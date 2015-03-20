@@ -36,6 +36,9 @@
                     "index" : "analyzed",
                     "store": true
                 },
+                "body_length" : {
+                    "type" : "long"
+                },
                 "raw_html" : {
                     "type" : "string",
                     "index" : "no",

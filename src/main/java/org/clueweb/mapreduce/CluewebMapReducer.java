@@ -33,9 +33,10 @@ public class CluewebMapReducer extends Reducer<Text, MapWritable, NullWritable, 
         mTemplate.put(new Text("anchor_texts"),                 new ArrayWritable(new String[0]));
         mTemplate.put(new Text("title"),                        new Text(""));
         mTemplate.put(new Text("body"),                         new Text(""));
+        mTemplate.put(new Text("body_length"),                  new LongWritable(0L));
         mTemplate.put(new Text("raw_html"),                     new Text(""));
-        mTemplate.put(new Text("page_rank"),                    new FloatWritable(0.0f));
-        mTemplate.put(new Text("spam_rank"),                    new LongWritable(0l));
+        mTemplate.put(new Text("page_rank"),                    new FloatWritable(0.0F));
+        mTemplate.put(new Text("spam_rank"),                    new LongWritable(0L));
     }
 
     @Override
