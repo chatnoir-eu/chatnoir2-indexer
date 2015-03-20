@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.mortbay.jetty:jsp-api-2.1:6.1.14">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mortbay.jetty/jsp-api-2.1/6.1.14/756b3fac155e31bd0e85545dbf953495e0455c73/jsp-api-2.1-6.1.14.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mortbay.jetty/jsp-api-2.1/6.1.14/66b48b3eae1a16ae47f3d3abf27f64a0818f7462/jsp-api-2.1-6.1.14-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

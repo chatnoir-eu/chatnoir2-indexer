@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.apache.geronimo.specs:geronimo-jaspic_1.0_spec:1.0">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.geronimo.specs/geronimo-jaspic_1.0_spec/1.0/44b95be7dae1147716dce5336419eafade880756/geronimo-jaspic_1.0_spec-1.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.geronimo.specs/geronimo-jaspic_1.0_spec/1.0/ded68014e70c18a2598b23d544c727acadcc79ac/geronimo-jaspic_1.0_spec-1.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

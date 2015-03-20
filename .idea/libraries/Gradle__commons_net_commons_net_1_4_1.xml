@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: commons-net:commons-net:1.4.1">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/commons-net/commons-net/1.4.1/abb932adb2c10790c1eaa4365d3ac2a1ac7cb700/commons-net-1.4.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/commons-net/commons-net/1.4.1/4c85b39e7f03471338bf7d36558eefe1e463e3de/commons-net-1.4.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

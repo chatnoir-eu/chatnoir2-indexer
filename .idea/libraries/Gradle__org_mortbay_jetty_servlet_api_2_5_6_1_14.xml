@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.mortbay.jetty:servlet-api-2.5:6.1.14">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mortbay.jetty/servlet-api-2.5/6.1.14/5f07601ab7d7c85dd9e38a17c0e1b0edfbd4a191/servlet-api-2.5-6.1.14.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mortbay.jetty/servlet-api-2.5/6.1.14/19bf7c8cf3b67563414aeeb462c143a9748795d4/servlet-api-2.5-6.1.14-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
