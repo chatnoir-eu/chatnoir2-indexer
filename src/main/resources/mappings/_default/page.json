@@ -1,67 +1,65 @@
 {
-    "mappings" : {
-        "warcrecord" : {
-            "_all" : {
-                "enabled" : false
+    "warcrecord" : {
+        "_all" : {
+            "enabled" : false
+        },
+        "_source" : {
+            "enabled" : false
+        },
+        "properties" : {
+            "WARC-TREC-ID" : {
+                "type" : "string",
+                "index" : "not_analyzed",
+                "store": true
             },
-            "_source" : {
-                "enabled" : false
+            "WARC-Target-URI" : {
+                "type" : "string",
+                "similarity" : "BM25",
+                "index" : "analyzed",
+                "store": true
             },
-            "properties" : {
-                "WARC-TREC-ID" : {
-                    "type" : "string",
-                    "index" : "not_analyzed",
-                    "store": true
-                },
-                "WARC-Target-URI" : {
-                    "type" : "string",
-                    "similarity" : "BM25",
-                    "index" : "analyzed",
-                    "store": true
-                },
-                "WARC-Warcinfo-ID" : {
-                    "type" : "string",
-                    "index" : "not_analyzed",
-                    "store": true
-                },
-                "title" : {
-                    "type" : "string",
-                    "similarity" : "BM25",
-                    "index" : "analyzed",
-                    "store": true
-                },
-                "body" : {
-                    "type" : "string",
-                    "similarity" : "BM25",
-                    "index" : "analyzed",
-                    "store": true
-                },
-                "body_length" : {
-                    "type" : "long"
-                },
-                "raw_html" : {
-                    "type" : "string",
-                    "index" : "no",
-                    "store": true
-                },
-                "meta_desc" : {
-                    "type" : "string",
-                    "similarity" : "BM25",
-                    "index" : "analyzed",
-                    "store": true
-                },
-                "meta_keywords" : {
-                    "type" : "string",
-                    "similarity" : "BM25",
-                    "index" : "analyzed",
-                    "store": true
-                },
-                "page_rank" : {
-                    "type" : "float"
-                },
-                "spam_rank" : {
-                    "type" : "byte"
-                }
+            "WARC-Warcinfo-ID" : {
+                "type" : "string",
+                "index" : "not_analyzed",
+                "store": true
+            },
+            "title" : {
+                "type" : "string",
+                "similarity" : "BM25",
+                "index" : "analyzed",
+                "store": true
+            },
+            "body" : {
+                "type" : "string",
+                "similarity" : "BM25",
+                "index" : "analyzed",
+                "store": true
+            },
+            "body_length" : {
+                "type" : "long"
+            },
+            "raw_html" : {
+                "type" : "string",
+                "index" : "no",
+                "store": true
+            },
+            "meta_desc" : {
+                "type" : "string",
+                "similarity" : "BM25",
+                "index" : "analyzed",
+                "store": true
+            },
+            "meta_keywords" : {
+                "type" : "string",
+                "similarity" : "BM25",
+                "index" : "analyzed",
+                "store": true
+            },
+            "page_rank" : {
+                "type" : "float"
+            },
+            "spam_rank" : {
+                "type" : "byte"
             }
         }
     }
