@@ -146,7 +146,7 @@ public class ESIndexer extends Configured implements Tool
         conf.setBoolean("mapreduce.reduce.speculative", false);
 
         conf.set("es.nodes",             conf.get("es.nodes", "betaweb020.medien.uni-weimar.de:9200"));
-        conf.set("es.resource",          conf.get("es.resource", String.format("%s/page", indexName)));
+        conf.set("es.resource",          conf.get("es.resource", String.format("%s/warcrecord", indexName)));
         conf.set("es.input.json",        "no");
         conf.set("es.index.auto.create", "yes");
         conf.set("es.batch.size.bytes",  "50mb");
