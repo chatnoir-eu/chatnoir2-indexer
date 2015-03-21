@@ -1,0 +1,2310 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="es-indexer" default="all">
+  
+  
+  <property file="es-indexer.properties"/>
+  <!-- Uncomment the following property if no tests compilation is needed -->
+  <!-- 
+  <property name="skip.tests" value="true"/>
+   -->
+  
+  <!-- Compiler options -->
+  
+  <property name="compiler.debug" value="on"/>
+  <property name="compiler.generate.no.warnings" value="off"/>
+  <property name="compiler.args" value=""/>
+  <property name="compiler.max.memory" value="700m"/>
+  <patternset id="ignored.files">
+    <exclude name="**/CVS/**"/>
+    <exclude name="**/SCCS/**"/>
+    <exclude name="**/RCS/**"/>
+    <exclude name="**/rcs/**"/>
+    <exclude name="**/.DS_Store/**"/>
+    <exclude name="**/.svn/**"/>
+    <exclude name="**/.pyc/**"/>
+    <exclude name="**/.pyo/**"/>
+    <exclude name="**/*.pyc/**"/>
+    <exclude name="**/*.pyo/**"/>
+    <exclude name="**/.git/**"/>
+    <exclude name="**/*.hprof/**"/>
+    <exclude name="**/_svn/**"/>
+    <exclude name="**/.hg/**"/>
+    <exclude name="**/*.lib/**"/>
+    <exclude name="**/*~/**"/>
+    <exclude name="**/__pycache__/**"/>
+    <exclude name="**/.bundle/**"/>
+    <exclude name="**/*.rbc/**"/>
+    <exclude name="**/vssver.scc/**"/>
+    <exclude name="**/vssver2.scc/**"/>
+  </patternset>
+  <patternset id="library.patterns">
+    <include name="*.war"/>
+    <include name="*.ear"/>
+    <include name="*.apk"/>
+    <include name="*.zip"/>
+    <include name="*.swc"/>
+    <include name="*.ane"/>
+    <include name="*.egg"/>
+    <include name="*.jar"/>
+  </patternset>
+  <patternset id="compiler.resources">
+    <exclude name="**/?*.java"/>
+    <exclude name="**/?*.form"/>
+    <exclude name="**/?*.class"/>
+    <exclude name="**/?*.groovy"/>
+    <exclude name="**/?*.scala"/>
+    <exclude name="**/?*.flex"/>
+    <exclude name="**/?*.kt"/>
+    <exclude name="**/?*.clj"/>
+    <exclude name="**/?*.aj"/>
+  </patternset>
+  
+  <!-- JDK definitions -->
+  
+  <property name="jdk.bin.1.7" value="${jdk.home.1.7}/bin"/>
+  <path id="jdk.classpath.1.7">
+    <fileset dir="${jdk.home.1.7}">
+      <include name="jre/lib/management-agent.jar"/>
+      <include name="jre/lib/jsse.jar"/>
+      <include name="jre/lib/resources.jar"/>
+      <include name="jre/lib/plugin.jar"/>
+      <include name="jre/lib/charsets.jar"/>
+      <include name="jre/lib/jfxrt.jar"/>
+      <include name="jre/lib/jce.jar"/>
+      <include name="jre/lib/jfr.jar"/>
+      <include name="jre/lib/rt.jar"/>
+      <include name="jre/lib/javaws.jar"/>
+      <include name="jre/lib/deploy.jar"/>
+      <include name="jre/lib/ext/sunpkcs11.jar"/>
+      <include name="jre/lib/ext/localedata.jar"/>
+      <include name="jre/lib/ext/sunec.jar"/>
+      <include name="jre/lib/ext/zipfs.jar"/>
+      <include name="jre/lib/ext/sunjce_provider.jar"/>
+      <include name="jre/lib/ext/dnsns.jar"/>
+    </fileset>
+  </path>
+  
+  <property name="project.jdk.home" value="${jdk.home.1.7}"/>
+  <property name="project.jdk.bin" value="${jdk.bin.1.7}"/>
+  <property name="project.jdk.classpath" value="jdk.classpath.1.7"/>
+  
+  
+  <!-- Project Libraries -->
+  
+  <path id="library.gradle:_ant:ant:1.6.5.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/ant/ant/1.6.5/7d18faf23df1a5c3a43613952e0e8a182664564b/ant-1.6.5.jar"/>
+  </path>
+  
+  <path id="library.gradle:_antlr:antlr:2.7.7.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/antlr/antlr/2.7.7/83cd2cd674a217ade95a4bb83a8a14f351f48bd0/antlr-2.7.7.jar"/>
+  </path>
+  
+  <path id="library.gradle:_aopalliance:aopalliance:1.0.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/aopalliance/aopalliance/1.0/235ba8b489512805ac13a8f9ea77a1ca5ebe3e8/aopalliance-1.0.jar"/>
+  </path>
+  
+  <path id="library.gradle:_asm:asm-commons:3.1.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/asm/asm-commons/3.1/1b607fbfe7889c6fdff1b7c16439ade0a60869ac/asm-commons-3.1.jar"/>
+  </path>
+  
+  <path id="library.gradle:_asm:asm-tree:3.1.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/asm/asm-tree/3.1/c9a5d4334ddf194ea492f22107d45119a5c5322f/asm-tree-3.1.jar"/>
+  </path>
+  
+  <path id="library.gradle:_asm:asm:3.1.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/asm/asm/3.1/c157def142714c544bdea2e6144645702adf7097/asm-3.1.jar"/>
+  </path>
+  
+  <path id="library.gradle:_ch.qos.logback:logback-classic:1.0.6.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/ch.qos.logback/logback-classic/1.0.6/ba738848da3e6fffa0107771c75546eb6d407f3c/logback-classic-1.0.6.jar"/>
+  </path>
+  
+  <path id="library.gradle:_ch.qos.logback:logback-core:1.0.6.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/ch.qos.logback/logback-core/1.0.6/132d78b900674cd484e91efc69a4ffd36aadfff3/logback-core-1.0.6.jar"/>
+  </path>
+  
+  <path id="library.gradle:_colt:colt:1.2.0.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/colt/colt/1.2.0/abc984f3adc760684d49e0f11ddf167ba516d4f/colt-1.2.0.jar"/>
+  </path>
+  
+  <path id="library.gradle:_com.clearspring.analytics:stream:2.7.0.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.clearspring.analytics/stream/2.7.0/9998f8cf87d329fef226405f8d519638cfe1431d/stream-2.7.0.jar"/>
+  </path>
+  
+  <path id="library.gradle:_com.codahale.metrics:metrics-core:3.0.0.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.codahale.metrics/metrics-core/3.0.0/73539fc5711032e3de658c134eb3521d146d464e/metrics-core-3.0.0.jar"/>
+  </path>
+  
+  <path id="library.gradle:_com.codahale.metrics:metrics-graphite:3.0.0.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.codahale.metrics/metrics-graphite/3.0.0/460aa766759492528cc6404bd6c1ca4eb8393722/metrics-graphite-3.0.0.jar"/>
+  </path>
+  
+  <path id="library.gradle:_com.codahale.metrics:metrics-json:3.0.0.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.codahale.metrics/metrics-json/3.0.0/63c61487aac6cec6077dd34ded044b49d0e3bf16/metrics-json-3.0.0.jar"/>
+  </path>
+  
+  <path id="library.gradle:_com.codahale.metrics:metrics-jvm:3.0.0.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.codahale.metrics/metrics-jvm/3.0.0/2585b314ba294ab328283f9746af5c6496c17a5/metrics-jvm-3.0.0.jar"/>
+  </path>
+  
+  <path id="library.gradle:_com.esotericsoftware.kryo:kryo:2.21.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.esotericsoftware.kryo/kryo/2.21/9a4e69cff8d225729656f7e97e40893b23bffef/kryo-2.21.jar"/>
+  </path>
+  
+  <path id="library.gradle:_com.esotericsoftware.minlog:minlog:1.2.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.esotericsoftware.minlog/minlog/1.2/59bfcd171d82f9981a5e242b9e840191f650e209/minlog-1.2.jar"/>
+  </path>
+  
+  <path id="library.gradle:_com.esotericsoftware.reflectasm:reflectasm:1.07:shaded.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.esotericsoftware.reflectasm/reflectasm/1.07/76f11c94a53ee975a0d9154b325c408b210155bd/reflectasm-1.07-shaded.jar"/>
+  </path>
+  
+  <path id="library.gradle:_com.fasterxml.jackson.core:jackson-annotations:2.3.0.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-annotations/2.3.0/f5e853a20b60758922453d56f9ae1e64af5cb3da/jackson-annotations-2.3.0.jar"/>
+  </path>
+  
+  <path id="library.gradle:_com.fasterxml.jackson.core:jackson-core:2.3.1.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.3.1/f9f7185c92ca5fefe2fb3efdeb477a67c96ea2d0/jackson-core-2.3.1.jar"/>
+  </path>
+  
+  <path id="library.gradle:_com.fasterxml.jackson.core:jackson-databind:2.3.1.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-databind/2.3.1/c4096a8323bbbcbeda072e3def123a9b66783361/jackson-databind-2.3.1.jar"/>
+  </path>
+  
+  <path id="library.gradle:_com.google.code.findbugs:jsr305:1.3.9.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/1.3.9/40719ea6961c0cb6afaeb6a921eaa1f6afd4cfdf/jsr305-1.3.9.jar"/>
+  </path>
+  
+  <path id="library.gradle:_com.google.code.gson:gson:2.2.4.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.2.4/a60a5e993c98c864010053cb901b7eab25306568/gson-2.2.4.jar"/>
+  </path>
+  
+  <path id="library.gradle:_com.google.guava:guava:16.0.1.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.google.guava/guava/16.0.1/5fa98cd1a63c99a44dd8d3b77e4762b066a5d0c5/guava-16.0.1.jar"/>
+  </path>
+  
+  <path id="library.gradle:_com.google.inject:guice:3.0.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.google.inject/guice/3.0/9d84f15fe35e2c716a02979fb62f50a29f38aefa/guice-3.0.jar"/>
+  </path>
+  
+  <path id="library.gradle:_com.google.protobuf:protobuf-java:2.5.0.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.google.protobuf/protobuf-java/2.5.0/a10732c76bfacdbd633a7eb0f7968b1059a65dfa/protobuf-java-2.5.0.jar"/>
+  </path>
+  
+  <path id="library.gradle:_com.googlecode.disruptor:disruptor:2.10.1.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.googlecode.disruptor/disruptor/2.10.1/82a4bc0bec8178f78779500e6b68e1dd6a622696/disruptor-2.10.1.jar"/>
+  </path>
+  
+  <path id="library.gradle:_com.googlecode.json-simple:json-simple:1.1.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.googlecode.json-simple/json-simple/1.1/5e303a03d04e6788dddfa3655272580ae0fc13bb/json-simple-1.1.jar"/>
+  </path>
+  
+  <path id="library.gradle:_com.jolbox:bonecp:0.8.0.release.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.jolbox/bonecp/0.8.0.RELEASE/cec24ee9345b3678472bb1b8fdd6aa6b9428beb8/bonecp-0.8.0.RELEASE.jar"/>
+  </path>
+  
+  <path id="library.gradle:_com.ning:compress-lzf:1.0.0.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.ning/compress-lzf/1.0.0/f2a7519a5c98f0fc06d90a2f4a131b201dbf690d/compress-lzf-1.0.0.jar"/>
+  </path>
+  
+  <path id="library.gradle:_com.spatial4j:spatial4j:0.4.1.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.spatial4j/spatial4j/0.4.1/4234d12b1ba4d4b539fb3e29edd948a99539d9eb/spatial4j-0.4.1.jar"/>
+  </path>
+  
+  <path id="library.gradle:_com.sun.jersey.contribs:jersey-guice:1.9.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.sun.jersey.contribs/jersey-guice/1.9/5963c28c47df7e5d6ad34cec80c071c368777f7b/jersey-guice-1.9.jar"/>
+  </path>
+  
+  <path id="library.gradle:_com.sun.jersey:jersey-client:1.9.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.sun.jersey/jersey-client/1.9/d3c4b2b5f89db32c96ceddcb863684821910a7bb/jersey-client-1.9.jar"/>
+  </path>
+  
+  <path id="library.gradle:_com.sun.jersey:jersey-core:1.9.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.sun.jersey/jersey-core/1.9/8341846f18187013bb9e27e46b7ee00a6395daf4/jersey-core-1.9.jar"/>
+  </path>
+  
+  <path id="library.gradle:_com.sun.jersey:jersey-json:1.9.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.sun.jersey/jersey-json/1.9/1aa73e1896bcc7013fed247157d7f676226eb432/jersey-json-1.9.jar"/>
+  </path>
+  
+  <path id="library.gradle:_com.sun.jersey:jersey-server:1.9.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.sun.jersey/jersey-server/1.9/3a6ea7cc5e15c824953f9f3ece2201b634d90d18/jersey-server-1.9.jar"/>
+  </path>
+  
+  <path id="library.gradle:_com.sun.xml.bind:jaxb-impl:2.2.3-1.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.sun.xml.bind/jaxb-impl/2.2.3-1/56baae106392040a45a06d4a41099173425da1e6/jaxb-impl-2.2.3-1.jar"/>
+  </path>
+  
+  <path id="library.gradle:_com.thoughtworks.paranamer:paranamer:2.6.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.thoughtworks.paranamer/paranamer/2.6/52c3c8d8876440d714e23036eb87bcc4244d9aa5/paranamer-2.6.jar"/>
+  </path>
+  
+  <path id="library.gradle:_com.twitter:chill-java:0.3.6.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.twitter/chill-java/0.3.6/68487306eb75555e72dd0b622dabae730636896b/chill-java-0.3.6.jar"/>
+  </path>
+  
+  <path id="library.gradle:_com.twitter:chill_2.10:0.3.6.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.twitter/chill_2.10/0.3.6/9f1700cae0d1dad5b1f52532d8e4fa524daa6484/chill_2.10-0.3.6.jar"/>
+  </path>
+  
+  <path id="library.gradle:_com.twitter:parquet-column:1.4.3.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.twitter/parquet-column/1.4.3/5ac74b89f895e9f4ee514bb4e49cbd464579b38/parquet-column-1.4.3.jar"/>
+  </path>
+  
+  <path id="library.gradle:_com.twitter:parquet-common:1.4.3.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.twitter/parquet-common/1.4.3/6fb8e00bc0928cf171c858902354ce26d3ba0f61/parquet-common-1.4.3.jar"/>
+  </path>
+  
+  <path id="library.gradle:_com.twitter:parquet-encoding:1.4.3.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.twitter/parquet-encoding/1.4.3/2eaf01c88fd117362080285016d1b51cfd59fc04/parquet-encoding-1.4.3.jar"/>
+  </path>
+  
+  <path id="library.gradle:_com.twitter:parquet-format:2.0.0.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.twitter/parquet-format/2.0.0/7b0d90082bd2aff46e40e34182342c286dcef525/parquet-format-2.0.0.jar"/>
+  </path>
+  
+  <path id="library.gradle:_com.twitter:parquet-generator:1.4.3.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.twitter/parquet-generator/1.4.3/ce2d757288c130a256a6bd5bc14169b3f907eea5/parquet-generator-1.4.3.jar"/>
+  </path>
+  
+  <path id="library.gradle:_com.twitter:parquet-hadoop:1.4.3.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.twitter/parquet-hadoop/1.4.3/78f0973e24e8de343cb725c8b2d4c7448123f477/parquet-hadoop-1.4.3.jar"/>
+  </path>
+  
+  <path id="library.gradle:_com.twitter:parquet-jackson:1.4.3.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.twitter/parquet-jackson/1.4.3/15274fbd1581018171fed3cb2f255973a26c0064/parquet-jackson-1.4.3.jar"/>
+  </path>
+  
+  <path id="library.gradle:_com.typesafe:config:1.0.2.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.typesafe/config/1.0.2/a0bca82c39f23f75e3afccd6e12840eeabaea123/config-1.0.2.jar"/>
+  </path>
+  
+  <path id="library.gradle:_commons-beanutils:commons-beanutils-core:1.8.0.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/commons-beanutils/commons-beanutils-core/1.8.0/175dc721f87e4bc5cc0573f990e28c3cf9117508/commons-beanutils-core-1.8.0.jar"/>
+  </path>
+  
+  <path id="library.gradle:_commons-beanutils:commons-beanutils:1.7.0.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/commons-beanutils/commons-beanutils/1.7.0/5675fd96b29656504b86029551973d60fb41339b/commons-beanutils-1.7.0.jar"/>
+  </path>
+  
+  <path id="library.gradle:_commons-cli:commons-cli:1.2.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/commons-cli/commons-cli/1.2/2bf96b7aa8b611c177d329452af1dc933e14501c/commons-cli-1.2.jar"/>
+  </path>
+  
+  <path id="library.gradle:_commons-codec:commons-codec:1.6.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/commons-codec/commons-codec/1.6/b7f0fc8f61ecadeb3695f0b9464755eee44374d4/commons-codec-1.6.jar"/>
+  </path>
+  
+  <path id="library.gradle:_commons-collections:commons-collections:3.2.1.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/commons-collections/commons-collections/3.2.1/761ea405b9b37ced573d2df0d1e3a4e0f9edc668/commons-collections-3.2.1.jar"/>
+  </path>
+  
+  <path id="library.gradle:_commons-configuration:commons-configuration:1.6.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/commons-configuration/commons-configuration/1.6/32cadde23955d7681b0d94a2715846d20b425235/commons-configuration-1.6.jar"/>
+  </path>
+  
+  <path id="library.gradle:_commons-digester:commons-digester:1.8.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/commons-digester/commons-digester/1.8/dc6a73fdbd1fa3f0944e8497c6c872fa21dca37e/commons-digester-1.8.jar"/>
+  </path>
+  
+  <path id="library.gradle:_commons-el:commons-el:1.0.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/commons-el/commons-el/1.0/1df2c042b3f2de0124750241ac6c886dbfa2cc2c/commons-el-1.0.jar"/>
+  </path>
+  
+  <path id="library.gradle:_commons-httpclient:commons-httpclient:3.1.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/commons-httpclient/commons-httpclient/3.1/964cd74171f427720480efdec40a7c7f6e58426a/commons-httpclient-3.1.jar"/>
+  </path>
+  
+  <path id="library.gradle:_commons-io:commons-io:2.4.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/commons-io/commons-io/2.4/b1b6ea3b7e4aa4f492509a4952029cd8e48019ad/commons-io-2.4.jar"/>
+  </path>
+  
+  <path id="library.gradle:_commons-lang:commons-lang:2.6.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/commons-lang/commons-lang/2.6/ce1edb914c94ebc388f086c6827e8bdeec71ac2/commons-lang-2.6.jar"/>
+  </path>
+  
+  <path id="library.gradle:_commons-logging:commons-logging:1.1.3.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/commons-logging/commons-logging/1.1.3/f6f66e966c70a83ffbdb6f17a0919eaf7c8aca7f/commons-logging-1.1.3.jar"/>
+  </path>
+  
+  <path id="library.gradle:_commons-net:commons-net:3.1.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/commons-net/commons-net/3.1/2298164a7c2484406f2aa5ac85b205d39019896f/commons-net-3.1.jar"/>
+  </path>
+  
+  <path id="library.gradle:_concurrent:concurrent:1.3.4.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/concurrent/concurrent/1.3.4/1cf394c2a388199db550cda311174a4c6a7d117c/concurrent-1.3.4.jar"/>
+  </path>
+  
+  <path id="library.gradle:_hsqldb:hsqldb:1.8.0.10.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/hsqldb/hsqldb/1.8.0.10/7e9978fdb754bce5fcd5161133e7734ecb683036/hsqldb-1.8.0.10.jar"/>
+  </path>
+  
+  <path id="library.gradle:_io.netty:netty-all:4.0.23.final.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/io.netty/netty-all/4.0.23.Final/294104aaf1781d6a56a07d561e792c5d0c95f45/netty-all-4.0.23.Final.jar"/>
+  </path>
+  
+  <path id="library.gradle:_io.netty:netty:3.7.0.final.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/io.netty/netty/3.7.0.Final/7a8c35599c68c0bf383df74469aa3e03d9aca87/netty-3.7.0.Final.jar"/>
+  </path>
+  
+  <path id="library.gradle:_javax.activation:activation:1.1.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/javax.activation/activation/1.1/e6cb541461c2834bdea3eb920f1884d1eb508b50/activation-1.1.jar"/>
+  </path>
+  
+  <path id="library.gradle:_javax.inject:javax.inject:1.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/javax.inject/javax.inject/1/6975da39a7040257bd51d21a231b76c915872d38/javax.inject-1.jar"/>
+  </path>
+  
+  <path id="library.gradle:_javax.jdo:jdo-api:3.0.1.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/javax.jdo/jdo-api/3.0.1/58e7a538e020b73871e232eeb064835fd98a492/jdo-api-3.0.1.jar"/>
+  </path>
+  
+  <path id="library.gradle:_javax.mail:mail:1.4.1.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/javax.mail/mail/1.4.1/8b7bc69010655425dabf091b51d1e90b4de36715/mail-1.4.1.jar"/>
+  </path>
+  
+  <path id="library.gradle:_javax.servlet:javax.servlet-api:3.0.1.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/javax.servlet/javax.servlet-api/3.0.1/6bf0ebb7efd993e222fc1112377b5e92a13b38dd/javax.servlet-api-3.0.1.jar"/>
+  </path>
+  
+  <path id="library.gradle:_javax.servlet:servlet-api:2.5.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/javax.servlet/servlet-api/2.5/5959582d97d8b61f4d154ca9e495aafd16726e34/servlet-api-2.5.jar"/>
+  </path>
+  
+  <path id="library.gradle:_javax.transaction:jta:1.1.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/javax.transaction/jta/1.1/2ca09f0b36ca7d71b762e14ea2ff09d5eac57558/jta-1.1.jar"/>
+  </path>
+  
+  <path id="library.gradle:_javax.xml.bind:jaxb-api:2.2.2.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/javax.xml.bind/jaxb-api/2.2.2/aeb3021ca93dde265796d82015beecdcff95bf09/jaxb-api-2.2.2.jar"/>
+  </path>
+  
+  <path id="library.gradle:_javax.xml.stream:stax-api:1.0-2.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/javax.xml.stream/stax-api/1.0-2/d6337b0de8b25e53e81b922352fbea9f9f57ba0b/stax-api-1.0-2.jar"/>
+  </path>
+  
+  <path id="library.gradle:_jline:jline:0.9.94.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/jline/jline/0.9.94/99a18e9a44834afdebc467294e1138364c207402/jline-0.9.94.jar"/>
+  </path>
+  
+  <path id="library.gradle:_joda-time:joda-time:2.1.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/joda-time/joda-time/2.1/8f79e353ef77da6710e1f10d34fc3698eaaacbca/joda-time-2.1.jar"/>
+  </path>
+  
+  <path id="library.gradle:_junit:junit:4.8.1.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/junit/junit/4.8.1/f2975548f836416306ef1dee748d956f04733915/junit-4.8.1.jar"/>
+  </path>
+  
+  <path id="library.gradle:_log4j:log4j:1.2.17.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/log4j/log4j/1.2.17/5af35056b4d257e4b64b9e8069c0746e8b08629f/log4j-1.2.17.jar"/>
+  </path>
+  
+  <path id="library.gradle:_net.htmlparser.jericho:jericho-html:3.3.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/net.htmlparser.jericho/jericho-html/3.3/bf3aa8c67df4683da93d49e98d56cd0bc48f7c62/jericho-html-3.3.jar"/>
+  </path>
+  
+  <path id="library.gradle:_net.java.dev.jets3t:jets3t:0.7.1.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/net.java.dev.jets3t/jets3t/0.7.1/2d10b62398360c674b4039ea4f2d1c697f46f6cd/jets3t-0.7.1.jar"/>
+  </path>
+  
+  <path id="library.gradle:_net.jpountz.lz4:lz4:1.2.0.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/net.jpountz.lz4/lz4/1.2.0/cd301e9a481eae5b68c53267100aeca43b782b9f/lz4-1.2.0.jar"/>
+  </path>
+  
+  <path id="library.gradle:_net.sf.jpam:jpam:1.1.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/net.sf.jpam/jpam/1.1/cb3d91c2dfda767518a371dbb02edfd6a4aa0600/jpam-1.1.jar"/>
+  </path>
+  
+  <path id="library.gradle:_net.sf.kosmosfs:kfs:0.3.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/net.sf.kosmosfs/kfs/0.3/20fcbc065182bdcd706c90a2eb383ae70eb5b223/kfs-0.3.jar"/>
+  </path>
+  
+  <path id="library.gradle:_net.sf.py4j:py4j:0.8.2.1.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/net.sf.py4j/py4j/0.8.2.1/3e22b0cccd1baa119c56e898dc2962b15ad1cb0a/py4j-0.8.2.1.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.antlr:antlr-runtime:3.5.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.antlr/antlr-runtime/3.5/baa82bff19059401e90e1b90020beb9c96305d7/antlr-runtime-3.5.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.antlr:st4:4.0.4.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.antlr/ST4/4.0.4/467a2aa12be6d0f0f68c70eecf6714ab733027ac/ST4-4.0.4.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.antlr:stringtemplate:3.2.1.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.antlr/stringtemplate/3.2.1/59ec8083721eae215c6f3caee944c410d2be34de/stringtemplate-3.2.1.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.ant:ant-launcher:1.9.1.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.ant/ant-launcher/1.9.1/7c71043ca185eaada9e36391dd022d92859327de/ant-launcher-1.9.1.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.ant:ant:1.9.1.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.ant/ant/1.9.1/35900c96dbebc85dcfbd71f4661059ebcf93c077/ant-1.9.1.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.avro:avro:1.7.5.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.avro/avro/1.7.5/8343a5b33f56fa16306ed27fa7b1a79278c26c2d/avro-1.7.5.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.commons:commons-compress:1.4.1.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-compress/1.4.1/b02e84a993d88568417536240e970c4b809126fd/commons-compress-1.4.1.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.commons:commons-exec:1.1.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-exec/1.1/7dfdf16fade726000564386825ed6d911a44ba1/commons-exec-1.1.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.commons:commons-lang3:3.3.2.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-lang3/3.3.2/90a3822c38ec8c996e84c16a3477ef632cbc87a3/commons-lang3-3.3.2.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.commons:commons-math3:3.1.1.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-math3/3.1.1/6719d757a98ff24a83d9d727bef9cec83f59b6e1/commons-math3-3.1.1.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.curator:curator-client:2.6.0.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.curator/curator-client/2.6.0/b9007c357ad1a78066fc6004e8b1feaa2318f6f3/curator-client-2.6.0.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.curator:curator-framework:2.6.0.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.curator/curator-framework/2.6.0/81a699c39d127b5b4ff97cc77da7650b53e5b5ed/curator-framework-2.6.0.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.curator:curator-recipes:2.6.0.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.curator/curator-recipes/2.6.0/8736b0fc42e6bf006d585fe85c90aaa4ade5cbef/curator-recipes-2.6.0.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.derby:derby:10.10.1.1.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.derby/derby/10.10.1.1/9f6f910f0373adc1b23c10f9b4bb151b7e7449f/derby-10.10.1.1.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.directory.api:api-asn1-api:1.0.0-m20.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.directory.api/api-asn1-api/1.0.0-M20/5e6486ffa3125ba44dc410ead166e1d6ba8ac76d/api-asn1-api-1.0.0-M20.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.directory.api:api-util:1.0.0-m20.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.directory.api/api-util/1.0.0-M20/a871abf060b3cf83fc6dc4d7e3d151fce50ac3cb/api-util-1.0.0-M20.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.directory.server:apacheds-i18n:2.0.0-m15.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.directory.server/apacheds-i18n/2.0.0-M15/71c61c84683152ec2a6a65f3f96fe534e304fa22/apacheds-i18n-2.0.0-M15.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.directory.server:apacheds-kerberos-codec:2.0.0-m15.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.directory.server/apacheds-kerberos-codec/2.0.0-M15/1c16e4e477183641c5f0dd5cdecd27ec331bacb5/apacheds-kerberos-codec-2.0.0-M15.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.geronimo.specs:geronimo-annotation_1.0_spec:1.1.1.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.geronimo.specs/geronimo-annotation_1.0_spec/1.1.1/47caa799389f69d297b86bf90523d431599c3796/geronimo-annotation_1.0_spec-1.1.1.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.geronimo.specs:geronimo-jaspic_1.0_spec:1.0.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.geronimo.specs/geronimo-jaspic_1.0_spec/1.0/44b95be7dae1147716dce5336419eafade880756/geronimo-jaspic_1.0_spec-1.0.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.geronimo.specs:geronimo-jta_1.1_spec:1.1.1.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.geronimo.specs/geronimo-jta_1.1_spec/1.1.1/aabab3165b8ea936b9360abbf448459c0d04a5a4/geronimo-jta_1.1_spec-1.1.1.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.hadoop:hadoop-annotations:2.6.0.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.hadoop/hadoop-annotations/2.6.0/8cd40a4cde2b77e6edc1ab3bb55706d626ae8b2d/hadoop-annotations-2.6.0.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.hadoop:hadoop-auth:2.6.0.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.hadoop/hadoop-auth/2.6.0/b0b8dec23a84ac8a0d00fbd69a87d320724ae34a/hadoop-auth-2.6.0.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.hadoop:hadoop-client:2.6.0.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.hadoop/hadoop-client/2.6.0/fe477db282eb6770dd6a99a614588fe0fcd05a1f/hadoop-client-2.6.0.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.hadoop:hadoop-common:2.6.0.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.hadoop/hadoop-common/2.6.0/a3f6d9827e9813a0fb286ebc0d3ae8cffed17105/hadoop-common-2.6.0.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.hadoop:hadoop-hdfs:2.6.0.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.hadoop/hadoop-hdfs/2.6.0/9e25d4ea9daab5d0b7fbbe1749790aef3280ff35/hadoop-hdfs-2.6.0.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.hadoop:hadoop-mapreduce-client-app:2.6.0.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.hadoop/hadoop-mapreduce-client-app/2.6.0/43aba8c4a4c152889363efcff5691b7bf0cd6db7/hadoop-mapreduce-client-app-2.6.0.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.hadoop:hadoop-mapreduce-client-common:2.6.0.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.hadoop/hadoop-mapreduce-client-common/2.6.0/b901fc26d9d73558132120fc8d9e7d753ee7a7/hadoop-mapreduce-client-common-2.6.0.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.hadoop:hadoop-mapreduce-client-core:2.6.0.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.hadoop/hadoop-mapreduce-client-core/2.6.0/c0c6bb2c79833e0a0e75473c340a1fb9544a9ac9/hadoop-mapreduce-client-core-2.6.0.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.hadoop:hadoop-mapreduce-client-jobclient:2.6.0.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.hadoop/hadoop-mapreduce-client-jobclient/2.6.0/250e960011ff5a87964fbf7b2cd86438cbb74c16/hadoop-mapreduce-client-jobclient-2.6.0.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.hadoop:hadoop-mapreduce-client-shuffle:2.6.0.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.hadoop/hadoop-mapreduce-client-shuffle/2.6.0/32ecb6cb40ade3abea1ef4cad5eb16704b5467b0/hadoop-mapreduce-client-shuffle-2.6.0.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.hadoop:hadoop-yarn-api:2.6.0.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.hadoop/hadoop-yarn-api/2.6.0/c3bcbcd82cd61b55dc5d523f26a259f8d27fc237/hadoop-yarn-api-2.6.0.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.hadoop:hadoop-yarn-client:2.6.0.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.hadoop/hadoop-yarn-client/2.6.0/bbd9752aaa12a1db3fd6ce1e851307dd12c8fe96/hadoop-yarn-client-2.6.0.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.hadoop:hadoop-yarn-common:2.6.0.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.hadoop/hadoop-yarn-common/2.6.0/9dd33fb5183f8faac731868eff69ac2b7678b75b/hadoop-yarn-common-2.6.0.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.hadoop:hadoop-yarn-server-common:2.6.0.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.hadoop/hadoop-yarn-server-common/2.6.0/887639fe75421ab6f67a78b6f9b04b0c9b251490/hadoop-yarn-server-common-2.6.0.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.hadoop:hadoop-yarn-server-nodemanager:2.6.0.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.hadoop/hadoop-yarn-server-nodemanager/2.6.0/e02948e79d7408d79c4d1d60cb410b16146376d5/hadoop-yarn-server-nodemanager-2.6.0.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.hive.shims:hive-shims-0.20:0.13.1.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.hive.shims/hive-shims-0.20/0.13.1/8438f1ffba0cf94353fb87051700efa55d932e18/hive-shims-0.20-0.13.1.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.hive.shims:hive-shims-0.20s:0.13.1.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.hive.shims/hive-shims-0.20S/0.13.1/c644cda2b6ad2e3eb085495d9dcb39a8008d617b/hive-shims-0.20S-0.13.1.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.hive.shims:hive-shims-0.23:0.13.1.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.hive.shims/hive-shims-0.23/0.13.1/fa81798e930cd3a2b6eead6c74c951e01c279aa/hive-shims-0.23-0.13.1.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.hive.shims:hive-shims-common-secure:0.13.1.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.hive.shims/hive-shims-common-secure/0.13.1/e0f0231f98acf03151d3d8f777111cb722dea376/hive-shims-common-secure-0.13.1.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.hive.shims:hive-shims-common:0.13.1.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.hive.shims/hive-shims-common/0.13.1/fdffc348740a4ffa04417a57cbb6712111aa315c/hive-shims-common-0.13.1.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.hive:hive-ant:0.13.1.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.hive/hive-ant/0.13.1/14ea3faa606fb02d5c13fec4285a61b805b25461/hive-ant-0.13.1.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.hive:hive-common:0.13.1.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.hive/hive-common/0.13.1/ab3cbfd3a5c98cc8150d212a26def9ff2b81b985/hive-common-0.13.1.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.hive:hive-exec:0.13.1.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.hive/hive-exec/0.13.1/92776e3c9899780aa5c00bcb6919db72e2c06434/hive-exec-0.13.1.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.hive:hive-metastore:0.13.1.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.hive/hive-metastore/0.13.1/99f58b6a51a105901b78202aa2b09ca784dfe5aa/hive-metastore-0.13.1.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.hive:hive-serde:0.13.1.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.hive/hive-serde/0.13.1/8fa79af700488ea0ce3f3c2a0c76bdd587d52ca3/hive-serde-0.13.1.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.hive:hive-service:0.13.1.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.hive/hive-service/0.13.1/f527fad9efbe8054713100ff89d786cf1709b93e/hive-service-0.13.1.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.hive:hive-shims:0.13.1.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.hive/hive-shims/0.13.1/9611970c1a9c13b7c5d8008a77339662dfa76c79/hive-shims-0.13.1.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.httpcomponents:httpclient:4.3.3.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpclient/4.3.3/18f4247ff4572a074444572cee34647c43e7c9c7/httpclient-4.3.3.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.httpcomponents:httpcore:4.3.2.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpcore/4.3.2/31fbbff1ddbf98f3aa7377c94d33b0447c646b6e/httpcore-4.3.2.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.lucene:lucene-analyzers-common:4.10.3.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-analyzers-common/4.10.3/2fc01f6bfc26d282a96da36a367755f61b4074a8/lucene-analyzers-common-4.10.3.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.lucene:lucene-core:4.10.3.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-core/4.10.3/ea0344b37d8668e6beb21ec41c67c9ca2df9f2a4/lucene-core-4.10.3.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.lucene:lucene-grouping:4.10.3.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-grouping/4.10.3/e773f0ce6b769e7a8b0fbf3a3bea780658af39a/lucene-grouping-4.10.3.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.lucene:lucene-highlighter:4.10.3.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-highlighter/4.10.3/73dafa5b404ddf72ab35606c791c8672455775d9/lucene-highlighter-4.10.3.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.lucene:lucene-join:4.10.3.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-join/4.10.3/83b722179d7518c2ddd24ae02d2cde71155f9e76/lucene-join-4.10.3.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.lucene:lucene-memory:4.10.3.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-memory/4.10.3/d33e392555c22dbe57fa2720126e6f87182e40af/lucene-memory-4.10.3.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.lucene:lucene-misc:4.10.3.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-misc/4.10.3/1573b915937d74e1c3cd700f9712a0dffae6fcd3/lucene-misc-4.10.3.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.lucene:lucene-queries:4.10.3.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-queries/4.10.3/40a4d378a857ec0c7cc32d3122a36f22beae2fd7/lucene-queries-4.10.3.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.lucene:lucene-queryparser:4.10.3.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-queryparser/4.10.3/e7a0384c99257136e7295efd69516615b19d92bc/lucene-queryparser-4.10.3.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.lucene:lucene-sandbox:4.10.3.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-sandbox/4.10.3/39ecd581b636adc15379dbd53878928e0f05a89c/lucene-sandbox-4.10.3.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.lucene:lucene-spatial:4.10.3.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-spatial/4.10.3/ecfc47a924eebf5df1944efe0bd95adee12efc9b/lucene-spatial-4.10.3.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.lucene:lucene-suggest:4.10.3.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-suggest/4.10.3/3d0f240b1d5079fc5914570b1c2b80c34e7c5c4b/lucene-suggest-4.10.3.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.mesos:mesos:0.18.1:shaded-protobuf.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.mesos/mesos/0.18.1/a558f0382cee5fe371a8460f2cab8b8492c91fbd/mesos-0.18.1-shaded-protobuf.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.pig:pig:0.13.0.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.pig/pig/0.13.0/411ce756bd3fff58349a2a1509bfd3298cc2b86c/pig-0.13.0.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.spark:spark-catalyst_2.10:1.1.0.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.spark/spark-catalyst_2.10/1.1.0/8e6b1bc3057e9a3d74ca2101162c91e35ff008cf/spark-catalyst_2.10-1.1.0.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.spark:spark-core_2.10:1.1.0.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.spark/spark-core_2.10/1.1.0/786db1f5dfea453ff0001b6939e3e5a1c8b68a10/spark-core_2.10-1.1.0.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.spark:spark-sql_2.10:1.1.0.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.spark/spark-sql_2.10/1.1.0/71374ce9d2073691b5319c688e9509abcf3bb896/spark-sql_2.10-1.1.0.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.storm:storm-core:0.9.2-incubating.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.storm/storm-core/0.9.2-incubating/64342cfa48109b3b2e504eaf7b24231f13eae274/storm-core-0.9.2-incubating.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.thrift:libfb303:0.9.0.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.thrift/libfb303/0.9.0/639bd69767fdbd7f658ce8233248fe1cea635164/libfb303-0.9.0.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.thrift:libthrift:0.9.0.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.thrift/libthrift/0.9.0/9ba8df332b5db95ce7f3b7a83e44d796c3d014d3/libthrift-0.9.0.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.velocity:velocity:1.5.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.velocity/velocity/1.5/9f306baf7523ffc0e81a6353d08a584d254133b/velocity-1.5.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.apache.zookeeper:zookeeper:3.4.6.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.zookeeper/zookeeper/3.4.6/1b2502e29da1ebaade2357cd1de35a855fa3755/zookeeper-3.4.6.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.clojure:clojure:1.5.1.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.clojure/clojure/1.5.1/e7e53da8bc4ac41fca95ccfacf84f9469dd3147f/clojure-1.5.1.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.clojure:math.numeric-tower:0.0.1.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.clojure/math.numeric-tower/0.0.1/51732e943950ec22bc8747c01d2dbc039d128ac5/math.numeric-tower-0.0.1.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.clojure:tools.cli:0.2.4.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.clojure/tools.cli/0.2.4/732842ef07fc5336ecd7123b2c92a5cc59cc0635/tools.cli-0.2.4.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.clojure:tools.logging:0.2.3.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.clojure/tools.logging/0.2.3/20096ee8dbc67fccf39ca5e997c3a2647f20176f/tools.logging-0.2.3.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.codehaus.groovy:groovy-all:2.1.6.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.codehaus.groovy/groovy-all/2.1.6/165b8246372a829c1915611646f6d964010656cf/groovy-all-2.1.6.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.codehaus.jackson:jackson-core-asl:1.9.13.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.codehaus.jackson/jackson-core-asl/1.9.13/3c304d70f42f832e0a86d45bd437f692129299a4/jackson-core-asl-1.9.13.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.codehaus.jackson:jackson-jaxrs:1.9.13.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.codehaus.jackson/jackson-jaxrs/1.9.13/534d72d2b9d6199dd531dfb27083dd4844082bba/jackson-jaxrs-1.9.13.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.codehaus.jackson:jackson-mapper-asl:1.9.13.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.codehaus.jackson/jackson-mapper-asl/1.9.13/1ee2f2bed0e5dd29d1cb155a166e6f8d50bbddb7/jackson-mapper-asl-1.9.13.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.codehaus.jackson:jackson-xc:1.9.13.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.codehaus.jackson/jackson-xc/1.9.13/e3480072bc95c202476ffa1de99ff7ee9149f29c/jackson-xc-1.9.13.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.codehaus.jettison:jettison:1.1.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.codehaus.jettison/jettison/1.1/1a01a2a1218fcf9faa2cc2a6ced025bdea687262/jettison-1.1.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.datanucleus:datanucleus-api-jdo:3.2.6.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.datanucleus/datanucleus-api-jdo/3.2.6/cb21100ecc0d2e80dfd62067046c8a2a25a95c50/datanucleus-api-jdo-3.2.6.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.datanucleus:datanucleus-core:3.2.10.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.datanucleus/datanucleus-core/3.2.10/7ad66634f30d7c6a06373475e94bcfbe65e2648e/datanucleus-core-3.2.10.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.datanucleus:datanucleus-rdbms:3.2.9.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.datanucleus/datanucleus-rdbms/3.2.9/b95b6ff6ea969ab67f06754108167c4f9fadfd7e/datanucleus-rdbms-3.2.9.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.eclipse.jdt:core:3.1.1.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.eclipse.jdt/core/3.1.1/88c83ce444cf46d02494da37c9fa1eebc9ce9cea/core-3.1.1.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.eclipse.jetty.aggregate:jetty-all:7.6.0.v20120127.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.eclipse.jetty.aggregate/jetty-all/7.6.0.v20120127/47bb68e3837e5c6422138dd1e0d4d75c60dce87a/jetty-all-7.6.0.v20120127.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.eclipse.jetty.orbit:javax.activation:1.1.0.v201105071233.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.eclipse.jetty.orbit/javax.activation/1.1.0.v201105071233/b394a9fbf664ca835452b3ced452710bcf79fd81/javax.activation-1.1.0.v201105071233.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.eclipse.jetty.orbit:javax.mail.glassfish:1.4.1.v201005082020.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.eclipse.jetty.orbit/javax.mail.glassfish/1.4.1.v201005082020/b707c39fc080529c4a9ffc1df4eac58421133aaf/javax.mail.glassfish-1.4.1.v201005082020.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.eclipse.jetty.orbit:javax.servlet:3.0.0.v201112011016.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.eclipse.jetty.orbit/javax.servlet/3.0.0.v201112011016/aaaa85845fb5c59da00193f06b8e5278d8bf3f8/javax.servlet-3.0.0.v201112011016.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.eclipse.jetty.orbit:javax.transaction:1.1.1.v201105210645.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.eclipse.jetty.orbit/javax.transaction/1.1.1.v201105210645/68e61aa115bbff4e1e2ae4b16feb27d9f805eb6/javax.transaction-1.1.1.v201105210645.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.eclipse.jetty:jetty-continuation:8.1.14.v20131031.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-continuation/8.1.14.v20131031/e3396abd21360191c2277e848eff489b58bba45d/jetty-continuation-8.1.14.v20131031.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.eclipse.jetty:jetty-http:8.1.14.v20131031.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-http/8.1.14.v20131031/8dd4e01b374e16cf0335b7975a7aa0a57396d5da/jetty-http-8.1.14.v20131031.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.eclipse.jetty:jetty-io:8.1.14.v20131031.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-io/8.1.14.v20131031/12f6f92d7e58349501f2cfc0716b8f1c6a2962eb/jetty-io-8.1.14.v20131031.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.eclipse.jetty:jetty-jndi:8.1.14.v20131031.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-jndi/8.1.14.v20131031/a59b5267df3a8707792d0ea75925ac7179d9be23/jetty-jndi-8.1.14.v20131031.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.eclipse.jetty:jetty-plus:8.1.14.v20131031.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-plus/8.1.14.v20131031/630cb2b45d9cd9aae503ba729c68de3dcb58cc5e/jetty-plus-8.1.14.v20131031.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.eclipse.jetty:jetty-security:8.1.14.v20131031.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-security/8.1.14.v20131031/d6fd7add8e6015a95558b67b43edf7752a925884/jetty-security-8.1.14.v20131031.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.eclipse.jetty:jetty-server:8.1.14.v20131031.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-server/8.1.14.v20131031/7f7f9b929b9d9169dd68f36327c819ab9a03a661/jetty-server-8.1.14.v20131031.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.eclipse.jetty:jetty-servlet:8.1.14.v20131031.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-servlet/8.1.14.v20131031/2ea127b7001965201d28ce715f5754573205c4ae/jetty-servlet-8.1.14.v20131031.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.eclipse.jetty:jetty-util:8.1.14.v20131031.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-util/8.1.14.v20131031/43063284480a41eca024dc8852452eedf6379c16/jetty-util-8.1.14.v20131031.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.eclipse.jetty:jetty-webapp:8.1.14.v20131031.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-webapp/8.1.14.v20131031/1f29371c74381ac42f961e9b984a7af28cc62093/jetty-webapp-8.1.14.v20131031.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.eclipse.jetty:jetty-xml:8.1.14.v20131031.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-xml/8.1.14.v20131031/8732c74817fef6d2e3e667636e6c4f27fb4cada9/jetty-xml-8.1.14.v20131031.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.elasticsearch:elasticsearch-hadoop:2.1.0.beta3.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.elasticsearch/elasticsearch-hadoop/2.1.0.Beta3/92d3a3e55e93a1d04727ceaa7031cd78b5726683/elasticsearch-hadoop-2.1.0.Beta3.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.elasticsearch:elasticsearch:1.4.4.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.elasticsearch/elasticsearch/1.4.4/8d893aedcb97ea8b5e64de2dd895af9e43e8dc1e/elasticsearch-1.4.4.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.fusesource.leveldbjni:leveldbjni-all:1.8.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.fusesource.leveldbjni/leveldbjni-all/1.8/707350a2eeb1fa2ed77a32ddb3893ed308e941db/leveldbjni-all-1.8.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.htrace:htrace-core:3.0.4.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.htrace/htrace-core/3.0.4/d7461828faf28411f37f8570d896292db277d838/htrace-core-3.0.4.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.jgrapht:jgrapht-core:0.9.0.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.jgrapht/jgrapht-core/0.9.0/6297555cbffd288a9b00c692c631edd235a649cb/jgrapht-core-0.9.0.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.json4s:json4s-ast_2.10:3.2.10.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.json4s/json4s-ast_2.10/3.2.10/6b0269aac8115a624fe432e7d4ae3e9804240ca7/json4s-ast_2.10-3.2.10.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.json4s:json4s-core_2.10:3.2.10.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.json4s/json4s-core_2.10/3.2.10/dad833a33b231556e6254ab609eedfe8364793d3/json4s-core_2.10-3.2.10.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.json4s:json4s-jackson_2.10:3.2.10.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.json4s/json4s-jackson_2.10/3.2.10/d52c4a71a17bc806593d0e868e1d32dca4257da9/json4s-jackson_2.10-3.2.10.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.mortbay.jetty:jetty-util:6.1.26.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.mortbay.jetty/jetty-util/6.1.26/e5642fe0399814e1687d55a3862aa5a3417226a9/jetty-util-6.1.26.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.mortbay.jetty:jetty:6.1.26.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.mortbay.jetty/jetty/6.1.26/2f546e289fddd5b1fab1d4199fbb6e9ef43ee4b0/jetty-6.1.26.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.mortbay.jetty:jsp-2.1:6.1.14.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.mortbay.jetty/jsp-2.1/6.1.14/3a1df1e8e0fa56e9a940abbd19bc6f397fce16b5/jsp-2.1-6.1.14.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.mortbay.jetty:jsp-api-2.1:6.1.14.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.mortbay.jetty/jsp-api-2.1/6.1.14/756b3fac155e31bd0e85545dbf953495e0455c73/jsp-api-2.1-6.1.14.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.mortbay.jetty:servlet-api-2.5:6.1.14.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.mortbay.jetty/servlet-api-2.5/6.1.14/5f07601ab7d7c85dd9e38a17c0e1b0edfbd4a191/servlet-api-2.5-6.1.14.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.mortbay.jetty:servlet-api:2.5-20081211.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.mortbay.jetty/servlet-api/2.5-20081211/22bff70037e1e6fa7e6413149489552ee2064702/servlet-api-2.5-20081211.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.objenesis:objenesis:1.2.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.objenesis/objenesis/1.2/bfcb0539a071a4c5a30690388903ac48c0667f2a/objenesis-1.2.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.ow2.asm:asm-commons:4.1.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-commons/4.1/f8b86f4ee6e02082f63a658e00eb5506821253c6/asm-commons-4.1.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.ow2.asm:asm:4.1.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm/4.1/ad568238ee36a820bd6c6806807e8a14ea34684d/asm-4.1.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.scala-lang:scala-compiler:2.10.4.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.scala-lang/scala-compiler/2.10.4/9e65406822299d082caae78699bb4b64011340ef/scala-compiler-2.10.4.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.scala-lang:scala-library:2.10.4.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.scala-lang/scala-library/2.10.4/9aae4cb1802537d604e03688cab744ff47b31a7d/scala-library-2.10.4.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.scala-lang:scala-reflect:2.10.4.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.scala-lang/scala-reflect/2.10.4/dad1949e8bddc4f97a77025e67d6f0bb2a5071be/scala-reflect-2.10.4.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.scala-lang:scalap:2.10.0.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.scala-lang/scalap/2.10.0/ab42ae21d1fd7311b367fe3d7f33343f2e4bff6b/scalap-2.10.0.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.scalamacros:quasiquotes_2.10:2.0.1.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.scalamacros/quasiquotes_2.10/2.0.1/9ae77ad3e5cb0ea65c0d260c6bd7ec7362c902ba/quasiquotes_2.10-2.0.1.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.slf4j:jcl-over-slf4j:1.7.5.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.slf4j/jcl-over-slf4j/1.7.5/cd5970bd13fa85f7bed41ca606d6daf7cbf1365/jcl-over-slf4j-1.7.5.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.slf4j:jul-to-slf4j:1.7.5.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.slf4j/jul-to-slf4j/1.7.5/d2b0f76abde33a62f1dbc19a9da726ffe9a0180e/jul-to-slf4j-1.7.5.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.slf4j:log4j-over-slf4j:1.6.6.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.slf4j/log4j-over-slf4j/1.6.6/170e8f7395753ebbe6710bb862a84689db1f128b/log4j-over-slf4j-1.6.6.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.slf4j:slf4j-api:1.7.6.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/1.7.6/562424e36df3d2327e8e9301a76027fca17d54ea/slf4j-api-1.7.6.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.slf4j:slf4j-log4j12:1.7.5.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-log4j12/1.7.5/6edffc576ce104ec769d954618764f39f0f0f10d/slf4j-log4j12-1.7.5.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.sonatype.sisu.inject:cglib:2.2.1-v20090111.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.sonatype.sisu.inject/cglib/2.2.1-v20090111/7ce5e983fd0e6c78346f4c9cbfa39d83049dda2/cglib-2.2.1-v20090111.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.spark-project.akka:akka-actor_2.10:2.2.3-shaded-protobuf.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.spark-project.akka/akka-actor_2.10/2.2.3-shaded-protobuf/f8960d359989ad5105d8c449642b3e7350b96657/akka-actor_2.10-2.2.3-shaded-protobuf.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.spark-project.akka:akka-remote_2.10:2.2.3-shaded-protobuf.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.spark-project.akka/akka-remote_2.10/2.2.3-shaded-protobuf/1e525f96cd1613f68f41c37d50eca36aa19c2c60/akka-remote_2.10-2.2.3-shaded-protobuf.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.spark-project.akka:akka-slf4j_2.10:2.2.3-shaded-protobuf.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.spark-project.akka/akka-slf4j_2.10/2.2.3-shaded-protobuf/17f92b7c5e6123b00d0f9ba4a77abefa495a384c/akka-slf4j_2.10-2.2.3-shaded-protobuf.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.spark-project.protobuf:protobuf-java:2.4.1-shaded.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.spark-project.protobuf/protobuf-java/2.4.1-shaded/806ebdb2828ace30fb70518d9955574ba287147b/protobuf-java-2.4.1-shaded.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.spark-project:pyrolite:2.0.1.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.spark-project/pyrolite/2.0.1/c44fc37b5dacd14e431c5d42dd660bc3bc17b4a/pyrolite-2.0.1.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.tachyonproject:tachyon-client:0.5.0.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.tachyonproject/tachyon-client/0.5.0/51a671ab424f675b54ed1db3a3b1bff5cb4db484/tachyon-client-0.5.0.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.tachyonproject:tachyon:0.5.0.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.tachyonproject/tachyon/0.5.0/27ddddf84724c7de76b5153cc682110686e81d55/tachyon-0.5.0.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.tukaani:xz:1.0.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.tukaani/xz/1.0/ecff5cb8b1189514c9d1d8d68eb77ac372e000c9/xz-1.0.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.uncommons.maths:uncommons-maths:1.2.2a.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.uncommons.maths/uncommons-maths/1.2.2a/e4e84f879d4160be9508aa3904516ec30c39e815/uncommons-maths-1.2.2a.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.xerial.snappy:snappy-java:1.0.5.3.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.xerial.snappy/snappy-java/1.0.5.3/6a7529f55968e0f1dec55a6992cf3648d998cca4/snappy-java-1.0.5.3.jar"/>
+  </path>
+  
+  <path id="library.gradle:_org.yaml:snakeyaml:1.11.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.yaml/snakeyaml/1.11/8f33a218f0bcad15223dd8c3af31f1b65c80c7a7/snakeyaml-1.11.jar"/>
+  </path>
+  
+  <path id="library.gradle:_oro:oro:2.0.8.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/oro/oro/2.0.8/5592374f834645c4ae250f4c9fbb314c9369d698/oro-2.0.8.jar"/>
+  </path>
+  
+  <path id="library.gradle:_stax:stax-api:1.0.1.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/stax/stax-api/1.0.1/49c100caf72d658aca8e58bd74a4ba90fa2b0d70/stax-api-1.0.1.jar"/>
+  </path>
+  
+  <path id="library.gradle:_tomcat:jasper-compiler:5.5.12.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/tomcat/jasper-compiler/5.5.12/c594866c64565344c0e7bdc9bf4fee70290c4dd5/jasper-compiler-5.5.12.jar"/>
+  </path>
+  
+  <path id="library.gradle:_tomcat:jasper-runtime:5.5.12.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/tomcat/jasper-runtime/5.5.12/f3a50a55414655b9843f5a089923ea83d49dc55e/jasper-runtime-5.5.12.jar"/>
+  </path>
+  
+  <path id="library.gradle:_xerces:xercesimpl:2.9.1.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/xerces/xercesImpl/2.9.1/7bc7e49ddfe4fb5f193ed37ecc96c12292c8ceb6/xercesImpl-2.9.1.jar"/>
+  </path>
+  
+  <path id="library.gradle:_xml-apis:xml-apis:1.3.04.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/xml-apis/xml-apis/1.3.04/90b215f48fe42776c8c7f6e3509ec54e84fd65ef/xml-apis-1.3.04.jar"/>
+  </path>
+  
+  <path id="library.gradle:_xmlenc:xmlenc:0.52.classpath">
+    <pathelement location="${basedir}/../../../.gradle/caches/modules-2/files-2.1/xmlenc/xmlenc/0.52/d82554efbe65906d83b3d97bd7509289e9db561a/xmlenc-0.52.jar"/>
+  </path>
+  
+  
+  <!-- Application Server Libraries -->
+  
+  <!-- Modules -->
+  
+  
+  <!-- Module es-indexer -->
+  
+  <dirname property="module.es-indexer.basedir" file="${ant.file}"/>
+  
+  
+  <property name="module.jdk.home.es-indexer" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.es-indexer" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.es-indexer" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.es-indexer" value="-encoding UTF-8 -source 1.7 ${compiler.args}"/>
+  
+  <property name="es-indexer.output.dir" value="${module.es-indexer.basedir}/build/classes/main"/>
+  <property name="es-indexer.testoutput.dir" value="${module.es-indexer.basedir}/build/classes/test"/>
+  
+  <path id="es-indexer.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="es-indexer.module.production.classpath">
+    <path refid="${module.jdk.classpath.es-indexer}"/>
+    <path refid="library.gradle:_org.apache.hadoop:hadoop-client:2.6.0.classpath"/>
+    <path refid="library.gradle:_net.htmlparser.jericho:jericho-html:3.3.classpath"/>
+    <path refid="library.gradle:_org.slf4j:slf4j-api:1.7.6.classpath"/>
+    <path refid="library.gradle:_org.apache.hadoop:hadoop-annotations:2.6.0.classpath"/>
+    <path refid="library.gradle:_commons-cli:commons-cli:1.2.classpath"/>
+    <path refid="library.gradle:_org.apache.commons:commons-math3:3.1.1.classpath"/>
+    <path refid="library.gradle:_xmlenc:xmlenc:0.52.classpath"/>
+    <path refid="library.gradle:_commons-logging:commons-logging:1.1.3.classpath"/>
+    <path refid="library.gradle:_commons-codec:commons-codec:1.6.classpath"/>
+    <path refid="library.gradle:_commons-httpclient:commons-httpclient:3.1.classpath"/>
+    <path refid="library.gradle:_commons-io:commons-io:2.4.classpath"/>
+    <path refid="library.gradle:_commons-net:commons-net:3.1.classpath"/>
+    <path refid="library.gradle:_commons-collections:commons-collections:3.2.1.classpath"/>
+    <path refid="library.gradle:_log4j:log4j:1.2.17.classpath"/>
+    <path refid="library.gradle:_commons-lang:commons-lang:2.6.classpath"/>
+    <path refid="library.gradle:_commons-beanutils:commons-beanutils:1.7.0.classpath"/>
+    <path refid="library.gradle:_commons-digester:commons-digester:1.8.classpath"/>
+    <path refid="library.gradle:_commons-beanutils:commons-beanutils-core:1.8.0.classpath"/>
+    <path refid="library.gradle:_commons-configuration:commons-configuration:1.6.classpath"/>
+    <path refid="library.gradle:_org.codehaus.jackson:jackson-core-asl:1.9.13.classpath"/>
+    <path refid="library.gradle:_org.codehaus.jackson:jackson-mapper-asl:1.9.13.classpath"/>
+    <path refid="library.gradle:_com.google.protobuf:protobuf-java:2.5.0.classpath"/>
+    <path refid="library.gradle:_com.google.code.gson:gson:2.2.4.classpath"/>
+    <path refid="library.gradle:_org.slf4j:slf4j-log4j12:1.7.5.classpath"/>
+    <path refid="library.gradle:_junit:junit:4.8.1.classpath"/>
+    <path refid="library.gradle:_jline:jline:0.9.94.classpath"/>
+    <path refid="library.gradle:_io.netty:netty:3.7.0.final.classpath"/>
+    <path refid="library.gradle:_org.apache.zookeeper:zookeeper:3.4.6.classpath"/>
+    <path refid="library.gradle:_org.apache.directory.server:apacheds-i18n:2.0.0-m15.classpath"/>
+    <path refid="library.gradle:_org.apache.directory.api:api-asn1-api:1.0.0-m20.classpath"/>
+    <path refid="library.gradle:_org.apache.directory.api:api-util:1.0.0-m20.classpath"/>
+    <path refid="library.gradle:_org.apache.directory.server:apacheds-kerberos-codec:2.0.0-m15.classpath"/>
+    <path refid="library.gradle:_com.google.guava:guava:16.0.1.classpath"/>
+    <path refid="library.gradle:_org.apache.curator:curator-client:2.6.0.classpath"/>
+    <path refid="library.gradle:_org.apache.curator:curator-framework:2.6.0.classpath"/>
+    <path refid="library.gradle:_org.apache.hadoop:hadoop-auth:2.6.0.classpath"/>
+    <path refid="library.gradle:_org.apache.curator:curator-recipes:2.6.0.classpath"/>
+    <path refid="library.gradle:_com.google.code.findbugs:jsr305:1.3.9.classpath"/>
+    <path refid="library.gradle:_org.mortbay.jetty:jetty-util:6.1.26.classpath"/>
+    <path refid="library.gradle:_org.htrace:htrace-core:3.0.4.classpath"/>
+    <path refid="library.gradle:_org.tukaani:xz:1.0.classpath"/>
+    <path refid="library.gradle:_org.apache.commons:commons-compress:1.4.1.classpath"/>
+    <path refid="library.gradle:_org.apache.avro:avro:1.7.5.classpath"/>
+    <path refid="library.gradle:_org.apache.hadoop:hadoop-common:2.6.0.classpath"/>
+    <path refid="library.gradle:_xml-apis:xml-apis:1.3.04.classpath"/>
+    <path refid="library.gradle:_xerces:xercesimpl:2.9.1.classpath"/>
+    <path refid="library.gradle:_org.apache.hadoop:hadoop-hdfs:2.6.0.classpath"/>
+    <path refid="library.gradle:_org.apache.hadoop:hadoop-yarn-api:2.6.0.classpath"/>
+    <path refid="library.gradle:_javax.activation:activation:1.1.classpath"/>
+    <path refid="library.gradle:_javax.xml.stream:stax-api:1.0-2.classpath"/>
+    <path refid="library.gradle:_javax.xml.bind:jaxb-api:2.2.2.classpath"/>
+    <path refid="library.gradle:_javax.servlet:servlet-api:2.5.classpath"/>
+    <path refid="library.gradle:_com.sun.jersey:jersey-core:1.9.classpath"/>
+    <path refid="library.gradle:_com.sun.jersey:jersey-client:1.9.classpath"/>
+    <path refid="library.gradle:_org.codehaus.jackson:jackson-jaxrs:1.9.13.classpath"/>
+    <path refid="library.gradle:_org.codehaus.jackson:jackson-xc:1.9.13.classpath"/>
+    <path refid="library.gradle:_javax.inject:javax.inject:1.classpath"/>
+    <path refid="library.gradle:_aopalliance:aopalliance:1.0.classpath"/>
+    <path refid="library.gradle:_asm:asm:3.1.classpath"/>
+    <path refid="library.gradle:_org.sonatype.sisu.inject:cglib:2.2.1-v20090111.classpath"/>
+    <path refid="library.gradle:_com.google.inject:guice:3.0.classpath"/>
+    <path refid="library.gradle:_com.sun.jersey:jersey-server:1.9.classpath"/>
+    <path refid="library.gradle:_org.codehaus.jettison:jettison:1.1.classpath"/>
+    <path refid="library.gradle:_com.sun.xml.bind:jaxb-impl:2.2.3-1.classpath"/>
+    <path refid="library.gradle:_com.sun.jersey:jersey-json:1.9.classpath"/>
+    <path refid="library.gradle:_com.sun.jersey.contribs:jersey-guice:1.9.classpath"/>
+    <path refid="library.gradle:_org.apache.hadoop:hadoop-yarn-common:2.6.0.classpath"/>
+    <path refid="library.gradle:_org.apache.hadoop:hadoop-mapreduce-client-core:2.6.0.classpath"/>
+    <path refid="library.gradle:_org.apache.hadoop:hadoop-yarn-client:2.6.0.classpath"/>
+    <path refid="library.gradle:_org.fusesource.leveldbjni:leveldbjni-all:1.8.classpath"/>
+    <path refid="library.gradle:_org.apache.hadoop:hadoop-yarn-server-common:2.6.0.classpath"/>
+    <path refid="library.gradle:_org.apache.hadoop:hadoop-mapreduce-client-common:2.6.0.classpath"/>
+    <path refid="library.gradle:_org.apache.hadoop:hadoop-yarn-server-nodemanager:2.6.0.classpath"/>
+    <path refid="library.gradle:_org.apache.hadoop:hadoop-mapreduce-client-shuffle:2.6.0.classpath"/>
+    <path refid="library.gradle:_org.apache.hadoop:hadoop-mapreduce-client-app:2.6.0.classpath"/>
+    <path refid="library.gradle:_org.apache.hadoop:hadoop-mapreduce-client-jobclient:2.6.0.classpath"/>
+    <path refid="library.gradle:_com.spatial4j:spatial4j:0.4.1.classpath"/>
+    <path refid="library.gradle:_org.apache.thrift:libthrift:0.9.0.classpath"/>
+    <path refid="library.gradle:_org.apache.thrift:libfb303:0.9.0.classpath"/>
+    <path refid="library.gradle:_antlr:antlr:2.7.7.classpath"/>
+    <path refid="library.gradle:_org.antlr:stringtemplate:3.2.1.classpath"/>
+    <path refid="library.gradle:_org.datanucleus:datanucleus-core:3.2.10.classpath"/>
+    <path refid="library.gradle:_com.jolbox:bonecp:0.8.0.release.classpath"/>
+    <path refid="library.gradle:_org.apache.derby:derby:10.10.1.1.classpath"/>
+    <path refid="library.gradle:_org.datanucleus:datanucleus-api-jdo:3.2.6.classpath"/>
+    <path refid="library.gradle:_org.datanucleus:datanucleus-rdbms:3.2.9.classpath"/>
+    <path refid="library.gradle:_javax.transaction:jta:1.1.classpath"/>
+    <path refid="library.gradle:_javax.jdo:jdo-api:3.0.1.classpath"/>
+    <path refid="library.gradle:_org.antlr:st4:4.0.4.classpath"/>
+    <path refid="library.gradle:_org.apache.ant:ant-launcher:1.9.1.classpath"/>
+    <path refid="library.gradle:_org.apache.ant:ant:1.9.1.classpath"/>
+    <path refid="library.gradle:_oro:oro:2.0.8.classpath"/>
+    <path refid="library.gradle:_org.apache.velocity:velocity:1.5.classpath"/>
+    <path refid="library.gradle:_org.codehaus.groovy:groovy-all:2.1.6.classpath"/>
+    <path refid="library.gradle:_stax:stax-api:1.0.1.classpath"/>
+    <path refid="library.gradle:_net.sf.jpam:jpam:1.1.classpath"/>
+    <path refid="library.gradle:_org.apache.geronimo.specs:geronimo-jta_1.1_spec:1.1.1.classpath"/>
+    <path refid="library.gradle:_javax.mail:mail:1.4.1.classpath"/>
+    <path refid="library.gradle:_org.apache.geronimo.specs:geronimo-jaspic_1.0_spec:1.0.classpath"/>
+    <path refid="library.gradle:_org.apache.geronimo.specs:geronimo-annotation_1.0_spec:1.1.1.classpath"/>
+    <path refid="library.gradle:_asm:asm-tree:3.1.classpath"/>
+    <path refid="library.gradle:_asm:asm-commons:3.1.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty.aggregate:jetty-all:7.6.0.v20120127.classpath"/>
+    <path refid="library.gradle:_org.mortbay.jetty:servlet-api:2.5-20081211.classpath"/>
+    <path refid="library.gradle:_org.mortbay.jetty:jetty:6.1.26.classpath"/>
+    <path refid="library.gradle:_tomcat:jasper-runtime:5.5.12.classpath"/>
+    <path refid="library.gradle:_tomcat:jasper-compiler:5.5.12.classpath"/>
+    <path refid="library.gradle:_org.mortbay.jetty:servlet-api-2.5:6.1.14.classpath"/>
+    <path refid="library.gradle:_org.mortbay.jetty:jsp-api-2.1:6.1.14.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jdt:core:3.1.1.classpath"/>
+    <path refid="library.gradle:_ant:ant:1.6.5.classpath"/>
+    <path refid="library.gradle:_org.mortbay.jetty:jsp-2.1:6.1.14.classpath"/>
+    <path refid="library.gradle:_commons-el:commons-el:1.0.classpath"/>
+    <path refid="library.gradle:_net.java.dev.jets3t:jets3t:0.7.1.classpath"/>
+    <path refid="library.gradle:_net.sf.kosmosfs:kfs:0.3.classpath"/>
+    <path refid="library.gradle:_hsqldb:hsqldb:1.8.0.10.classpath"/>
+    <path refid="library.gradle:_joda-time:joda-time:2.1.classpath"/>
+    <path refid="library.gradle:_org.elasticsearch:elasticsearch:1.4.4.classpath"/>
+    <path refid="library.gradle:_org.apache.lucene:lucene-core:4.10.3.classpath"/>
+    <path refid="library.gradle:_org.apache.lucene:lucene-analyzers-common:4.10.3.classpath"/>
+    <path refid="library.gradle:_org.apache.lucene:lucene-queries:4.10.3.classpath"/>
+    <path refid="library.gradle:_org.apache.lucene:lucene-memory:4.10.3.classpath"/>
+    <path refid="library.gradle:_org.apache.lucene:lucene-highlighter:4.10.3.classpath"/>
+    <path refid="library.gradle:_org.apache.lucene:lucene-sandbox:4.10.3.classpath"/>
+    <path refid="library.gradle:_org.apache.lucene:lucene-queryparser:4.10.3.classpath"/>
+    <path refid="library.gradle:_org.apache.lucene:lucene-misc:4.10.3.classpath"/>
+    <path refid="library.gradle:_org.apache.lucene:lucene-suggest:4.10.3.classpath"/>
+    <path refid="library.gradle:_org.apache.lucene:lucene-grouping:4.10.3.classpath"/>
+    <path refid="library.gradle:_org.apache.lucene:lucene-join:4.10.3.classpath"/>
+    <path refid="library.gradle:_org.apache.lucene:lucene-spatial:4.10.3.classpath"/>
+    <path refid="library.gradle:_org.antlr:antlr-runtime:3.5.classpath"/>
+    <path refid="library.gradle:_org.ow2.asm:asm:4.1.classpath"/>
+    <path refid="library.gradle:_org.ow2.asm:asm-commons:4.1.classpath"/>
+    <path refid="library.gradle:_org.elasticsearch:elasticsearch-hadoop:2.1.0.beta3.classpath"/>
+    <path refid="library.gradle:_org.apache.httpcomponents:httpcore:4.3.2.classpath"/>
+    <path refid="library.gradle:_org.apache.httpcomponents:httpclient:4.3.3.classpath"/>
+    <path refid="library.gradle:_org.xerial.snappy:snappy-java:1.0.5.3.classpath"/>
+    <path refid="library.gradle:_com.thoughtworks.paranamer:paranamer:2.6.classpath"/>
+    <path refid="library.gradle:_org.apache.hive.shims:hive-shims-common:0.13.1.classpath"/>
+    <path refid="library.gradle:_org.apache.hive.shims:hive-shims-common-secure:0.13.1.classpath"/>
+    <path refid="library.gradle:_org.apache.hive:hive-shims:0.13.1.classpath"/>
+    <path refid="library.gradle:_org.apache.hive:hive-common:0.13.1.classpath"/>
+    <path refid="library.gradle:_org.apache.hive:hive-serde:0.13.1.classpath"/>
+    <path refid="library.gradle:_org.apache.hive:hive-metastore:0.13.1.classpath"/>
+    <path refid="library.gradle:_org.apache.commons:commons-lang3:3.3.2.classpath"/>
+    <path refid="library.gradle:_org.apache.hive:hive-ant:0.13.1.classpath"/>
+    <path refid="library.gradle:_org.apache.hive:hive-exec:0.13.1.classpath"/>
+    <path refid="library.gradle:_org.apache.hive:hive-service:0.13.1.classpath"/>
+    <path refid="library.gradle:_org.apache.hive.shims:hive-shims-0.20:0.13.1.classpath"/>
+    <path refid="library.gradle:_org.apache.hive.shims:hive-shims-0.20s:0.13.1.classpath"/>
+    <path refid="library.gradle:_org.apache.hive.shims:hive-shims-0.23:0.13.1.classpath"/>
+    <path refid="library.gradle:_org.scala-lang:scala-library:2.10.4.classpath"/>
+    <path refid="library.gradle:_javax.servlet:javax.servlet-api:3.0.1.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty.orbit:javax.transaction:1.1.1.v201105210645.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty:jetty-util:8.1.14.v20131031.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty:jetty-xml:8.1.14.v20131031.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty.orbit:javax.servlet:3.0.0.v201112011016.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty:jetty-continuation:8.1.14.v20131031.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty:jetty-io:8.1.14.v20131031.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty:jetty-http:8.1.14.v20131031.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty:jetty-server:8.1.14.v20131031.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty:jetty-security:8.1.14.v20131031.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty:jetty-servlet:8.1.14.v20131031.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty:jetty-webapp:8.1.14.v20131031.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty.orbit:javax.activation:1.1.0.v201105071233.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty.orbit:javax.mail.glassfish:1.4.1.v201005082020.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty:jetty-jndi:8.1.14.v20131031.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty:jetty-plus:8.1.14.v20131031.classpath"/>
+    <path refid="library.gradle:_org.slf4j:jul-to-slf4j:1.7.5.classpath"/>
+    <path refid="library.gradle:_org.slf4j:jcl-over-slf4j:1.7.5.classpath"/>
+    <path refid="library.gradle:_com.ning:compress-lzf:1.0.0.classpath"/>
+    <path refid="library.gradle:_net.jpountz.lz4:lz4:1.2.0.classpath"/>
+    <path refid="library.gradle:_com.esotericsoftware.reflectasm:reflectasm:1.07:shaded.classpath"/>
+    <path refid="library.gradle:_com.esotericsoftware.minlog:minlog:1.2.classpath"/>
+    <path refid="library.gradle:_org.objenesis:objenesis:1.2.classpath"/>
+    <path refid="library.gradle:_com.esotericsoftware.kryo:kryo:2.21.classpath"/>
+    <path refid="library.gradle:_com.twitter:chill-java:0.3.6.classpath"/>
+    <path refid="library.gradle:_com.twitter:chill_2.10:0.3.6.classpath"/>
+    <path refid="library.gradle:_com.typesafe:config:1.0.2.classpath"/>
+    <path refid="library.gradle:_org.spark-project.akka:akka-actor_2.10:2.2.3-shaded-protobuf.classpath"/>
+    <path refid="library.gradle:_org.spark-project.protobuf:protobuf-java:2.4.1-shaded.classpath"/>
+    <path refid="library.gradle:_org.uncommons.maths:uncommons-maths:1.2.2a.classpath"/>
+    <path refid="library.gradle:_org.spark-project.akka:akka-remote_2.10:2.2.3-shaded-protobuf.classpath"/>
+    <path refid="library.gradle:_org.spark-project.akka:akka-slf4j_2.10:2.2.3-shaded-protobuf.classpath"/>
+    <path refid="library.gradle:_org.json4s:json4s-ast_2.10:3.2.10.classpath"/>
+    <path refid="library.gradle:_org.scala-lang:scala-reflect:2.10.4.classpath"/>
+    <path refid="library.gradle:_org.scala-lang:scala-compiler:2.10.4.classpath"/>
+    <path refid="library.gradle:_org.scala-lang:scalap:2.10.0.classpath"/>
+    <path refid="library.gradle:_org.json4s:json4s-core_2.10:3.2.10.classpath"/>
+    <path refid="library.gradle:_com.fasterxml.jackson.core:jackson-annotations:2.3.0.classpath"/>
+    <path refid="library.gradle:_com.fasterxml.jackson.core:jackson-core:2.3.1.classpath"/>
+    <path refid="library.gradle:_com.fasterxml.jackson.core:jackson-databind:2.3.1.classpath"/>
+    <path refid="library.gradle:_org.json4s:json4s-jackson_2.10:3.2.10.classpath"/>
+    <path refid="library.gradle:_concurrent:concurrent:1.3.4.classpath"/>
+    <path refid="library.gradle:_colt:colt:1.2.0.classpath"/>
+    <path refid="library.gradle:_org.apache.mesos:mesos:0.18.1:shaded-protobuf.classpath"/>
+    <path refid="library.gradle:_io.netty:netty-all:4.0.23.final.classpath"/>
+    <path refid="library.gradle:_com.clearspring.analytics:stream:2.7.0.classpath"/>
+    <path refid="library.gradle:_com.codahale.metrics:metrics-core:3.0.0.classpath"/>
+    <path refid="library.gradle:_com.codahale.metrics:metrics-jvm:3.0.0.classpath"/>
+    <path refid="library.gradle:_com.codahale.metrics:metrics-json:3.0.0.classpath"/>
+    <path refid="library.gradle:_com.codahale.metrics:metrics-graphite:3.0.0.classpath"/>
+    <path refid="library.gradle:_org.tachyonproject:tachyon:0.5.0.classpath"/>
+    <path refid="library.gradle:_org.tachyonproject:tachyon-client:0.5.0.classpath"/>
+    <path refid="library.gradle:_org.spark-project:pyrolite:2.0.1.classpath"/>
+    <path refid="library.gradle:_net.sf.py4j:py4j:0.8.2.1.classpath"/>
+    <path refid="library.gradle:_org.apache.spark:spark-core_2.10:1.1.0.classpath"/>
+    <path refid="library.gradle:_org.clojure:clojure:1.5.1.classpath"/>
+    <path refid="library.gradle:_org.clojure:tools.logging:0.2.3.classpath"/>
+    <path refid="library.gradle:_org.clojure:math.numeric-tower:0.0.1.classpath"/>
+    <path refid="library.gradle:_org.clojure:tools.cli:0.2.4.classpath"/>
+    <path refid="library.gradle:_org.apache.commons:commons-exec:1.1.classpath"/>
+    <path refid="library.gradle:_com.googlecode.json-simple:json-simple:1.1.classpath"/>
+    <path refid="library.gradle:_org.yaml:snakeyaml:1.11.classpath"/>
+    <path refid="library.gradle:_com.googlecode.disruptor:disruptor:2.10.1.classpath"/>
+    <path refid="library.gradle:_org.jgrapht:jgrapht-core:0.9.0.classpath"/>
+    <path refid="library.gradle:_ch.qos.logback:logback-core:1.0.6.classpath"/>
+    <path refid="library.gradle:_ch.qos.logback:logback-classic:1.0.6.classpath"/>
+    <path refid="library.gradle:_org.slf4j:log4j-over-slf4j:1.6.6.classpath"/>
+    <path refid="library.gradle:_org.apache.storm:storm-core:0.9.2-incubating.classpath"/>
+    <path refid="library.gradle:_org.apache.pig:pig:0.13.0.classpath"/>
+    <path refid="library.gradle:_org.scalamacros:quasiquotes_2.10:2.0.1.classpath"/>
+    <path refid="library.gradle:_org.apache.spark:spark-catalyst_2.10:1.1.0.classpath"/>
+    <path refid="library.gradle:_com.twitter:parquet-common:1.4.3.classpath"/>
+    <path refid="library.gradle:_com.twitter:parquet-generator:1.4.3.classpath"/>
+    <path refid="library.gradle:_com.twitter:parquet-encoding:1.4.3.classpath"/>
+    <path refid="library.gradle:_com.twitter:parquet-column:1.4.3.classpath"/>
+    <path refid="library.gradle:_com.twitter:parquet-format:2.0.0.classpath"/>
+    <path refid="library.gradle:_com.twitter:parquet-jackson:1.4.3.classpath"/>
+    <path refid="library.gradle:_com.twitter:parquet-hadoop:1.4.3.classpath"/>
+    <path refid="library.gradle:_org.apache.spark:spark-sql_2.10:1.1.0.classpath"/>
+  </path>
+  
+  <path id="es-indexer.runtime.production.module.classpath">
+    <pathelement location="${es-indexer.output.dir}"/>
+    <path refid="library.gradle:_org.apache.hadoop:hadoop-client:2.6.0.classpath"/>
+    <path refid="library.gradle:_net.htmlparser.jericho:jericho-html:3.3.classpath"/>
+    <path refid="library.gradle:_org.slf4j:slf4j-api:1.7.6.classpath"/>
+    <path refid="library.gradle:_org.apache.hadoop:hadoop-annotations:2.6.0.classpath"/>
+    <path refid="library.gradle:_commons-cli:commons-cli:1.2.classpath"/>
+    <path refid="library.gradle:_org.apache.commons:commons-math3:3.1.1.classpath"/>
+    <path refid="library.gradle:_xmlenc:xmlenc:0.52.classpath"/>
+    <path refid="library.gradle:_commons-logging:commons-logging:1.1.3.classpath"/>
+    <path refid="library.gradle:_commons-codec:commons-codec:1.6.classpath"/>
+    <path refid="library.gradle:_commons-httpclient:commons-httpclient:3.1.classpath"/>
+    <path refid="library.gradle:_commons-io:commons-io:2.4.classpath"/>
+    <path refid="library.gradle:_commons-net:commons-net:3.1.classpath"/>
+    <path refid="library.gradle:_commons-collections:commons-collections:3.2.1.classpath"/>
+    <path refid="library.gradle:_log4j:log4j:1.2.17.classpath"/>
+    <path refid="library.gradle:_commons-lang:commons-lang:2.6.classpath"/>
+    <path refid="library.gradle:_commons-beanutils:commons-beanutils:1.7.0.classpath"/>
+    <path refid="library.gradle:_commons-digester:commons-digester:1.8.classpath"/>
+    <path refid="library.gradle:_commons-beanutils:commons-beanutils-core:1.8.0.classpath"/>
+    <path refid="library.gradle:_commons-configuration:commons-configuration:1.6.classpath"/>
+    <path refid="library.gradle:_org.codehaus.jackson:jackson-core-asl:1.9.13.classpath"/>
+    <path refid="library.gradle:_org.codehaus.jackson:jackson-mapper-asl:1.9.13.classpath"/>
+    <path refid="library.gradle:_com.google.protobuf:protobuf-java:2.5.0.classpath"/>
+    <path refid="library.gradle:_com.google.code.gson:gson:2.2.4.classpath"/>
+    <path refid="library.gradle:_org.slf4j:slf4j-log4j12:1.7.5.classpath"/>
+    <path refid="library.gradle:_junit:junit:4.8.1.classpath"/>
+    <path refid="library.gradle:_jline:jline:0.9.94.classpath"/>
+    <path refid="library.gradle:_io.netty:netty:3.7.0.final.classpath"/>
+    <path refid="library.gradle:_org.apache.zookeeper:zookeeper:3.4.6.classpath"/>
+    <path refid="library.gradle:_org.apache.directory.server:apacheds-i18n:2.0.0-m15.classpath"/>
+    <path refid="library.gradle:_org.apache.directory.api:api-asn1-api:1.0.0-m20.classpath"/>
+    <path refid="library.gradle:_org.apache.directory.api:api-util:1.0.0-m20.classpath"/>
+    <path refid="library.gradle:_org.apache.directory.server:apacheds-kerberos-codec:2.0.0-m15.classpath"/>
+    <path refid="library.gradle:_com.google.guava:guava:16.0.1.classpath"/>
+    <path refid="library.gradle:_org.apache.curator:curator-client:2.6.0.classpath"/>
+    <path refid="library.gradle:_org.apache.curator:curator-framework:2.6.0.classpath"/>
+    <path refid="library.gradle:_org.apache.hadoop:hadoop-auth:2.6.0.classpath"/>
+    <path refid="library.gradle:_org.apache.curator:curator-recipes:2.6.0.classpath"/>
+    <path refid="library.gradle:_com.google.code.findbugs:jsr305:1.3.9.classpath"/>
+    <path refid="library.gradle:_org.mortbay.jetty:jetty-util:6.1.26.classpath"/>
+    <path refid="library.gradle:_org.htrace:htrace-core:3.0.4.classpath"/>
+    <path refid="library.gradle:_org.tukaani:xz:1.0.classpath"/>
+    <path refid="library.gradle:_org.apache.commons:commons-compress:1.4.1.classpath"/>
+    <path refid="library.gradle:_org.apache.avro:avro:1.7.5.classpath"/>
+    <path refid="library.gradle:_org.apache.hadoop:hadoop-common:2.6.0.classpath"/>
+    <path refid="library.gradle:_xml-apis:xml-apis:1.3.04.classpath"/>
+    <path refid="library.gradle:_xerces:xercesimpl:2.9.1.classpath"/>
+    <path refid="library.gradle:_org.apache.hadoop:hadoop-hdfs:2.6.0.classpath"/>
+    <path refid="library.gradle:_org.apache.hadoop:hadoop-yarn-api:2.6.0.classpath"/>
+    <path refid="library.gradle:_javax.activation:activation:1.1.classpath"/>
+    <path refid="library.gradle:_javax.xml.stream:stax-api:1.0-2.classpath"/>
+    <path refid="library.gradle:_javax.xml.bind:jaxb-api:2.2.2.classpath"/>
+    <path refid="library.gradle:_javax.servlet:servlet-api:2.5.classpath"/>
+    <path refid="library.gradle:_com.sun.jersey:jersey-core:1.9.classpath"/>
+    <path refid="library.gradle:_com.sun.jersey:jersey-client:1.9.classpath"/>
+    <path refid="library.gradle:_org.codehaus.jackson:jackson-jaxrs:1.9.13.classpath"/>
+    <path refid="library.gradle:_org.codehaus.jackson:jackson-xc:1.9.13.classpath"/>
+    <path refid="library.gradle:_javax.inject:javax.inject:1.classpath"/>
+    <path refid="library.gradle:_aopalliance:aopalliance:1.0.classpath"/>
+    <path refid="library.gradle:_asm:asm:3.1.classpath"/>
+    <path refid="library.gradle:_org.sonatype.sisu.inject:cglib:2.2.1-v20090111.classpath"/>
+    <path refid="library.gradle:_com.google.inject:guice:3.0.classpath"/>
+    <path refid="library.gradle:_com.sun.jersey:jersey-server:1.9.classpath"/>
+    <path refid="library.gradle:_org.codehaus.jettison:jettison:1.1.classpath"/>
+    <path refid="library.gradle:_com.sun.xml.bind:jaxb-impl:2.2.3-1.classpath"/>
+    <path refid="library.gradle:_com.sun.jersey:jersey-json:1.9.classpath"/>
+    <path refid="library.gradle:_com.sun.jersey.contribs:jersey-guice:1.9.classpath"/>
+    <path refid="library.gradle:_org.apache.hadoop:hadoop-yarn-common:2.6.0.classpath"/>
+    <path refid="library.gradle:_org.apache.hadoop:hadoop-mapreduce-client-core:2.6.0.classpath"/>
+    <path refid="library.gradle:_org.apache.hadoop:hadoop-yarn-client:2.6.0.classpath"/>
+    <path refid="library.gradle:_org.fusesource.leveldbjni:leveldbjni-all:1.8.classpath"/>
+    <path refid="library.gradle:_org.apache.hadoop:hadoop-yarn-server-common:2.6.0.classpath"/>
+    <path refid="library.gradle:_org.apache.hadoop:hadoop-mapreduce-client-common:2.6.0.classpath"/>
+    <path refid="library.gradle:_org.apache.hadoop:hadoop-yarn-server-nodemanager:2.6.0.classpath"/>
+    <path refid="library.gradle:_org.apache.hadoop:hadoop-mapreduce-client-shuffle:2.6.0.classpath"/>
+    <path refid="library.gradle:_org.apache.hadoop:hadoop-mapreduce-client-app:2.6.0.classpath"/>
+    <path refid="library.gradle:_org.apache.hadoop:hadoop-mapreduce-client-jobclient:2.6.0.classpath"/>
+    <path refid="library.gradle:_com.spatial4j:spatial4j:0.4.1.classpath"/>
+    <path refid="library.gradle:_org.apache.thrift:libthrift:0.9.0.classpath"/>
+    <path refid="library.gradle:_org.apache.thrift:libfb303:0.9.0.classpath"/>
+    <path refid="library.gradle:_antlr:antlr:2.7.7.classpath"/>
+    <path refid="library.gradle:_org.antlr:stringtemplate:3.2.1.classpath"/>
+    <path refid="library.gradle:_org.datanucleus:datanucleus-core:3.2.10.classpath"/>
+    <path refid="library.gradle:_com.jolbox:bonecp:0.8.0.release.classpath"/>
+    <path refid="library.gradle:_org.apache.derby:derby:10.10.1.1.classpath"/>
+    <path refid="library.gradle:_org.datanucleus:datanucleus-api-jdo:3.2.6.classpath"/>
+    <path refid="library.gradle:_org.datanucleus:datanucleus-rdbms:3.2.9.classpath"/>
+    <path refid="library.gradle:_javax.transaction:jta:1.1.classpath"/>
+    <path refid="library.gradle:_javax.jdo:jdo-api:3.0.1.classpath"/>
+    <path refid="library.gradle:_org.antlr:st4:4.0.4.classpath"/>
+    <path refid="library.gradle:_org.apache.ant:ant-launcher:1.9.1.classpath"/>
+    <path refid="library.gradle:_org.apache.ant:ant:1.9.1.classpath"/>
+    <path refid="library.gradle:_oro:oro:2.0.8.classpath"/>
+    <path refid="library.gradle:_org.apache.velocity:velocity:1.5.classpath"/>
+    <path refid="library.gradle:_org.codehaus.groovy:groovy-all:2.1.6.classpath"/>
+    <path refid="library.gradle:_stax:stax-api:1.0.1.classpath"/>
+    <path refid="library.gradle:_net.sf.jpam:jpam:1.1.classpath"/>
+    <path refid="library.gradle:_org.apache.geronimo.specs:geronimo-jta_1.1_spec:1.1.1.classpath"/>
+    <path refid="library.gradle:_javax.mail:mail:1.4.1.classpath"/>
+    <path refid="library.gradle:_org.apache.geronimo.specs:geronimo-jaspic_1.0_spec:1.0.classpath"/>
+    <path refid="library.gradle:_org.apache.geronimo.specs:geronimo-annotation_1.0_spec:1.1.1.classpath"/>
+    <path refid="library.gradle:_asm:asm-tree:3.1.classpath"/>
+    <path refid="library.gradle:_asm:asm-commons:3.1.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty.aggregate:jetty-all:7.6.0.v20120127.classpath"/>
+    <path refid="library.gradle:_org.mortbay.jetty:servlet-api:2.5-20081211.classpath"/>
+    <path refid="library.gradle:_org.mortbay.jetty:jetty:6.1.26.classpath"/>
+    <path refid="library.gradle:_tomcat:jasper-runtime:5.5.12.classpath"/>
+    <path refid="library.gradle:_tomcat:jasper-compiler:5.5.12.classpath"/>
+    <path refid="library.gradle:_org.mortbay.jetty:servlet-api-2.5:6.1.14.classpath"/>
+    <path refid="library.gradle:_org.mortbay.jetty:jsp-api-2.1:6.1.14.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jdt:core:3.1.1.classpath"/>
+    <path refid="library.gradle:_ant:ant:1.6.5.classpath"/>
+    <path refid="library.gradle:_org.mortbay.jetty:jsp-2.1:6.1.14.classpath"/>
+    <path refid="library.gradle:_commons-el:commons-el:1.0.classpath"/>
+    <path refid="library.gradle:_net.java.dev.jets3t:jets3t:0.7.1.classpath"/>
+    <path refid="library.gradle:_net.sf.kosmosfs:kfs:0.3.classpath"/>
+    <path refid="library.gradle:_hsqldb:hsqldb:1.8.0.10.classpath"/>
+    <path refid="library.gradle:_joda-time:joda-time:2.1.classpath"/>
+    <path refid="library.gradle:_org.elasticsearch:elasticsearch:1.4.4.classpath"/>
+    <path refid="library.gradle:_org.apache.lucene:lucene-core:4.10.3.classpath"/>
+    <path refid="library.gradle:_org.apache.lucene:lucene-analyzers-common:4.10.3.classpath"/>
+    <path refid="library.gradle:_org.apache.lucene:lucene-queries:4.10.3.classpath"/>
+    <path refid="library.gradle:_org.apache.lucene:lucene-memory:4.10.3.classpath"/>
+    <path refid="library.gradle:_org.apache.lucene:lucene-highlighter:4.10.3.classpath"/>
+    <path refid="library.gradle:_org.apache.lucene:lucene-sandbox:4.10.3.classpath"/>
+    <path refid="library.gradle:_org.apache.lucene:lucene-queryparser:4.10.3.classpath"/>
+    <path refid="library.gradle:_org.apache.lucene:lucene-misc:4.10.3.classpath"/>
+    <path refid="library.gradle:_org.apache.lucene:lucene-suggest:4.10.3.classpath"/>
+    <path refid="library.gradle:_org.apache.lucene:lucene-grouping:4.10.3.classpath"/>
+    <path refid="library.gradle:_org.apache.lucene:lucene-join:4.10.3.classpath"/>
+    <path refid="library.gradle:_org.apache.lucene:lucene-spatial:4.10.3.classpath"/>
+    <path refid="library.gradle:_org.antlr:antlr-runtime:3.5.classpath"/>
+    <path refid="library.gradle:_org.ow2.asm:asm:4.1.classpath"/>
+    <path refid="library.gradle:_org.ow2.asm:asm-commons:4.1.classpath"/>
+    <path refid="library.gradle:_org.elasticsearch:elasticsearch-hadoop:2.1.0.beta3.classpath"/>
+    <path refid="library.gradle:_org.apache.httpcomponents:httpcore:4.3.2.classpath"/>
+    <path refid="library.gradle:_org.apache.httpcomponents:httpclient:4.3.3.classpath"/>
+    <path refid="library.gradle:_org.xerial.snappy:snappy-java:1.0.5.3.classpath"/>
+    <path refid="library.gradle:_com.thoughtworks.paranamer:paranamer:2.6.classpath"/>
+    <path refid="library.gradle:_org.apache.hive.shims:hive-shims-common:0.13.1.classpath"/>
+    <path refid="library.gradle:_org.apache.hive.shims:hive-shims-common-secure:0.13.1.classpath"/>
+    <path refid="library.gradle:_org.apache.hive:hive-shims:0.13.1.classpath"/>
+    <path refid="library.gradle:_org.apache.hive:hive-common:0.13.1.classpath"/>
+    <path refid="library.gradle:_org.apache.hive:hive-serde:0.13.1.classpath"/>
+    <path refid="library.gradle:_org.apache.hive:hive-metastore:0.13.1.classpath"/>
+    <path refid="library.gradle:_org.apache.commons:commons-lang3:3.3.2.classpath"/>
+    <path refid="library.gradle:_org.apache.hive:hive-ant:0.13.1.classpath"/>
+    <path refid="library.gradle:_org.apache.hive:hive-exec:0.13.1.classpath"/>
+    <path refid="library.gradle:_org.apache.hive:hive-service:0.13.1.classpath"/>
+    <path refid="library.gradle:_org.apache.hive.shims:hive-shims-0.20:0.13.1.classpath"/>
+    <path refid="library.gradle:_org.apache.hive.shims:hive-shims-0.20s:0.13.1.classpath"/>
+    <path refid="library.gradle:_org.apache.hive.shims:hive-shims-0.23:0.13.1.classpath"/>
+    <path refid="library.gradle:_org.scala-lang:scala-library:2.10.4.classpath"/>
+    <path refid="library.gradle:_javax.servlet:javax.servlet-api:3.0.1.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty.orbit:javax.transaction:1.1.1.v201105210645.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty:jetty-util:8.1.14.v20131031.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty:jetty-xml:8.1.14.v20131031.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty.orbit:javax.servlet:3.0.0.v201112011016.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty:jetty-continuation:8.1.14.v20131031.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty:jetty-io:8.1.14.v20131031.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty:jetty-http:8.1.14.v20131031.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty:jetty-server:8.1.14.v20131031.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty:jetty-security:8.1.14.v20131031.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty:jetty-servlet:8.1.14.v20131031.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty:jetty-webapp:8.1.14.v20131031.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty.orbit:javax.activation:1.1.0.v201105071233.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty.orbit:javax.mail.glassfish:1.4.1.v201005082020.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty:jetty-jndi:8.1.14.v20131031.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty:jetty-plus:8.1.14.v20131031.classpath"/>
+    <path refid="library.gradle:_org.slf4j:jul-to-slf4j:1.7.5.classpath"/>
+    <path refid="library.gradle:_org.slf4j:jcl-over-slf4j:1.7.5.classpath"/>
+    <path refid="library.gradle:_com.ning:compress-lzf:1.0.0.classpath"/>
+    <path refid="library.gradle:_net.jpountz.lz4:lz4:1.2.0.classpath"/>
+    <path refid="library.gradle:_com.esotericsoftware.reflectasm:reflectasm:1.07:shaded.classpath"/>
+    <path refid="library.gradle:_com.esotericsoftware.minlog:minlog:1.2.classpath"/>
+    <path refid="library.gradle:_org.objenesis:objenesis:1.2.classpath"/>
+    <path refid="library.gradle:_com.esotericsoftware.kryo:kryo:2.21.classpath"/>
+    <path refid="library.gradle:_com.twitter:chill-java:0.3.6.classpath"/>
+    <path refid="library.gradle:_com.twitter:chill_2.10:0.3.6.classpath"/>
+    <path refid="library.gradle:_com.typesafe:config:1.0.2.classpath"/>
+    <path refid="library.gradle:_org.spark-project.akka:akka-actor_2.10:2.2.3-shaded-protobuf.classpath"/>
+    <path refid="library.gradle:_org.spark-project.protobuf:protobuf-java:2.4.1-shaded.classpath"/>
+    <path refid="library.gradle:_org.uncommons.maths:uncommons-maths:1.2.2a.classpath"/>
+    <path refid="library.gradle:_org.spark-project.akka:akka-remote_2.10:2.2.3-shaded-protobuf.classpath"/>
+    <path refid="library.gradle:_org.spark-project.akka:akka-slf4j_2.10:2.2.3-shaded-protobuf.classpath"/>
+    <path refid="library.gradle:_org.json4s:json4s-ast_2.10:3.2.10.classpath"/>
+    <path refid="library.gradle:_org.scala-lang:scala-reflect:2.10.4.classpath"/>
+    <path refid="library.gradle:_org.scala-lang:scala-compiler:2.10.4.classpath"/>
+    <path refid="library.gradle:_org.scala-lang:scalap:2.10.0.classpath"/>
+    <path refid="library.gradle:_org.json4s:json4s-core_2.10:3.2.10.classpath"/>
+    <path refid="library.gradle:_com.fasterxml.jackson.core:jackson-annotations:2.3.0.classpath"/>
+    <path refid="library.gradle:_com.fasterxml.jackson.core:jackson-core:2.3.1.classpath"/>
+    <path refid="library.gradle:_com.fasterxml.jackson.core:jackson-databind:2.3.1.classpath"/>
+    <path refid="library.gradle:_org.json4s:json4s-jackson_2.10:3.2.10.classpath"/>
+    <path refid="library.gradle:_concurrent:concurrent:1.3.4.classpath"/>
+    <path refid="library.gradle:_colt:colt:1.2.0.classpath"/>
+    <path refid="library.gradle:_org.apache.mesos:mesos:0.18.1:shaded-protobuf.classpath"/>
+    <path refid="library.gradle:_io.netty:netty-all:4.0.23.final.classpath"/>
+    <path refid="library.gradle:_com.clearspring.analytics:stream:2.7.0.classpath"/>
+    <path refid="library.gradle:_com.codahale.metrics:metrics-core:3.0.0.classpath"/>
+    <path refid="library.gradle:_com.codahale.metrics:metrics-jvm:3.0.0.classpath"/>
+    <path refid="library.gradle:_com.codahale.metrics:metrics-json:3.0.0.classpath"/>
+    <path refid="library.gradle:_com.codahale.metrics:metrics-graphite:3.0.0.classpath"/>
+    <path refid="library.gradle:_org.tachyonproject:tachyon:0.5.0.classpath"/>
+    <path refid="library.gradle:_org.tachyonproject:tachyon-client:0.5.0.classpath"/>
+    <path refid="library.gradle:_org.spark-project:pyrolite:2.0.1.classpath"/>
+    <path refid="library.gradle:_net.sf.py4j:py4j:0.8.2.1.classpath"/>
+    <path refid="library.gradle:_org.apache.spark:spark-core_2.10:1.1.0.classpath"/>
+    <path refid="library.gradle:_org.clojure:clojure:1.5.1.classpath"/>
+    <path refid="library.gradle:_org.clojure:tools.logging:0.2.3.classpath"/>
+    <path refid="library.gradle:_org.clojure:math.numeric-tower:0.0.1.classpath"/>
+    <path refid="library.gradle:_org.clojure:tools.cli:0.2.4.classpath"/>
+    <path refid="library.gradle:_org.apache.commons:commons-exec:1.1.classpath"/>
+    <path refid="library.gradle:_com.googlecode.json-simple:json-simple:1.1.classpath"/>
+    <path refid="library.gradle:_org.yaml:snakeyaml:1.11.classpath"/>
+    <path refid="library.gradle:_com.googlecode.disruptor:disruptor:2.10.1.classpath"/>
+    <path refid="library.gradle:_org.jgrapht:jgrapht-core:0.9.0.classpath"/>
+    <path refid="library.gradle:_ch.qos.logback:logback-core:1.0.6.classpath"/>
+    <path refid="library.gradle:_ch.qos.logback:logback-classic:1.0.6.classpath"/>
+    <path refid="library.gradle:_org.slf4j:log4j-over-slf4j:1.6.6.classpath"/>
+    <path refid="library.gradle:_org.apache.storm:storm-core:0.9.2-incubating.classpath"/>
+    <path refid="library.gradle:_org.apache.pig:pig:0.13.0.classpath"/>
+    <path refid="library.gradle:_org.scalamacros:quasiquotes_2.10:2.0.1.classpath"/>
+    <path refid="library.gradle:_org.apache.spark:spark-catalyst_2.10:1.1.0.classpath"/>
+    <path refid="library.gradle:_com.twitter:parquet-common:1.4.3.classpath"/>
+    <path refid="library.gradle:_com.twitter:parquet-generator:1.4.3.classpath"/>
+    <path refid="library.gradle:_com.twitter:parquet-encoding:1.4.3.classpath"/>
+    <path refid="library.gradle:_com.twitter:parquet-column:1.4.3.classpath"/>
+    <path refid="library.gradle:_com.twitter:parquet-format:2.0.0.classpath"/>
+    <path refid="library.gradle:_com.twitter:parquet-jackson:1.4.3.classpath"/>
+    <path refid="library.gradle:_com.twitter:parquet-hadoop:1.4.3.classpath"/>
+    <path refid="library.gradle:_org.apache.spark:spark-sql_2.10:1.1.0.classpath"/>
+  </path>
+  
+  <path id="es-indexer.module.classpath">
+    <path refid="${module.jdk.classpath.es-indexer}"/>
+    <pathelement location="${es-indexer.output.dir}"/>
+    <path refid="library.gradle:_org.apache.hadoop:hadoop-client:2.6.0.classpath"/>
+    <path refid="library.gradle:_net.htmlparser.jericho:jericho-html:3.3.classpath"/>
+    <path refid="library.gradle:_org.slf4j:slf4j-api:1.7.6.classpath"/>
+    <path refid="library.gradle:_org.apache.hadoop:hadoop-annotations:2.6.0.classpath"/>
+    <path refid="library.gradle:_commons-cli:commons-cli:1.2.classpath"/>
+    <path refid="library.gradle:_org.apache.commons:commons-math3:3.1.1.classpath"/>
+    <path refid="library.gradle:_xmlenc:xmlenc:0.52.classpath"/>
+    <path refid="library.gradle:_commons-logging:commons-logging:1.1.3.classpath"/>
+    <path refid="library.gradle:_commons-codec:commons-codec:1.6.classpath"/>
+    <path refid="library.gradle:_commons-httpclient:commons-httpclient:3.1.classpath"/>
+    <path refid="library.gradle:_commons-io:commons-io:2.4.classpath"/>
+    <path refid="library.gradle:_commons-net:commons-net:3.1.classpath"/>
+    <path refid="library.gradle:_commons-collections:commons-collections:3.2.1.classpath"/>
+    <path refid="library.gradle:_log4j:log4j:1.2.17.classpath"/>
+    <path refid="library.gradle:_commons-lang:commons-lang:2.6.classpath"/>
+    <path refid="library.gradle:_commons-beanutils:commons-beanutils:1.7.0.classpath"/>
+    <path refid="library.gradle:_commons-digester:commons-digester:1.8.classpath"/>
+    <path refid="library.gradle:_commons-beanutils:commons-beanutils-core:1.8.0.classpath"/>
+    <path refid="library.gradle:_commons-configuration:commons-configuration:1.6.classpath"/>
+    <path refid="library.gradle:_org.codehaus.jackson:jackson-core-asl:1.9.13.classpath"/>
+    <path refid="library.gradle:_org.codehaus.jackson:jackson-mapper-asl:1.9.13.classpath"/>
+    <path refid="library.gradle:_com.google.protobuf:protobuf-java:2.5.0.classpath"/>
+    <path refid="library.gradle:_com.google.code.gson:gson:2.2.4.classpath"/>
+    <path refid="library.gradle:_org.slf4j:slf4j-log4j12:1.7.5.classpath"/>
+    <path refid="library.gradle:_junit:junit:4.8.1.classpath"/>
+    <path refid="library.gradle:_jline:jline:0.9.94.classpath"/>
+    <path refid="library.gradle:_io.netty:netty:3.7.0.final.classpath"/>
+    <path refid="library.gradle:_org.apache.zookeeper:zookeeper:3.4.6.classpath"/>
+    <path refid="library.gradle:_org.apache.directory.server:apacheds-i18n:2.0.0-m15.classpath"/>
+    <path refid="library.gradle:_org.apache.directory.api:api-asn1-api:1.0.0-m20.classpath"/>
+    <path refid="library.gradle:_org.apache.directory.api:api-util:1.0.0-m20.classpath"/>
+    <path refid="library.gradle:_org.apache.directory.server:apacheds-kerberos-codec:2.0.0-m15.classpath"/>
+    <path refid="library.gradle:_com.google.guava:guava:16.0.1.classpath"/>
+    <path refid="library.gradle:_org.apache.curator:curator-client:2.6.0.classpath"/>
+    <path refid="library.gradle:_org.apache.curator:curator-framework:2.6.0.classpath"/>
+    <path refid="library.gradle:_org.apache.hadoop:hadoop-auth:2.6.0.classpath"/>
+    <path refid="library.gradle:_org.apache.curator:curator-recipes:2.6.0.classpath"/>
+    <path refid="library.gradle:_com.google.code.findbugs:jsr305:1.3.9.classpath"/>
+    <path refid="library.gradle:_org.mortbay.jetty:jetty-util:6.1.26.classpath"/>
+    <path refid="library.gradle:_org.htrace:htrace-core:3.0.4.classpath"/>
+    <path refid="library.gradle:_org.tukaani:xz:1.0.classpath"/>
+    <path refid="library.gradle:_org.apache.commons:commons-compress:1.4.1.classpath"/>
+    <path refid="library.gradle:_org.apache.avro:avro:1.7.5.classpath"/>
+    <path refid="library.gradle:_org.apache.hadoop:hadoop-common:2.6.0.classpath"/>
+    <path refid="library.gradle:_xml-apis:xml-apis:1.3.04.classpath"/>
+    <path refid="library.gradle:_xerces:xercesimpl:2.9.1.classpath"/>
+    <path refid="library.gradle:_org.apache.hadoop:hadoop-hdfs:2.6.0.classpath"/>
+    <path refid="library.gradle:_org.apache.hadoop:hadoop-yarn-api:2.6.0.classpath"/>
+    <path refid="library.gradle:_javax.activation:activation:1.1.classpath"/>
+    <path refid="library.gradle:_javax.xml.stream:stax-api:1.0-2.classpath"/>
+    <path refid="library.gradle:_javax.xml.bind:jaxb-api:2.2.2.classpath"/>
+    <path refid="library.gradle:_javax.servlet:servlet-api:2.5.classpath"/>
+    <path refid="library.gradle:_com.sun.jersey:jersey-core:1.9.classpath"/>
+    <path refid="library.gradle:_com.sun.jersey:jersey-client:1.9.classpath"/>
+    <path refid="library.gradle:_org.codehaus.jackson:jackson-jaxrs:1.9.13.classpath"/>
+    <path refid="library.gradle:_org.codehaus.jackson:jackson-xc:1.9.13.classpath"/>
+    <path refid="library.gradle:_javax.inject:javax.inject:1.classpath"/>
+    <path refid="library.gradle:_aopalliance:aopalliance:1.0.classpath"/>
+    <path refid="library.gradle:_asm:asm:3.1.classpath"/>
+    <path refid="library.gradle:_org.sonatype.sisu.inject:cglib:2.2.1-v20090111.classpath"/>
+    <path refid="library.gradle:_com.google.inject:guice:3.0.classpath"/>
+    <path refid="library.gradle:_com.sun.jersey:jersey-server:1.9.classpath"/>
+    <path refid="library.gradle:_org.codehaus.jettison:jettison:1.1.classpath"/>
+    <path refid="library.gradle:_com.sun.xml.bind:jaxb-impl:2.2.3-1.classpath"/>
+    <path refid="library.gradle:_com.sun.jersey:jersey-json:1.9.classpath"/>
+    <path refid="library.gradle:_com.sun.jersey.contribs:jersey-guice:1.9.classpath"/>
+    <path refid="library.gradle:_org.apache.hadoop:hadoop-yarn-common:2.6.0.classpath"/>
+    <path refid="library.gradle:_org.apache.hadoop:hadoop-mapreduce-client-core:2.6.0.classpath"/>
+    <path refid="library.gradle:_org.apache.hadoop:hadoop-yarn-client:2.6.0.classpath"/>
+    <path refid="library.gradle:_org.fusesource.leveldbjni:leveldbjni-all:1.8.classpath"/>
+    <path refid="library.gradle:_org.apache.hadoop:hadoop-yarn-server-common:2.6.0.classpath"/>
+    <path refid="library.gradle:_org.apache.hadoop:hadoop-mapreduce-client-common:2.6.0.classpath"/>
+    <path refid="library.gradle:_org.apache.hadoop:hadoop-yarn-server-nodemanager:2.6.0.classpath"/>
+    <path refid="library.gradle:_org.apache.hadoop:hadoop-mapreduce-client-shuffle:2.6.0.classpath"/>
+    <path refid="library.gradle:_org.apache.hadoop:hadoop-mapreduce-client-app:2.6.0.classpath"/>
+    <path refid="library.gradle:_org.apache.hadoop:hadoop-mapreduce-client-jobclient:2.6.0.classpath"/>
+    <path refid="library.gradle:_com.spatial4j:spatial4j:0.4.1.classpath"/>
+    <path refid="library.gradle:_org.apache.thrift:libthrift:0.9.0.classpath"/>
+    <path refid="library.gradle:_org.apache.thrift:libfb303:0.9.0.classpath"/>
+    <path refid="library.gradle:_antlr:antlr:2.7.7.classpath"/>
+    <path refid="library.gradle:_org.antlr:stringtemplate:3.2.1.classpath"/>
+    <path refid="library.gradle:_org.datanucleus:datanucleus-core:3.2.10.classpath"/>
+    <path refid="library.gradle:_com.jolbox:bonecp:0.8.0.release.classpath"/>
+    <path refid="library.gradle:_org.apache.derby:derby:10.10.1.1.classpath"/>
+    <path refid="library.gradle:_org.datanucleus:datanucleus-api-jdo:3.2.6.classpath"/>
+    <path refid="library.gradle:_org.datanucleus:datanucleus-rdbms:3.2.9.classpath"/>
+    <path refid="library.gradle:_javax.transaction:jta:1.1.classpath"/>
+    <path refid="library.gradle:_javax.jdo:jdo-api:3.0.1.classpath"/>
+    <path refid="library.gradle:_org.antlr:st4:4.0.4.classpath"/>
+    <path refid="library.gradle:_org.apache.ant:ant-launcher:1.9.1.classpath"/>
+    <path refid="library.gradle:_org.apache.ant:ant:1.9.1.classpath"/>
+    <path refid="library.gradle:_oro:oro:2.0.8.classpath"/>
+    <path refid="library.gradle:_org.apache.velocity:velocity:1.5.classpath"/>
+    <path refid="library.gradle:_org.codehaus.groovy:groovy-all:2.1.6.classpath"/>
+    <path refid="library.gradle:_stax:stax-api:1.0.1.classpath"/>
+    <path refid="library.gradle:_net.sf.jpam:jpam:1.1.classpath"/>
+    <path refid="library.gradle:_org.apache.geronimo.specs:geronimo-jta_1.1_spec:1.1.1.classpath"/>
+    <path refid="library.gradle:_javax.mail:mail:1.4.1.classpath"/>
+    <path refid="library.gradle:_org.apache.geronimo.specs:geronimo-jaspic_1.0_spec:1.0.classpath"/>
+    <path refid="library.gradle:_org.apache.geronimo.specs:geronimo-annotation_1.0_spec:1.1.1.classpath"/>
+    <path refid="library.gradle:_asm:asm-tree:3.1.classpath"/>
+    <path refid="library.gradle:_asm:asm-commons:3.1.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty.aggregate:jetty-all:7.6.0.v20120127.classpath"/>
+    <path refid="library.gradle:_org.mortbay.jetty:servlet-api:2.5-20081211.classpath"/>
+    <path refid="library.gradle:_org.mortbay.jetty:jetty:6.1.26.classpath"/>
+    <path refid="library.gradle:_tomcat:jasper-runtime:5.5.12.classpath"/>
+    <path refid="library.gradle:_tomcat:jasper-compiler:5.5.12.classpath"/>
+    <path refid="library.gradle:_org.mortbay.jetty:servlet-api-2.5:6.1.14.classpath"/>
+    <path refid="library.gradle:_org.mortbay.jetty:jsp-api-2.1:6.1.14.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jdt:core:3.1.1.classpath"/>
+    <path refid="library.gradle:_ant:ant:1.6.5.classpath"/>
+    <path refid="library.gradle:_org.mortbay.jetty:jsp-2.1:6.1.14.classpath"/>
+    <path refid="library.gradle:_commons-el:commons-el:1.0.classpath"/>
+    <path refid="library.gradle:_net.java.dev.jets3t:jets3t:0.7.1.classpath"/>
+    <path refid="library.gradle:_net.sf.kosmosfs:kfs:0.3.classpath"/>
+    <path refid="library.gradle:_hsqldb:hsqldb:1.8.0.10.classpath"/>
+    <path refid="library.gradle:_joda-time:joda-time:2.1.classpath"/>
+    <path refid="library.gradle:_org.elasticsearch:elasticsearch:1.4.4.classpath"/>
+    <path refid="library.gradle:_org.apache.lucene:lucene-core:4.10.3.classpath"/>
+    <path refid="library.gradle:_org.apache.lucene:lucene-analyzers-common:4.10.3.classpath"/>
+    <path refid="library.gradle:_org.apache.lucene:lucene-queries:4.10.3.classpath"/>
+    <path refid="library.gradle:_org.apache.lucene:lucene-memory:4.10.3.classpath"/>
+    <path refid="library.gradle:_org.apache.lucene:lucene-highlighter:4.10.3.classpath"/>
+    <path refid="library.gradle:_org.apache.lucene:lucene-sandbox:4.10.3.classpath"/>
+    <path refid="library.gradle:_org.apache.lucene:lucene-queryparser:4.10.3.classpath"/>
+    <path refid="library.gradle:_org.apache.lucene:lucene-misc:4.10.3.classpath"/>
+    <path refid="library.gradle:_org.apache.lucene:lucene-suggest:4.10.3.classpath"/>
+    <path refid="library.gradle:_org.apache.lucene:lucene-grouping:4.10.3.classpath"/>
+    <path refid="library.gradle:_org.apache.lucene:lucene-join:4.10.3.classpath"/>
+    <path refid="library.gradle:_org.apache.lucene:lucene-spatial:4.10.3.classpath"/>
+    <path refid="library.gradle:_org.antlr:antlr-runtime:3.5.classpath"/>
+    <path refid="library.gradle:_org.ow2.asm:asm:4.1.classpath"/>
+    <path refid="library.gradle:_org.ow2.asm:asm-commons:4.1.classpath"/>
+    <path refid="library.gradle:_org.elasticsearch:elasticsearch-hadoop:2.1.0.beta3.classpath"/>
+    <path refid="library.gradle:_org.apache.httpcomponents:httpcore:4.3.2.classpath"/>
+    <path refid="library.gradle:_org.apache.httpcomponents:httpclient:4.3.3.classpath"/>
+    <path refid="library.gradle:_org.xerial.snappy:snappy-java:1.0.5.3.classpath"/>
+    <path refid="library.gradle:_com.thoughtworks.paranamer:paranamer:2.6.classpath"/>
+    <path refid="library.gradle:_org.apache.hive.shims:hive-shims-common:0.13.1.classpath"/>
+    <path refid="library.gradle:_org.apache.hive.shims:hive-shims-common-secure:0.13.1.classpath"/>
+    <path refid="library.gradle:_org.apache.hive:hive-shims:0.13.1.classpath"/>
+    <path refid="library.gradle:_org.apache.hive:hive-common:0.13.1.classpath"/>
+    <path refid="library.gradle:_org.apache.hive:hive-serde:0.13.1.classpath"/>
+    <path refid="library.gradle:_org.apache.hive:hive-metastore:0.13.1.classpath"/>
+    <path refid="library.gradle:_org.apache.commons:commons-lang3:3.3.2.classpath"/>
+    <path refid="library.gradle:_org.apache.hive:hive-ant:0.13.1.classpath"/>
+    <path refid="library.gradle:_org.apache.hive:hive-exec:0.13.1.classpath"/>
+    <path refid="library.gradle:_org.apache.hive:hive-service:0.13.1.classpath"/>
+    <path refid="library.gradle:_org.apache.hive.shims:hive-shims-0.20:0.13.1.classpath"/>
+    <path refid="library.gradle:_org.apache.hive.shims:hive-shims-0.20s:0.13.1.classpath"/>
+    <path refid="library.gradle:_org.apache.hive.shims:hive-shims-0.23:0.13.1.classpath"/>
+    <path refid="library.gradle:_org.scala-lang:scala-library:2.10.4.classpath"/>
+    <path refid="library.gradle:_javax.servlet:javax.servlet-api:3.0.1.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty.orbit:javax.transaction:1.1.1.v201105210645.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty:jetty-util:8.1.14.v20131031.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty:jetty-xml:8.1.14.v20131031.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty.orbit:javax.servlet:3.0.0.v201112011016.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty:jetty-continuation:8.1.14.v20131031.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty:jetty-io:8.1.14.v20131031.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty:jetty-http:8.1.14.v20131031.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty:jetty-server:8.1.14.v20131031.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty:jetty-security:8.1.14.v20131031.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty:jetty-servlet:8.1.14.v20131031.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty:jetty-webapp:8.1.14.v20131031.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty.orbit:javax.activation:1.1.0.v201105071233.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty.orbit:javax.mail.glassfish:1.4.1.v201005082020.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty:jetty-jndi:8.1.14.v20131031.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty:jetty-plus:8.1.14.v20131031.classpath"/>
+    <path refid="library.gradle:_org.slf4j:jul-to-slf4j:1.7.5.classpath"/>
+    <path refid="library.gradle:_org.slf4j:jcl-over-slf4j:1.7.5.classpath"/>
+    <path refid="library.gradle:_com.ning:compress-lzf:1.0.0.classpath"/>
+    <path refid="library.gradle:_net.jpountz.lz4:lz4:1.2.0.classpath"/>
+    <path refid="library.gradle:_com.esotericsoftware.reflectasm:reflectasm:1.07:shaded.classpath"/>
+    <path refid="library.gradle:_com.esotericsoftware.minlog:minlog:1.2.classpath"/>
+    <path refid="library.gradle:_org.objenesis:objenesis:1.2.classpath"/>
+    <path refid="library.gradle:_com.esotericsoftware.kryo:kryo:2.21.classpath"/>
+    <path refid="library.gradle:_com.twitter:chill-java:0.3.6.classpath"/>
+    <path refid="library.gradle:_com.twitter:chill_2.10:0.3.6.classpath"/>
+    <path refid="library.gradle:_com.typesafe:config:1.0.2.classpath"/>
+    <path refid="library.gradle:_org.spark-project.akka:akka-actor_2.10:2.2.3-shaded-protobuf.classpath"/>
+    <path refid="library.gradle:_org.spark-project.protobuf:protobuf-java:2.4.1-shaded.classpath"/>
+    <path refid="library.gradle:_org.uncommons.maths:uncommons-maths:1.2.2a.classpath"/>
+    <path refid="library.gradle:_org.spark-project.akka:akka-remote_2.10:2.2.3-shaded-protobuf.classpath"/>
+    <path refid="library.gradle:_org.spark-project.akka:akka-slf4j_2.10:2.2.3-shaded-protobuf.classpath"/>
+    <path refid="library.gradle:_org.json4s:json4s-ast_2.10:3.2.10.classpath"/>
+    <path refid="library.gradle:_org.scala-lang:scala-reflect:2.10.4.classpath"/>
+    <path refid="library.gradle:_org.scala-lang:scala-compiler:2.10.4.classpath"/>
+    <path refid="library.gradle:_org.scala-lang:scalap:2.10.0.classpath"/>
+    <path refid="library.gradle:_org.json4s:json4s-core_2.10:3.2.10.classpath"/>
+    <path refid="library.gradle:_com.fasterxml.jackson.core:jackson-annotations:2.3.0.classpath"/>
+    <path refid="library.gradle:_com.fasterxml.jackson.core:jackson-core:2.3.1.classpath"/>
+    <path refid="library.gradle:_com.fasterxml.jackson.core:jackson-databind:2.3.1.classpath"/>
+    <path refid="library.gradle:_org.json4s:json4s-jackson_2.10:3.2.10.classpath"/>
+    <path refid="library.gradle:_concurrent:concurrent:1.3.4.classpath"/>
+    <path refid="library.gradle:_colt:colt:1.2.0.classpath"/>
+    <path refid="library.gradle:_org.apache.mesos:mesos:0.18.1:shaded-protobuf.classpath"/>
+    <path refid="library.gradle:_io.netty:netty-all:4.0.23.final.classpath"/>
+    <path refid="library.gradle:_com.clearspring.analytics:stream:2.7.0.classpath"/>
+    <path refid="library.gradle:_com.codahale.metrics:metrics-core:3.0.0.classpath"/>
+    <path refid="library.gradle:_com.codahale.metrics:metrics-jvm:3.0.0.classpath"/>
+    <path refid="library.gradle:_com.codahale.metrics:metrics-json:3.0.0.classpath"/>
+    <path refid="library.gradle:_com.codahale.metrics:metrics-graphite:3.0.0.classpath"/>
+    <path refid="library.gradle:_org.tachyonproject:tachyon:0.5.0.classpath"/>
+    <path refid="library.gradle:_org.tachyonproject:tachyon-client:0.5.0.classpath"/>
+    <path refid="library.gradle:_org.spark-project:pyrolite:2.0.1.classpath"/>
+    <path refid="library.gradle:_net.sf.py4j:py4j:0.8.2.1.classpath"/>
+    <path refid="library.gradle:_org.apache.spark:spark-core_2.10:1.1.0.classpath"/>
+    <path refid="library.gradle:_org.clojure:clojure:1.5.1.classpath"/>
+    <path refid="library.gradle:_org.clojure:tools.logging:0.2.3.classpath"/>
+    <path refid="library.gradle:_org.clojure:math.numeric-tower:0.0.1.classpath"/>
+    <path refid="library.gradle:_org.clojure:tools.cli:0.2.4.classpath"/>
+    <path refid="library.gradle:_org.apache.commons:commons-exec:1.1.classpath"/>
+    <path refid="library.gradle:_com.googlecode.json-simple:json-simple:1.1.classpath"/>
+    <path refid="library.gradle:_org.yaml:snakeyaml:1.11.classpath"/>
+    <path refid="library.gradle:_com.googlecode.disruptor:disruptor:2.10.1.classpath"/>
+    <path refid="library.gradle:_org.jgrapht:jgrapht-core:0.9.0.classpath"/>
+    <path refid="library.gradle:_ch.qos.logback:logback-core:1.0.6.classpath"/>
+    <path refid="library.gradle:_ch.qos.logback:logback-classic:1.0.6.classpath"/>
+    <path refid="library.gradle:_org.slf4j:log4j-over-slf4j:1.6.6.classpath"/>
+    <path refid="library.gradle:_org.apache.storm:storm-core:0.9.2-incubating.classpath"/>
+    <path refid="library.gradle:_org.apache.pig:pig:0.13.0.classpath"/>
+    <path refid="library.gradle:_org.scalamacros:quasiquotes_2.10:2.0.1.classpath"/>
+    <path refid="library.gradle:_org.apache.spark:spark-catalyst_2.10:1.1.0.classpath"/>
+    <path refid="library.gradle:_com.twitter:parquet-common:1.4.3.classpath"/>
+    <path refid="library.gradle:_com.twitter:parquet-generator:1.4.3.classpath"/>
+    <path refid="library.gradle:_com.twitter:parquet-encoding:1.4.3.classpath"/>
+    <path refid="library.gradle:_com.twitter:parquet-column:1.4.3.classpath"/>
+    <path refid="library.gradle:_com.twitter:parquet-format:2.0.0.classpath"/>
+    <path refid="library.gradle:_com.twitter:parquet-jackson:1.4.3.classpath"/>
+    <path refid="library.gradle:_com.twitter:parquet-hadoop:1.4.3.classpath"/>
+    <path refid="library.gradle:_org.apache.spark:spark-sql_2.10:1.1.0.classpath"/>
+  </path>
+  
+  <path id="es-indexer.runtime.module.classpath">
+    <pathelement location="${es-indexer.testoutput.dir}"/>
+    <pathelement location="${es-indexer.output.dir}"/>
+    <path refid="library.gradle:_org.apache.hadoop:hadoop-client:2.6.0.classpath"/>
+    <path refid="library.gradle:_net.htmlparser.jericho:jericho-html:3.3.classpath"/>
+    <path refid="library.gradle:_org.slf4j:slf4j-api:1.7.6.classpath"/>
+    <path refid="library.gradle:_org.apache.hadoop:hadoop-annotations:2.6.0.classpath"/>
+    <path refid="library.gradle:_commons-cli:commons-cli:1.2.classpath"/>
+    <path refid="library.gradle:_org.apache.commons:commons-math3:3.1.1.classpath"/>
+    <path refid="library.gradle:_xmlenc:xmlenc:0.52.classpath"/>
+    <path refid="library.gradle:_commons-logging:commons-logging:1.1.3.classpath"/>
+    <path refid="library.gradle:_commons-codec:commons-codec:1.6.classpath"/>
+    <path refid="library.gradle:_commons-httpclient:commons-httpclient:3.1.classpath"/>
+    <path refid="library.gradle:_commons-io:commons-io:2.4.classpath"/>
+    <path refid="library.gradle:_commons-net:commons-net:3.1.classpath"/>
+    <path refid="library.gradle:_commons-collections:commons-collections:3.2.1.classpath"/>
+    <path refid="library.gradle:_log4j:log4j:1.2.17.classpath"/>
+    <path refid="library.gradle:_commons-lang:commons-lang:2.6.classpath"/>
+    <path refid="library.gradle:_commons-beanutils:commons-beanutils:1.7.0.classpath"/>
+    <path refid="library.gradle:_commons-digester:commons-digester:1.8.classpath"/>
+    <path refid="library.gradle:_commons-beanutils:commons-beanutils-core:1.8.0.classpath"/>
+    <path refid="library.gradle:_commons-configuration:commons-configuration:1.6.classpath"/>
+    <path refid="library.gradle:_org.codehaus.jackson:jackson-core-asl:1.9.13.classpath"/>
+    <path refid="library.gradle:_org.codehaus.jackson:jackson-mapper-asl:1.9.13.classpath"/>
+    <path refid="library.gradle:_com.google.protobuf:protobuf-java:2.5.0.classpath"/>
+    <path refid="library.gradle:_com.google.code.gson:gson:2.2.4.classpath"/>
+    <path refid="library.gradle:_org.slf4j:slf4j-log4j12:1.7.5.classpath"/>
+    <path refid="library.gradle:_junit:junit:4.8.1.classpath"/>
+    <path refid="library.gradle:_jline:jline:0.9.94.classpath"/>
+    <path refid="library.gradle:_io.netty:netty:3.7.0.final.classpath"/>
+    <path refid="library.gradle:_org.apache.zookeeper:zookeeper:3.4.6.classpath"/>
+    <path refid="library.gradle:_org.apache.directory.server:apacheds-i18n:2.0.0-m15.classpath"/>
+    <path refid="library.gradle:_org.apache.directory.api:api-asn1-api:1.0.0-m20.classpath"/>
+    <path refid="library.gradle:_org.apache.directory.api:api-util:1.0.0-m20.classpath"/>
+    <path refid="library.gradle:_org.apache.directory.server:apacheds-kerberos-codec:2.0.0-m15.classpath"/>
+    <path refid="library.gradle:_com.google.guava:guava:16.0.1.classpath"/>
+    <path refid="library.gradle:_org.apache.curator:curator-client:2.6.0.classpath"/>
+    <path refid="library.gradle:_org.apache.curator:curator-framework:2.6.0.classpath"/>
+    <path refid="library.gradle:_org.apache.hadoop:hadoop-auth:2.6.0.classpath"/>
+    <path refid="library.gradle:_org.apache.curator:curator-recipes:2.6.0.classpath"/>
+    <path refid="library.gradle:_com.google.code.findbugs:jsr305:1.3.9.classpath"/>
+    <path refid="library.gradle:_org.mortbay.jetty:jetty-util:6.1.26.classpath"/>
+    <path refid="library.gradle:_org.htrace:htrace-core:3.0.4.classpath"/>
+    <path refid="library.gradle:_org.tukaani:xz:1.0.classpath"/>
+    <path refid="library.gradle:_org.apache.commons:commons-compress:1.4.1.classpath"/>
+    <path refid="library.gradle:_org.apache.avro:avro:1.7.5.classpath"/>
+    <path refid="library.gradle:_org.apache.hadoop:hadoop-common:2.6.0.classpath"/>
+    <path refid="library.gradle:_xml-apis:xml-apis:1.3.04.classpath"/>
+    <path refid="library.gradle:_xerces:xercesimpl:2.9.1.classpath"/>
+    <path refid="library.gradle:_org.apache.hadoop:hadoop-hdfs:2.6.0.classpath"/>
+    <path refid="library.gradle:_org.apache.hadoop:hadoop-yarn-api:2.6.0.classpath"/>
+    <path refid="library.gradle:_javax.activation:activation:1.1.classpath"/>
+    <path refid="library.gradle:_javax.xml.stream:stax-api:1.0-2.classpath"/>
+    <path refid="library.gradle:_javax.xml.bind:jaxb-api:2.2.2.classpath"/>
+    <path refid="library.gradle:_javax.servlet:servlet-api:2.5.classpath"/>
+    <path refid="library.gradle:_com.sun.jersey:jersey-core:1.9.classpath"/>
+    <path refid="library.gradle:_com.sun.jersey:jersey-client:1.9.classpath"/>
+    <path refid="library.gradle:_org.codehaus.jackson:jackson-jaxrs:1.9.13.classpath"/>
+    <path refid="library.gradle:_org.codehaus.jackson:jackson-xc:1.9.13.classpath"/>
+    <path refid="library.gradle:_javax.inject:javax.inject:1.classpath"/>
+    <path refid="library.gradle:_aopalliance:aopalliance:1.0.classpath"/>
+    <path refid="library.gradle:_asm:asm:3.1.classpath"/>
+    <path refid="library.gradle:_org.sonatype.sisu.inject:cglib:2.2.1-v20090111.classpath"/>
+    <path refid="library.gradle:_com.google.inject:guice:3.0.classpath"/>
+    <path refid="library.gradle:_com.sun.jersey:jersey-server:1.9.classpath"/>
+    <path refid="library.gradle:_org.codehaus.jettison:jettison:1.1.classpath"/>
+    <path refid="library.gradle:_com.sun.xml.bind:jaxb-impl:2.2.3-1.classpath"/>
+    <path refid="library.gradle:_com.sun.jersey:jersey-json:1.9.classpath"/>
+    <path refid="library.gradle:_com.sun.jersey.contribs:jersey-guice:1.9.classpath"/>
+    <path refid="library.gradle:_org.apache.hadoop:hadoop-yarn-common:2.6.0.classpath"/>
+    <path refid="library.gradle:_org.apache.hadoop:hadoop-mapreduce-client-core:2.6.0.classpath"/>
+    <path refid="library.gradle:_org.apache.hadoop:hadoop-yarn-client:2.6.0.classpath"/>
+    <path refid="library.gradle:_org.fusesource.leveldbjni:leveldbjni-all:1.8.classpath"/>
+    <path refid="library.gradle:_org.apache.hadoop:hadoop-yarn-server-common:2.6.0.classpath"/>
+    <path refid="library.gradle:_org.apache.hadoop:hadoop-mapreduce-client-common:2.6.0.classpath"/>
+    <path refid="library.gradle:_org.apache.hadoop:hadoop-yarn-server-nodemanager:2.6.0.classpath"/>
+    <path refid="library.gradle:_org.apache.hadoop:hadoop-mapreduce-client-shuffle:2.6.0.classpath"/>
+    <path refid="library.gradle:_org.apache.hadoop:hadoop-mapreduce-client-app:2.6.0.classpath"/>
+    <path refid="library.gradle:_org.apache.hadoop:hadoop-mapreduce-client-jobclient:2.6.0.classpath"/>
+    <path refid="library.gradle:_com.spatial4j:spatial4j:0.4.1.classpath"/>
+    <path refid="library.gradle:_org.apache.thrift:libthrift:0.9.0.classpath"/>
+    <path refid="library.gradle:_org.apache.thrift:libfb303:0.9.0.classpath"/>
+    <path refid="library.gradle:_antlr:antlr:2.7.7.classpath"/>
+    <path refid="library.gradle:_org.antlr:stringtemplate:3.2.1.classpath"/>
+    <path refid="library.gradle:_org.datanucleus:datanucleus-core:3.2.10.classpath"/>
+    <path refid="library.gradle:_com.jolbox:bonecp:0.8.0.release.classpath"/>
+    <path refid="library.gradle:_org.apache.derby:derby:10.10.1.1.classpath"/>
+    <path refid="library.gradle:_org.datanucleus:datanucleus-api-jdo:3.2.6.classpath"/>
+    <path refid="library.gradle:_org.datanucleus:datanucleus-rdbms:3.2.9.classpath"/>
+    <path refid="library.gradle:_javax.transaction:jta:1.1.classpath"/>
+    <path refid="library.gradle:_javax.jdo:jdo-api:3.0.1.classpath"/>
+    <path refid="library.gradle:_org.antlr:st4:4.0.4.classpath"/>
+    <path refid="library.gradle:_org.apache.ant:ant-launcher:1.9.1.classpath"/>
+    <path refid="library.gradle:_org.apache.ant:ant:1.9.1.classpath"/>
+    <path refid="library.gradle:_oro:oro:2.0.8.classpath"/>
+    <path refid="library.gradle:_org.apache.velocity:velocity:1.5.classpath"/>
+    <path refid="library.gradle:_org.codehaus.groovy:groovy-all:2.1.6.classpath"/>
+    <path refid="library.gradle:_stax:stax-api:1.0.1.classpath"/>
+    <path refid="library.gradle:_net.sf.jpam:jpam:1.1.classpath"/>
+    <path refid="library.gradle:_org.apache.geronimo.specs:geronimo-jta_1.1_spec:1.1.1.classpath"/>
+    <path refid="library.gradle:_javax.mail:mail:1.4.1.classpath"/>
+    <path refid="library.gradle:_org.apache.geronimo.specs:geronimo-jaspic_1.0_spec:1.0.classpath"/>
+    <path refid="library.gradle:_org.apache.geronimo.specs:geronimo-annotation_1.0_spec:1.1.1.classpath"/>
+    <path refid="library.gradle:_asm:asm-tree:3.1.classpath"/>
+    <path refid="library.gradle:_asm:asm-commons:3.1.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty.aggregate:jetty-all:7.6.0.v20120127.classpath"/>
+    <path refid="library.gradle:_org.mortbay.jetty:servlet-api:2.5-20081211.classpath"/>
+    <path refid="library.gradle:_org.mortbay.jetty:jetty:6.1.26.classpath"/>
+    <path refid="library.gradle:_tomcat:jasper-runtime:5.5.12.classpath"/>
+    <path refid="library.gradle:_tomcat:jasper-compiler:5.5.12.classpath"/>
+    <path refid="library.gradle:_org.mortbay.jetty:servlet-api-2.5:6.1.14.classpath"/>
+    <path refid="library.gradle:_org.mortbay.jetty:jsp-api-2.1:6.1.14.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jdt:core:3.1.1.classpath"/>
+    <path refid="library.gradle:_ant:ant:1.6.5.classpath"/>
+    <path refid="library.gradle:_org.mortbay.jetty:jsp-2.1:6.1.14.classpath"/>
+    <path refid="library.gradle:_commons-el:commons-el:1.0.classpath"/>
+    <path refid="library.gradle:_net.java.dev.jets3t:jets3t:0.7.1.classpath"/>
+    <path refid="library.gradle:_net.sf.kosmosfs:kfs:0.3.classpath"/>
+    <path refid="library.gradle:_hsqldb:hsqldb:1.8.0.10.classpath"/>
+    <path refid="library.gradle:_joda-time:joda-time:2.1.classpath"/>
+    <path refid="library.gradle:_org.elasticsearch:elasticsearch:1.4.4.classpath"/>
+    <path refid="library.gradle:_org.apache.lucene:lucene-core:4.10.3.classpath"/>
+    <path refid="library.gradle:_org.apache.lucene:lucene-analyzers-common:4.10.3.classpath"/>
+    <path refid="library.gradle:_org.apache.lucene:lucene-queries:4.10.3.classpath"/>
+    <path refid="library.gradle:_org.apache.lucene:lucene-memory:4.10.3.classpath"/>
+    <path refid="library.gradle:_org.apache.lucene:lucene-highlighter:4.10.3.classpath"/>
+    <path refid="library.gradle:_org.apache.lucene:lucene-sandbox:4.10.3.classpath"/>
+    <path refid="library.gradle:_org.apache.lucene:lucene-queryparser:4.10.3.classpath"/>
+    <path refid="library.gradle:_org.apache.lucene:lucene-misc:4.10.3.classpath"/>
+    <path refid="library.gradle:_org.apache.lucene:lucene-suggest:4.10.3.classpath"/>
+    <path refid="library.gradle:_org.apache.lucene:lucene-grouping:4.10.3.classpath"/>
+    <path refid="library.gradle:_org.apache.lucene:lucene-join:4.10.3.classpath"/>
+    <path refid="library.gradle:_org.apache.lucene:lucene-spatial:4.10.3.classpath"/>
+    <path refid="library.gradle:_org.antlr:antlr-runtime:3.5.classpath"/>
+    <path refid="library.gradle:_org.ow2.asm:asm:4.1.classpath"/>
+    <path refid="library.gradle:_org.ow2.asm:asm-commons:4.1.classpath"/>
+    <path refid="library.gradle:_org.elasticsearch:elasticsearch-hadoop:2.1.0.beta3.classpath"/>
+    <path refid="library.gradle:_org.apache.httpcomponents:httpcore:4.3.2.classpath"/>
+    <path refid="library.gradle:_org.apache.httpcomponents:httpclient:4.3.3.classpath"/>
+    <path refid="library.gradle:_org.xerial.snappy:snappy-java:1.0.5.3.classpath"/>
+    <path refid="library.gradle:_com.thoughtworks.paranamer:paranamer:2.6.classpath"/>
+    <path refid="library.gradle:_org.apache.hive.shims:hive-shims-common:0.13.1.classpath"/>
+    <path refid="library.gradle:_org.apache.hive.shims:hive-shims-common-secure:0.13.1.classpath"/>
+    <path refid="library.gradle:_org.apache.hive:hive-shims:0.13.1.classpath"/>
+    <path refid="library.gradle:_org.apache.hive:hive-common:0.13.1.classpath"/>
+    <path refid="library.gradle:_org.apache.hive:hive-serde:0.13.1.classpath"/>
+    <path refid="library.gradle:_org.apache.hive:hive-metastore:0.13.1.classpath"/>
+    <path refid="library.gradle:_org.apache.commons:commons-lang3:3.3.2.classpath"/>
+    <path refid="library.gradle:_org.apache.hive:hive-ant:0.13.1.classpath"/>
+    <path refid="library.gradle:_org.apache.hive:hive-exec:0.13.1.classpath"/>
+    <path refid="library.gradle:_org.apache.hive:hive-service:0.13.1.classpath"/>
+    <path refid="library.gradle:_org.apache.hive.shims:hive-shims-0.20:0.13.1.classpath"/>
+    <path refid="library.gradle:_org.apache.hive.shims:hive-shims-0.20s:0.13.1.classpath"/>
+    <path refid="library.gradle:_org.apache.hive.shims:hive-shims-0.23:0.13.1.classpath"/>
+    <path refid="library.gradle:_org.scala-lang:scala-library:2.10.4.classpath"/>
+    <path refid="library.gradle:_javax.servlet:javax.servlet-api:3.0.1.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty.orbit:javax.transaction:1.1.1.v201105210645.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty:jetty-util:8.1.14.v20131031.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty:jetty-xml:8.1.14.v20131031.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty.orbit:javax.servlet:3.0.0.v201112011016.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty:jetty-continuation:8.1.14.v20131031.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty:jetty-io:8.1.14.v20131031.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty:jetty-http:8.1.14.v20131031.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty:jetty-server:8.1.14.v20131031.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty:jetty-security:8.1.14.v20131031.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty:jetty-servlet:8.1.14.v20131031.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty:jetty-webapp:8.1.14.v20131031.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty.orbit:javax.activation:1.1.0.v201105071233.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty.orbit:javax.mail.glassfish:1.4.1.v201005082020.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty:jetty-jndi:8.1.14.v20131031.classpath"/>
+    <path refid="library.gradle:_org.eclipse.jetty:jetty-plus:8.1.14.v20131031.classpath"/>
+    <path refid="library.gradle:_org.slf4j:jul-to-slf4j:1.7.5.classpath"/>
+    <path refid="library.gradle:_org.slf4j:jcl-over-slf4j:1.7.5.classpath"/>
+    <path refid="library.gradle:_com.ning:compress-lzf:1.0.0.classpath"/>
+    <path refid="library.gradle:_net.jpountz.lz4:lz4:1.2.0.classpath"/>
+    <path refid="library.gradle:_com.esotericsoftware.reflectasm:reflectasm:1.07:shaded.classpath"/>
+    <path refid="library.gradle:_com.esotericsoftware.minlog:minlog:1.2.classpath"/>
+    <path refid="library.gradle:_org.objenesis:objenesis:1.2.classpath"/>
+    <path refid="library.gradle:_com.esotericsoftware.kryo:kryo:2.21.classpath"/>
+    <path refid="library.gradle:_com.twitter:chill-java:0.3.6.classpath"/>
+    <path refid="library.gradle:_com.twitter:chill_2.10:0.3.6.classpath"/>
+    <path refid="library.gradle:_com.typesafe:config:1.0.2.classpath"/>
+    <path refid="library.gradle:_org.spark-project.akka:akka-actor_2.10:2.2.3-shaded-protobuf.classpath"/>
+    <path refid="library.gradle:_org.spark-project.protobuf:protobuf-java:2.4.1-shaded.classpath"/>
+    <path refid="library.gradle:_org.uncommons.maths:uncommons-maths:1.2.2a.classpath"/>
+    <path refid="library.gradle:_org.spark-project.akka:akka-remote_2.10:2.2.3-shaded-protobuf.classpath"/>
+    <path refid="library.gradle:_org.spark-project.akka:akka-slf4j_2.10:2.2.3-shaded-protobuf.classpath"/>
+    <path refid="library.gradle:_org.json4s:json4s-ast_2.10:3.2.10.classpath"/>
+    <path refid="library.gradle:_org.scala-lang:scala-reflect:2.10.4.classpath"/>
+    <path refid="library.gradle:_org.scala-lang:scala-compiler:2.10.4.classpath"/>
+    <path refid="library.gradle:_org.scala-lang:scalap:2.10.0.classpath"/>
+    <path refid="library.gradle:_org.json4s:json4s-core_2.10:3.2.10.classpath"/>
+    <path refid="library.gradle:_com.fasterxml.jackson.core:jackson-annotations:2.3.0.classpath"/>
+    <path refid="library.gradle:_com.fasterxml.jackson.core:jackson-core:2.3.1.classpath"/>
+    <path refid="library.gradle:_com.fasterxml.jackson.core:jackson-databind:2.3.1.classpath"/>
+    <path refid="library.gradle:_org.json4s:json4s-jackson_2.10:3.2.10.classpath"/>
+    <path refid="library.gradle:_concurrent:concurrent:1.3.4.classpath"/>
+    <path refid="library.gradle:_colt:colt:1.2.0.classpath"/>
+    <path refid="library.gradle:_org.apache.mesos:mesos:0.18.1:shaded-protobuf.classpath"/>
+    <path refid="library.gradle:_io.netty:netty-all:4.0.23.final.classpath"/>
+    <path refid="library.gradle:_com.clearspring.analytics:stream:2.7.0.classpath"/>
+    <path refid="library.gradle:_com.codahale.metrics:metrics-core:3.0.0.classpath"/>
+    <path refid="library.gradle:_com.codahale.metrics:metrics-jvm:3.0.0.classpath"/>
+    <path refid="library.gradle:_com.codahale.metrics:metrics-json:3.0.0.classpath"/>
+    <path refid="library.gradle:_com.codahale.metrics:metrics-graphite:3.0.0.classpath"/>
+    <path refid="library.gradle:_org.tachyonproject:tachyon:0.5.0.classpath"/>
+    <path refid="library.gradle:_org.tachyonproject:tachyon-client:0.5.0.classpath"/>
+    <path refid="library.gradle:_org.spark-project:pyrolite:2.0.1.classpath"/>
+    <path refid="library.gradle:_net.sf.py4j:py4j:0.8.2.1.classpath"/>
+    <path refid="library.gradle:_org.apache.spark:spark-core_2.10:1.1.0.classpath"/>
+    <path refid="library.gradle:_org.clojure:clojure:1.5.1.classpath"/>
+    <path refid="library.gradle:_org.clojure:tools.logging:0.2.3.classpath"/>
+    <path refid="library.gradle:_org.clojure:math.numeric-tower:0.0.1.classpath"/>
+    <path refid="library.gradle:_org.clojure:tools.cli:0.2.4.classpath"/>
+    <path refid="library.gradle:_org.apache.commons:commons-exec:1.1.classpath"/>
+    <path refid="library.gradle:_com.googlecode.json-simple:json-simple:1.1.classpath"/>
+    <path refid="library.gradle:_org.yaml:snakeyaml:1.11.classpath"/>
+    <path refid="library.gradle:_com.googlecode.disruptor:disruptor:2.10.1.classpath"/>
+    <path refid="library.gradle:_org.jgrapht:jgrapht-core:0.9.0.classpath"/>
+    <path refid="library.gradle:_ch.qos.logback:logback-core:1.0.6.classpath"/>
+    <path refid="library.gradle:_ch.qos.logback:logback-classic:1.0.6.classpath"/>
+    <path refid="library.gradle:_org.slf4j:log4j-over-slf4j:1.6.6.classpath"/>
+    <path refid="library.gradle:_org.apache.storm:storm-core:0.9.2-incubating.classpath"/>
+    <path refid="library.gradle:_org.apache.pig:pig:0.13.0.classpath"/>
+    <path refid="library.gradle:_org.scalamacros:quasiquotes_2.10:2.0.1.classpath"/>
+    <path refid="library.gradle:_org.apache.spark:spark-catalyst_2.10:1.1.0.classpath"/>
+    <path refid="library.gradle:_com.twitter:parquet-common:1.4.3.classpath"/>
+    <path refid="library.gradle:_com.twitter:parquet-generator:1.4.3.classpath"/>
+    <path refid="library.gradle:_com.twitter:parquet-encoding:1.4.3.classpath"/>
+    <path refid="library.gradle:_com.twitter:parquet-column:1.4.3.classpath"/>
+    <path refid="library.gradle:_com.twitter:parquet-format:2.0.0.classpath"/>
+    <path refid="library.gradle:_com.twitter:parquet-jackson:1.4.3.classpath"/>
+    <path refid="library.gradle:_com.twitter:parquet-hadoop:1.4.3.classpath"/>
+    <path refid="library.gradle:_org.apache.spark:spark-sql_2.10:1.1.0.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.es-indexer">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.es-indexer">
+    <patternset refid="excluded.from.module.es-indexer"/>
+  </patternset>
+  
+  <path id="es-indexer.module.sourcepath">
+    <dirset dir="${module.es-indexer.basedir}">
+      <include name="src/main/java"/>
+      <include name="src/main/resources"/>
+    </dirset>
+  </path>
+
+    <target name="remove-signatures">
+        <exec executable="zip">
+            <arg value="-d"/>
+            <arg value="${artifact.output.path}/es-indexer.jar"/>
+            <arg value="*.RSA"/>
+            <arg value="*.SF"/>
+            <arg value="*.DSA"/>
+        </exec>
+    </target>
+
+    <target name="compile.module.es-indexer" depends="compile.module.es-indexer.production,compile.module.es-indexer.tests" description="Compile module es-indexer"/>
+  
+  <target name="compile.module.es-indexer.production" description="Compile module es-indexer; production classes">
+    <mkdir dir="${es-indexer.output.dir}"/>
+    <javac destdir="${es-indexer.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.es-indexer}/javac">
+      <compilerarg line="${compiler.args.es-indexer}"/>
+      <bootclasspath refid="es-indexer.module.bootclasspath"/>
+      <classpath refid="es-indexer.module.production.classpath"/>
+      <src refid="es-indexer.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.es-indexer"/>
+    </javac>
+    
+    <copy todir="${es-indexer.output.dir}">
+      <fileset dir="${module.es-indexer.basedir}/src/main/java">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+      <fileset dir="${module.es-indexer.basedir}/src/main/resources">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.es-indexer.tests" depends="compile.module.es-indexer.production" description="compile module es-indexer; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.es-indexer" description="cleanup module">
+    <delete dir="${es-indexer.output.dir}"/>
+    <delete dir="${es-indexer.testoutput.dir}"/>
+  </target>
+  
+  <target name="init" description="Build initialization">
+    <!-- Perform any build initialization in this target -->
+  </target>
+  
+  <target name="clean" depends="clean.module.es-indexer" description="cleanup all"/>
+  
+  <target name="build.modules" depends="init, clean, compile.module.es-indexer" description="build all modules"/>
+  
+  <target name="init.artifacts">
+    <property name="artifacts.temp.dir" value="${basedir}/__artifacts_temp"/>
+    <property name="artifact.output.es-indexer:jar" value="${basedir}/build/classes/artifacts"/>
+    <mkdir dir="${artifacts.temp.dir}"/>
+    <property name="temp.jar.path.es-indexer.jar" value="${artifacts.temp.dir}/es-indexer.jar"/>
+  </target>
+  
+  <target name="artifact.es-indexer:jar" depends="init.artifacts, compile.module.es-indexer" description="Build &#39;es-indexer:jar&#39; artifact">
+    <property name="artifact.temp.output.es-indexer:jar" value="${artifacts.temp.dir}/es_indexer_jar"/>
+    <mkdir dir="${artifact.temp.output.es-indexer:jar}"/>
+    <jar destfile="${temp.jar.path.es-indexer.jar}" duplicate="preserve" filesetmanifest="mergewithoutmain">
+      <zipfileset dir="${es-indexer.output.dir}"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/hsqldb/hsqldb/1.8.0.10/7e9978fdb754bce5fcd5161133e7734ecb683036/hsqldb-1.8.0.10.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.eclipse.jdt/core/3.1.1/88c83ce444cf46d02494da37c9fa1eebc9ce9cea/core-3.1.1.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/javax.mail/mail/1.4.1/8b7bc69010655425dabf091b51d1e90b4de36715/mail-1.4.1.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-log4j12/1.7.5/6edffc576ce104ec769d954618764f39f0f0f10d/slf4j-log4j12-1.7.5.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.sun.jersey/jersey-core/1.9/8341846f18187013bb9e27e46b7ee00a6395daf4/jersey-core-1.9.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-security/8.1.14.v20131031/d6fd7add8e6015a95558b67b43edf7752a925884/jetty-security-8.1.14.v20131031.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.eclipse.jetty.orbit/javax.transaction/1.1.1.v201105210645/68e61aa115bbff4e1e2ae4b16feb27d9f805eb6/javax.transaction-1.1.1.v201105210645.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/commons-digester/commons-digester/1.8/dc6a73fdbd1fa3f0944e8497c6c872fa21dca37e/commons-digester-1.8.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/commons-el/commons-el/1.0/1df2c042b3f2de0124750241ac6c886dbfa2cc2c/commons-el-1.0.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.clojure/tools.logging/0.2.3/20096ee8dbc67fccf39ca5e997c3a2647f20176f/tools.logging-0.2.3.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.directory.server/apacheds-kerberos-codec/2.0.0-M15/1c16e4e477183641c5f0dd5cdecd27ec331bacb5/apacheds-kerberos-codec-2.0.0-M15.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-exec/1.1/7dfdf16fade726000564386825ed6d911a44ba1/commons-exec-1.1.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/commons-net/commons-net/3.1/2298164a7c2484406f2aa5ac85b205d39019896f/commons-net-3.1.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-memory/4.10.3/d33e392555c22dbe57fa2720126e6f87182e40af/lucene-memory-4.10.3.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.hive.shims/hive-shims-0.23/0.13.1/fa81798e930cd3a2b6eead6c74c951e01c279aa/hive-shims-0.23-0.13.1.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.hadoop/hadoop-client/2.6.0/fe477db282eb6770dd6a99a614588fe0fcd05a1f/hadoop-client-2.6.0.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-xml/8.1.14.v20131031/8732c74817fef6d2e3e667636e6c4f27fb4cada9/jetty-xml-8.1.14.v20131031.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/commons-cli/commons-cli/1.2/2bf96b7aa8b611c177d329452af1dc933e14501c/commons-cli-1.2.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.hive.shims/hive-shims-common-secure/0.13.1/e0f0231f98acf03151d3d8f777111cb722dea376/hive-shims-common-secure-0.13.1.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.tachyonproject/tachyon-client/0.5.0/51a671ab424f675b54ed1db3a3b1bff5cb4db484/tachyon-client-0.5.0.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.hive.shims/hive-shims-0.20/0.13.1/8438f1ffba0cf94353fb87051700efa55d932e18/hive-shims-0.20-0.13.1.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/xmlenc/xmlenc/0.52/d82554efbe65906d83b3d97bd7509289e9db561a/xmlenc-0.52.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.hive/hive-metastore/0.13.1/99f58b6a51a105901b78202aa2b09ca784dfe5aa/hive-metastore-0.13.1.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/commons-httpclient/commons-httpclient/3.1/964cd74171f427720480efdec40a7c7f6e58426a/commons-httpclient-3.1.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/net.sf.jpam/jpam/1.1/cb3d91c2dfda767518a371dbb02edfd6a4aa0600/jpam-1.1.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.curator/curator-recipes/2.6.0/8736b0fc42e6bf006d585fe85c90aaa4ade5cbef/curator-recipes-2.6.0.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.clojure/tools.cli/0.2.4/732842ef07fc5336ecd7123b2c92a5cc59cc0635/tools.cli-0.2.4.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.thrift/libfb303/0.9.0/639bd69767fdbd7f658ce8233248fe1cea635164/libfb303-0.9.0.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.sonatype.sisu.inject/cglib/2.2.1-v20090111/7ce5e983fd0e6c78346f4c9cbfa39d83049dda2/cglib-2.2.1-v20090111.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.ant/ant/1.9.1/35900c96dbebc85dcfbd71f4661059ebcf93c077/ant-1.9.1.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/stax/stax-api/1.0.1/49c100caf72d658aca8e58bd74a4ba90fa2b0d70/stax-api-1.0.1.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.ant/ant-launcher/1.9.1/7c71043ca185eaada9e36391dd022d92859327de/ant-launcher-1.9.1.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-join/4.10.3/83b722179d7518c2ddd24ae02d2cde71155f9e76/lucene-join-4.10.3.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.hadoop/hadoop-mapreduce-client-jobclient/2.6.0/250e960011ff5a87964fbf7b2cd86438cbb74c16/hadoop-mapreduce-client-jobclient-2.6.0.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/javax.jdo/jdo-api/3.0.1/58e7a538e020b73871e232eeb064835fd98a492/jdo-api-3.0.1.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.antlr/ST4/4.0.4/467a2aa12be6d0f0f68c70eecf6714ab733027ac/ST4-4.0.4.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/asm/asm-tree/3.1/c9a5d4334ddf194ea492f22107d45119a5c5322f/asm-tree-3.1.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.hive/hive-common/0.13.1/ab3cbfd3a5c98cc8150d212a26def9ff2b81b985/hive-common-0.13.1.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.hadoop/hadoop-auth/2.6.0/b0b8dec23a84ac8a0d00fbd69a87d320724ae34a/hadoop-auth-2.6.0.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-grouping/4.10.3/e773f0ce6b769e7a8b0fbf3a3bea780658af39a/lucene-grouping-4.10.3.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/javax.inject/javax.inject/1/6975da39a7040257bd51d21a231b76c915872d38/javax.inject-1.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.mortbay.jetty/jetty-util/6.1.26/e5642fe0399814e1687d55a3862aa5a3417226a9/jetty-util-6.1.26.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/net.htmlparser.jericho/jericho-html/3.3/bf3aa8c67df4683da93d49e98d56cd0bc48f7c62/jericho-html-3.3.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.spark/spark-core_2.10/1.1.0/786db1f5dfea453ff0001b6939e3e5a1c8b68a10/spark-core_2.10-1.1.0.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.tukaani/xz/1.0/ecff5cb8b1189514c9d1d8d68eb77ac372e000c9/xz-1.0.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.antlr/antlr-runtime/3.5/baa82bff19059401e90e1b90020beb9c96305d7/antlr-runtime-3.5.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/asm/asm-commons/3.1/1b607fbfe7889c6fdff1b7c16439ade0a60869ac/asm-commons-3.1.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.sun.jersey/jersey-server/1.9/3a6ea7cc5e15c824953f9f3ece2201b634d90d18/jersey-server-1.9.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-math3/3.1.1/6719d757a98ff24a83d9d727bef9cec83f59b6e1/commons-math3-3.1.1.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.esotericsoftware.reflectasm/reflectasm/1.07/76f11c94a53ee975a0d9154b325c408b210155bd/reflectasm-1.07-shaded.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.spark-project/pyrolite/2.0.1/c44fc37b5dacd14e431c5d42dd660bc3bc17b4a/pyrolite-2.0.1.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.3.1/f9f7185c92ca5fefe2fb3efdeb477a67c96ea2d0/jackson-core-2.3.1.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/net.sf.py4j/py4j/0.8.2.1/3e22b0cccd1baa119c56e898dc2962b15ad1cb0a/py4j-0.8.2.1.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.mortbay.jetty/jsp-2.1/6.1.14/3a1df1e8e0fa56e9a940abbd19bc6f397fce16b5/jsp-2.1-6.1.14.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-suggest/4.10.3/3d0f240b1d5079fc5914570b1c2b80c34e7c5c4b/lucene-suggest-4.10.3.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.uncommons.maths/uncommons-maths/1.2.2a/e4e84f879d4160be9508aa3904516ec30c39e815/uncommons-maths-1.2.2a.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/colt/colt/1.2.0/abc984f3adc760684d49e0f11ddf167ba516d4f/colt-1.2.0.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm/4.1/ad568238ee36a820bd6c6806807e8a14ea34684d/asm-4.1.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/commons-lang/commons-lang/2.6/ce1edb914c94ebc388f086c6827e8bdeec71ac2/commons-lang-2.6.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-servlet/8.1.14.v20131031/2ea127b7001965201d28ce715f5754573205c4ae/jetty-servlet-8.1.14.v20131031.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/commons-logging/commons-logging/1.1.3/f6f66e966c70a83ffbdb6f17a0919eaf7c8aca7f/commons-logging-1.1.3.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.google.protobuf/protobuf-java/2.5.0/a10732c76bfacdbd633a7eb0f7968b1059a65dfa/protobuf-java-2.5.0.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.hive/hive-exec/0.13.1/92776e3c9899780aa5c00bcb6919db72e2c06434/hive-exec-0.13.1.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/net.java.dev.jets3t/jets3t/0.7.1/2d10b62398360c674b4039ea4f2d1c697f46f6cd/jets3t-0.7.1.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.hadoop/hadoop-common/2.6.0/a3f6d9827e9813a0fb286ebc0d3ae8cffed17105/hadoop-common-2.6.0.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.codahale.metrics/metrics-core/3.0.0/73539fc5711032e3de658c134eb3521d146d464e/metrics-core-3.0.0.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.codahale.metrics/metrics-jvm/3.0.0/2585b314ba294ab328283f9746af5c6496c17a5/metrics-jvm-3.0.0.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.codehaus.jettison/jettison/1.1/1a01a2a1218fcf9faa2cc2a6ced025bdea687262/jettison-1.1.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.json4s/json4s-core_2.10/3.2.10/dad833a33b231556e6254ab609eedfe8364793d3/json4s-core_2.10-3.2.10.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.curator/curator-client/2.6.0/b9007c357ad1a78066fc6004e8b1feaa2318f6f3/curator-client-2.6.0.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/aopalliance/aopalliance/1.0/235ba8b489512805ac13a8f9ea77a1ca5ebe3e8/aopalliance-1.0.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.directory.server/apacheds-i18n/2.0.0-M15/71c61c84683152ec2a6a65f3f96fe534e304fa22/apacheds-i18n-2.0.0-M15.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/javax.transaction/jta/1.1/2ca09f0b36ca7d71b762e14ea2ff09d5eac57558/jta-1.1.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.typesafe/config/1.0.2/a0bca82c39f23f75e3afccd6e12840eeabaea123/config-1.0.2.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.hadoop/hadoop-mapreduce-client-app/2.6.0/43aba8c4a4c152889363efcff5691b7bf0cd6db7/hadoop-mapreduce-client-app-2.6.0.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-annotations/2.3.0/f5e853a20b60758922453d56f9ae1e64af5cb3da/jackson-annotations-2.3.0.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.mortbay.jetty/jsp-api-2.1/6.1.14/756b3fac155e31bd0e85545dbf953495e0455c73/jsp-api-2.1-6.1.14.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/net.jpountz.lz4/lz4/1.2.0/cd301e9a481eae5b68c53267100aeca43b782b9f/lz4-1.2.0.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.hadoop/hadoop-yarn-common/2.6.0/9dd33fb5183f8faac731868eff69ac2b7678b75b/hadoop-yarn-common-2.6.0.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-webapp/8.1.14.v20131031/1f29371c74381ac42f961e9b984a7af28cc62093/jetty-webapp-8.1.14.v20131031.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.sun.xml.bind/jaxb-impl/2.2.3-1/56baae106392040a45a06d4a41099173425da1e6/jaxb-impl-2.2.3-1.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.hadoop/hadoop-mapreduce-client-shuffle/2.6.0/32ecb6cb40ade3abea1ef4cad5eb16704b5467b0/hadoop-mapreduce-client-shuffle-2.6.0.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.twitter/parquet-generator/1.4.3/ce2d757288c130a256a6bd5bc14169b3f907eea5/parquet-generator-1.4.3.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.googlecode.disruptor/disruptor/2.10.1/82a4bc0bec8178f78779500e6b68e1dd6a622696/disruptor-2.10.1.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-lang3/3.3.2/90a3822c38ec8c996e84c16a3477ef632cbc87a3/commons-lang3-3.3.2.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.twitter/parquet-jackson/1.4.3/15274fbd1581018171fed3cb2f255973a26c0064/parquet-jackson-1.4.3.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.xerial.snappy/snappy-java/1.0.5.3/6a7529f55968e0f1dec55a6992cf3648d998cca4/snappy-java-1.0.5.3.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.sun.jersey.contribs/jersey-guice/1.9/5963c28c47df7e5d6ad34cec80c071c368777f7b/jersey-guice-1.9.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/io.netty/netty-all/4.0.23.Final/294104aaf1781d6a56a07d561e792c5d0c95f45/netty-all-4.0.23.Final.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.storm/storm-core/0.9.2-incubating/64342cfa48109b3b2e504eaf7b24231f13eae274/storm-core-0.9.2-incubating.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.json4s/json4s-ast_2.10/3.2.10/6b0269aac8115a624fe432e7d4ae3e9804240ca7/json4s-ast_2.10-3.2.10.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.2.4/a60a5e993c98c864010053cb901b7eab25306568/gson-2.2.4.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.datanucleus/datanucleus-api-jdo/3.2.6/cb21100ecc0d2e80dfd62067046c8a2a25a95c50/datanucleus-api-jdo-3.2.6.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.sun.jersey/jersey-json/1.9/1aa73e1896bcc7013fed247157d7f676226eb432/jersey-json-1.9.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.pig/pig/0.13.0/411ce756bd3fff58349a2a1509bfd3298cc2b86c/pig-0.13.0.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.scala-lang/scala-library/2.10.4/9aae4cb1802537d604e03688cab744ff47b31a7d/scala-library-2.10.4.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.hive/hive-shims/0.13.1/9611970c1a9c13b7c5d8008a77339662dfa76c79/hive-shims-0.13.1.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-databind/2.3.1/c4096a8323bbbcbeda072e3def123a9b66783361/jackson-databind-2.3.1.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.mortbay.jetty/jetty/6.1.26/2f546e289fddd5b1fab1d4199fbb6e9ef43ee4b0/jetty-6.1.26.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/javax.xml.bind/jaxb-api/2.2.2/aeb3021ca93dde265796d82015beecdcff95bf09/jaxb-api-2.2.2.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.esotericsoftware.minlog/minlog/1.2/59bfcd171d82f9981a5e242b9e840191f650e209/minlog-1.2.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/oro/oro/2.0.8/5592374f834645c4ae250f4c9fbb314c9369d698/oro-2.0.8.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.hadoop/hadoop-mapreduce-client-core/2.6.0/c0c6bb2c79833e0a0e75473c340a1fb9544a9ac9/hadoop-mapreduce-client-core-2.6.0.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.hadoop/hadoop-yarn-server-nodemanager/2.6.0/e02948e79d7408d79c4d1d60cb410b16146376d5/hadoop-yarn-server-nodemanager-2.6.0.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/javax.activation/activation/1.1/e6cb541461c2834bdea3eb920f1884d1eb508b50/activation-1.1.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/commons-configuration/commons-configuration/1.6/32cadde23955d7681b0d94a2715846d20b425235/commons-configuration-1.6.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.hadoop/hadoop-yarn-server-common/2.6.0/887639fe75421ab6f67a78b6f9b04b0c9b251490/hadoop-yarn-server-common-2.6.0.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.antlr/stringtemplate/3.2.1/59ec8083721eae215c6f3caee944c410d2be34de/stringtemplate-3.2.1.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/commons-codec/commons-codec/1.6/b7f0fc8f61ecadeb3695f0b9464755eee44374d4/commons-codec-1.6.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.directory.api/api-util/1.0.0-M20/a871abf060b3cf83fc6dc4d7e3d151fce50ac3cb/api-util-1.0.0-M20.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.velocity/velocity/1.5/9f306baf7523ffc0e81a6353d08a584d254133b/velocity-1.5.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.json4s/json4s-jackson_2.10/3.2.10/d52c4a71a17bc806593d0e868e1d32dca4257da9/json4s-jackson_2.10-3.2.10.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.hive.shims/hive-shims-common/0.13.1/fdffc348740a4ffa04417a57cbb6712111aa315c/hive-shims-common-0.13.1.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.twitter/parquet-common/1.4.3/6fb8e00bc0928cf171c858902354ce26d3ba0f61/parquet-common-1.4.3.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/joda-time/joda-time/2.1/8f79e353ef77da6710e1f10d34fc3698eaaacbca/joda-time-2.1.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.scalamacros/quasiquotes_2.10/2.0.1/9ae77ad3e5cb0ea65c0d260c6bd7ec7362c902ba/quasiquotes_2.10-2.0.1.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.mesos/mesos/0.18.1/a558f0382cee5fe371a8460f2cab8b8492c91fbd/mesos-0.18.1-shaded-protobuf.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.slf4j/jcl-over-slf4j/1.7.5/cd5970bd13fa85f7bed41ca606d6daf7cbf1365/jcl-over-slf4j-1.7.5.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.googlecode.json-simple/json-simple/1.1/5e303a03d04e6788dddfa3655272580ae0fc13bb/json-simple-1.1.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-commons/4.1/f8b86f4ee6e02082f63a658e00eb5506821253c6/asm-commons-4.1.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.codehaus.jackson/jackson-mapper-asl/1.9.13/1ee2f2bed0e5dd29d1cb155a166e6f8d50bbddb7/jackson-mapper-asl-1.9.13.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/javax.xml.stream/stax-api/1.0-2/d6337b0de8b25e53e81b922352fbea9f9f57ba0b/stax-api-1.0-2.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.slf4j/jul-to-slf4j/1.7.5/d2b0f76abde33a62f1dbc19a9da726ffe9a0180e/jul-to-slf4j-1.7.5.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-server/8.1.14.v20131031/7f7f9b929b9d9169dd68f36327c819ab9a03a661/jetty-server-8.1.14.v20131031.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.htrace/htrace-core/3.0.4/d7461828faf28411f37f8570d896292db277d838/htrace-core-3.0.4.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/jline/jline/0.9.94/99a18e9a44834afdebc467294e1138364c207402/jline-0.9.94.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.curator/curator-framework/2.6.0/81a699c39d127b5b4ff97cc77da7650b53e5b5ed/curator-framework-2.6.0.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.sun.jersey/jersey-client/1.9/d3c4b2b5f89db32c96ceddcb863684821910a7bb/jersey-client-1.9.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.hadoop/hadoop-hdfs/2.6.0/9e25d4ea9daab5d0b7fbbe1749790aef3280ff35/hadoop-hdfs-2.6.0.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.thrift/libthrift/0.9.0/9ba8df332b5db95ce7f3b7a83e44d796c3d014d3/libthrift-0.9.0.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.thoughtworks.paranamer/paranamer/2.6/52c3c8d8876440d714e23036eb87bcc4244d9aa5/paranamer-2.6.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.datanucleus/datanucleus-core/3.2.10/7ad66634f30d7c6a06373475e94bcfbe65e2648e/datanucleus-core-3.2.10.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.hadoop/hadoop-annotations/2.6.0/8cd40a4cde2b77e6edc1ab3bb55706d626ae8b2d/hadoop-annotations-2.6.0.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.google.inject/guice/3.0/9d84f15fe35e2c716a02979fb62f50a29f38aefa/guice-3.0.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.clojure/math.numeric-tower/0.0.1/51732e943950ec22bc8747c01d2dbc039d128ac5/math.numeric-tower-0.0.1.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.avro/avro/1.7.5/8343a5b33f56fa16306ed27fa7b1a79278c26c2d/avro-1.7.5.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.jolbox/bonecp/0.8.0.RELEASE/cec24ee9345b3678472bb1b8fdd6aa6b9428beb8/bonecp-0.8.0.RELEASE.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.hadoop/hadoop-yarn-client/2.6.0/bbd9752aaa12a1db3fd6ce1e851307dd12c8fe96/hadoop-yarn-client-2.6.0.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.geronimo.specs/geronimo-annotation_1.0_spec/1.1.1/47caa799389f69d297b86bf90523d431599c3796/geronimo-annotation_1.0_spec-1.1.1.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.google.guava/guava/16.0.1/5fa98cd1a63c99a44dd8d3b77e4762b066a5d0c5/guava-16.0.1.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.spark-project.akka/akka-slf4j_2.10/2.2.3-shaded-protobuf/17f92b7c5e6123b00d0f9ba4a77abefa495a384c/akka-slf4j_2.10-2.2.3-shaded-protobuf.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.codehaus.jackson/jackson-jaxrs/1.9.13/534d72d2b9d6199dd531dfb27083dd4844082bba/jackson-jaxrs-1.9.13.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-misc/4.10.3/1573b915937d74e1c3cd700f9712a0dffae6fcd3/lucene-misc-4.10.3.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.hadoop/hadoop-mapreduce-client-common/2.6.0/b901fc26d9d73558132120fc8d9e7d753ee7a7/hadoop-mapreduce-client-common-2.6.0.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.datanucleus/datanucleus-rdbms/3.2.9/b95b6ff6ea969ab67f06754108167c4f9fadfd7e/datanucleus-rdbms-3.2.9.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.twitter/parquet-hadoop/1.4.3/78f0973e24e8de343cb725c8b2d4c7448123f477/parquet-hadoop-1.4.3.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/ch.qos.logback/logback-classic/1.0.6/ba738848da3e6fffa0107771c75546eb6d407f3c/logback-classic-1.0.6.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-jndi/8.1.14.v20131031/a59b5267df3a8707792d0ea75925ac7179d9be23/jetty-jndi-8.1.14.v20131031.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.zookeeper/zookeeper/3.4.6/1b2502e29da1ebaade2357cd1de35a855fa3755/zookeeper-3.4.6.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/io.netty/netty/3.7.0.Final/7a8c35599c68c0bf383df74469aa3e03d9aca87/netty-3.7.0.Final.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/antlr/antlr/2.7.7/83cd2cd674a217ade95a4bb83a8a14f351f48bd0/antlr-2.7.7.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/commons-beanutils/commons-beanutils-core/1.8.0/175dc721f87e4bc5cc0573f990e28c3cf9117508/commons-beanutils-core-1.8.0.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.codehaus.groovy/groovy-all/2.1.6/165b8246372a829c1915611646f6d964010656cf/groovy-all-2.1.6.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.scala-lang/scala-compiler/2.10.4/9e65406822299d082caae78699bb4b64011340ef/scala-compiler-2.10.4.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/asm/asm/3.1/c157def142714c544bdea2e6144645702adf7097/asm-3.1.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.hive/hive-serde/0.13.1/8fa79af700488ea0ce3f3c2a0c76bdd587d52ca3/hive-serde-0.13.1.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/concurrent/concurrent/1.3.4/1cf394c2a388199db550cda311174a4c6a7d117c/concurrent-1.3.4.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/junit/junit/4.8.1/f2975548f836416306ef1dee748d956f04733915/junit-4.8.1.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.codehaus.jackson/jackson-core-asl/1.9.13/3c304d70f42f832e0a86d45bd437f692129299a4/jackson-core-asl-1.9.13.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.clearspring.analytics/stream/2.7.0/9998f8cf87d329fef226405f8d519638cfe1431d/stream-2.7.0.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.elasticsearch/elasticsearch-hadoop/2.1.0.Beta3/92d3a3e55e93a1d04727ceaa7031cd78b5726683/elasticsearch-hadoop-2.1.0.Beta3.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/commons-collections/commons-collections/3.2.1/761ea405b9b37ced573d2df0d1e3a4e0f9edc668/commons-collections-3.2.1.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/xml-apis/xml-apis/1.3.04/90b215f48fe42776c8c7f6e3509ec54e84fd65ef/xml-apis-1.3.04.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.slf4j/log4j-over-slf4j/1.6.6/170e8f7395753ebbe6710bb862a84689db1f128b/log4j-over-slf4j-1.6.6.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/1.7.6/562424e36df3d2327e8e9301a76027fca17d54ea/slf4j-api-1.7.6.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-core/4.10.3/ea0344b37d8668e6beb21ec41c67c9ca2df9f2a4/lucene-core-4.10.3.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-spatial/4.10.3/ecfc47a924eebf5df1944efe0bd95adee12efc9b/lucene-spatial-4.10.3.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.derby/derby/10.10.1.1/9f6f910f0373adc1b23c10f9b4bb151b7e7449f/derby-10.10.1.1.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.twitter/parquet-encoding/1.4.3/2eaf01c88fd117362080285016d1b51cfd59fc04/parquet-encoding-1.4.3.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.scala-lang/scala-reflect/2.10.4/dad1949e8bddc4f97a77025e67d6f0bb2a5071be/scala-reflect-2.10.4.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.tachyonproject/tachyon/0.5.0/27ddddf84724c7de76b5153cc682110686e81d55/tachyon-0.5.0.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/xerces/xercesImpl/2.9.1/7bc7e49ddfe4fb5f193ed37ecc96c12292c8ceb6/xercesImpl-2.9.1.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.hive/hive-ant/0.13.1/14ea3faa606fb02d5c13fec4285a61b805b25461/hive-ant-0.13.1.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.eclipse.jetty.orbit/javax.mail.glassfish/1.4.1.v201005082020/b707c39fc080529c4a9ffc1df4eac58421133aaf/javax.mail.glassfish-1.4.1.v201005082020.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.spatial4j/spatial4j/0.4.1/4234d12b1ba4d4b539fb3e29edd948a99539d9eb/spatial4j-0.4.1.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-http/8.1.14.v20131031/8dd4e01b374e16cf0335b7975a7aa0a57396d5da/jetty-http-8.1.14.v20131031.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.twitter/parquet-column/1.4.3/5ac74b89f895e9f4ee514bb4e49cbd464579b38/parquet-column-1.4.3.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/commons-io/commons-io/2.4/b1b6ea3b7e4aa4f492509a4952029cd8e48019ad/commons-io-2.4.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.geronimo.specs/geronimo-jta_1.1_spec/1.1.1/aabab3165b8ea936b9360abbf448459c0d04a5a4/geronimo-jta_1.1_spec-1.1.1.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.yaml/snakeyaml/1.11/8f33a218f0bcad15223dd8c3af31f1b65c80c7a7/snakeyaml-1.11.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-queries/4.10.3/40a4d378a857ec0c7cc32d3122a36f22beae2fd7/lucene-queries-4.10.3.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.twitter/chill_2.10/0.3.6/9f1700cae0d1dad5b1f52532d8e4fa524daa6484/chill_2.10-0.3.6.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.hadoop/hadoop-yarn-api/2.6.0/c3bcbcd82cd61b55dc5d523f26a259f8d27fc237/hadoop-yarn-api-2.6.0.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.spark/spark-sql_2.10/1.1.0/71374ce9d2073691b5319c688e9509abcf3bb896/spark-sql_2.10-1.1.0.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/ant/ant/1.6.5/7d18faf23df1a5c3a43613952e0e8a182664564b/ant-1.6.5.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/javax.servlet/servlet-api/2.5/5959582d97d8b61f4d154ca9e495aafd16726e34/servlet-api-2.5.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/commons-beanutils/commons-beanutils/1.7.0/5675fd96b29656504b86029551973d60fb41339b/commons-beanutils-1.7.0.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-io/8.1.14.v20131031/12f6f92d7e58349501f2cfc0716b8f1c6a2962eb/jetty-io-8.1.14.v20131031.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.jgrapht/jgrapht-core/0.9.0/6297555cbffd288a9b00c692c631edd235a649cb/jgrapht-core-0.9.0.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-continuation/8.1.14.v20131031/e3396abd21360191c2277e848eff489b58bba45d/jetty-continuation-8.1.14.v20131031.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/tomcat/jasper-runtime/5.5.12/f3a50a55414655b9843f5a089923ea83d49dc55e/jasper-runtime-5.5.12.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.fusesource.leveldbjni/leveldbjni-all/1.8/707350a2eeb1fa2ed77a32ddb3893ed308e941db/leveldbjni-all-1.8.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.codahale.metrics/metrics-json/3.0.0/63c61487aac6cec6077dd34ded044b49d0e3bf16/metrics-json-3.0.0.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/log4j/log4j/1.2.17/5af35056b4d257e4b64b9e8069c0746e8b08629f/log4j-1.2.17.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/javax.servlet/javax.servlet-api/3.0.1/6bf0ebb7efd993e222fc1112377b5e92a13b38dd/javax.servlet-api-3.0.1.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.eclipse.jetty.orbit/javax.activation/1.1.0.v201105071233/b394a9fbf664ca835452b3ced452710bcf79fd81/javax.activation-1.1.0.v201105071233.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-analyzers-common/4.10.3/2fc01f6bfc26d282a96da36a367755f61b4074a8/lucene-analyzers-common-4.10.3.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.ning/compress-lzf/1.0.0/f2a7519a5c98f0fc06d90a2f4a131b201dbf690d/compress-lzf-1.0.0.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.clojure/clojure/1.5.1/e7e53da8bc4ac41fca95ccfacf84f9469dd3147f/clojure-1.5.1.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.twitter/parquet-format/2.0.0/7b0d90082bd2aff46e40e34182342c286dcef525/parquet-format-2.0.0.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.scala-lang/scalap/2.10.0/ab42ae21d1fd7311b367fe3d7f33343f2e4bff6b/scalap-2.10.0.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.codahale.metrics/metrics-graphite/3.0.0/460aa766759492528cc6404bd6c1ca4eb8393722/metrics-graphite-3.0.0.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpcore/4.3.2/31fbbff1ddbf98f3aa7377c94d33b0447c646b6e/httpcore-4.3.2.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.spark-project.akka/akka-actor_2.10/2.2.3-shaded-protobuf/f8960d359989ad5105d8c449642b3e7350b96657/akka-actor_2.10-2.2.3-shaded-protobuf.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-plus/8.1.14.v20131031/630cb2b45d9cd9aae503ba729c68de3dcb58cc5e/jetty-plus-8.1.14.v20131031.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/net.sf.kosmosfs/kfs/0.3/20fcbc065182bdcd706c90a2eb383ae70eb5b223/kfs-0.3.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpclient/4.3.3/18f4247ff4572a074444572cee34647c43e7c9c7/httpclient-4.3.3.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.elasticsearch/elasticsearch/1.4.4/8d893aedcb97ea8b5e64de2dd895af9e43e8dc1e/elasticsearch-1.4.4.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.codehaus.jackson/jackson-xc/1.9.13/e3480072bc95c202476ffa1de99ff7ee9149f29c/jackson-xc-1.9.13.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.directory.api/api-asn1-api/1.0.0-M20/5e6486ffa3125ba44dc410ead166e1d6ba8ac76d/api-asn1-api-1.0.0-M20.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.twitter/chill-java/0.3.6/68487306eb75555e72dd0b622dabae730636896b/chill-java-0.3.6.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.objenesis/objenesis/1.2/bfcb0539a071a4c5a30690388903ac48c0667f2a/objenesis-1.2.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-queryparser/4.10.3/e7a0384c99257136e7295efd69516615b19d92bc/lucene-queryparser-4.10.3.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.hive.shims/hive-shims-0.20S/0.13.1/c644cda2b6ad2e3eb085495d9dcb39a8008d617b/hive-shims-0.20S-0.13.1.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-util/8.1.14.v20131031/43063284480a41eca024dc8852452eedf6379c16/jetty-util-8.1.14.v20131031.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-sandbox/4.10.3/39ecd581b636adc15379dbd53878928e0f05a89c/lucene-sandbox-4.10.3.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.eclipse.jetty.orbit/javax.servlet/3.0.0.v201112011016/aaaa85845fb5c59da00193f06b8e5278d8bf3f8/javax.servlet-3.0.0.v201112011016.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.spark-project.protobuf/protobuf-java/2.4.1-shaded/806ebdb2828ace30fb70518d9955574ba287147b/protobuf-java-2.4.1-shaded.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/1.3.9/40719ea6961c0cb6afaeb6a921eaa1f6afd4cfdf/jsr305-1.3.9.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.geronimo.specs/geronimo-jaspic_1.0_spec/1.0/44b95be7dae1147716dce5336419eafade880756/geronimo-jaspic_1.0_spec-1.0.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.spark/spark-catalyst_2.10/1.1.0/8e6b1bc3057e9a3d74ca2101162c91e35ff008cf/spark-catalyst_2.10-1.1.0.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.mortbay.jetty/servlet-api-2.5/6.1.14/5f07601ab7d7c85dd9e38a17c0e1b0edfbd4a191/servlet-api-2.5-6.1.14.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-highlighter/4.10.3/73dafa5b404ddf72ab35606c791c8672455775d9/lucene-highlighter-4.10.3.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.mortbay.jetty/servlet-api/2.5-20081211/22bff70037e1e6fa7e6413149489552ee2064702/servlet-api-2.5-20081211.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/com.esotericsoftware.kryo/kryo/2.21/9a4e69cff8d225729656f7e97e40893b23bffef/kryo-2.21.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/tomcat/jasper-compiler/5.5.12/c594866c64565344c0e7bdc9bf4fee70290c4dd5/jasper-compiler-5.5.12.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.hive/hive-service/0.13.1/f527fad9efbe8054713100ff89d786cf1709b93e/hive-service-0.13.1.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.eclipse.jetty.aggregate/jetty-all/7.6.0.v20120127/47bb68e3837e5c6422138dd1e0d4d75c60dce87a/jetty-all-7.6.0.v20120127.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.spark-project.akka/akka-remote_2.10/2.2.3-shaded-protobuf/1e525f96cd1613f68f41c37d50eca36aa19c2c60/akka-remote_2.10-2.2.3-shaded-protobuf.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/ch.qos.logback/logback-core/1.0.6/132d78b900674cd484e91efc69a4ffd36aadfff3/logback-core-1.0.6.jar"/>
+      <zipfileset src="${basedir}/../../../.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-compress/1.4.1/b02e84a993d88568417536240e970c4b809126fd/commons-compress-1.4.1.jar"/>
+    </jar>
+    <copy file="${temp.jar.path.es-indexer.jar}" tofile="${artifact.temp.output.es-indexer:jar}/es-indexer.jar"/>
+    <ant antfile="" target="null" dir="">
+      <property name="artifact.output.path" value="${artifact.temp.output.es-indexer:jar}"/>
+    </ant>
+  </target>
+  
+  <target name="build.all.artifacts" depends="artifact.es-indexer:jar" description="Build all artifacts">
+    <mkdir dir="${artifact.output.es-indexer:jar}"/>
+    <copy todir="${artifact.output.es-indexer:jar}">
+      <fileset dir="${artifact.temp.output.es-indexer:jar}"/>
+    </copy>
+    
+    <!-- Delete temporary files -->
+    <delete dir="${artifacts.temp.dir}"/>
+  </target>
+  
+  <target name="all" depends="build.modules, build.all.artifacts" description="build all"/>
+</project>
