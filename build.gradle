@@ -1,16 +1,27 @@
 apply plugin: 'java'
 
-sourceCompatibility = 1.5
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
 version = '1.0'
 
 repositories {
     mavenCentral()
+    maven { url "http://conjars.org/repo" }
+    maven { url "https://clojars.org/repo" }
 }
 
 dependencies {
     compile "org.apache.hadoop:hadoop-client:2.6.0"
     compile "org.elasticsearch:elasticsearch:1.4.4"
-    compile "org.elasticsearch:elasticsearch-hadoop:2.1.0"
+    compile "org.elasticsearch:elasticsearch-hadoop:2.1.0.Beta3"
     compile "net.htmlparser.jericho:jericho-html:3.3"
     compile "org.slf4j:slf4j-api:1.4.3"
+}
+
+task fatJar(type: Jar) {
+    zip64 = true
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+    exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA' 
 }
