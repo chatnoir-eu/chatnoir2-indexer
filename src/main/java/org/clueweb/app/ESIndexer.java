@@ -55,7 +55,7 @@ public class ESIndexer extends Configured implements Tool
     public static final String[] SPAMRANK_INPUT_OPTION         = { "spamranks",   "s" };
     public static final String[] PAGERANK_INPUT_OPTION         = { "pageranks",   "p" };
     public static final String[] ANCHOR_INPUT_OPTION           = { "anchortexts", "a" };
-    public static final String[] INDEX_OPTION                  = { "index",       "i" };
+    public static final String[] INDEX_INPUT_OPTION            = { "index",       "i" };
 
     /**
      * Run this tool.
@@ -102,10 +102,10 @@ public class ESIndexer extends Configured implements Tool
         options.addOption(OptionBuilder.
                 withArgName("NAME").
                 hasArg().
-                withLongOpt(INDEX_OPTION[0]).
+                withLongOpt(INDEX_INPUT_OPTION[0]).
                 withDescription("index name (default: clueweb[VERSION])").
                 isRequired(false).
-                create(INDEX_OPTION[1]));
+                create(INDEX_INPUT_OPTION[1]));
 
         CommandLine cmdline;
         final CommandLineParser parser = new GnuParser();
@@ -125,8 +125,8 @@ public class ESIndexer extends Configured implements Tool
         final String inputSpamRanks = cmdline.getOptionValue(SPAMRANK_INPUT_OPTION[0]);
         final String inputPageRanks = cmdline.getOptionValue(PAGERANK_INPUT_OPTION[0]);
         final String inputAnchors   = cmdline.getOptionValue(ANCHOR_INPUT_OPTION[0]);
-        final String indexName      = null != cmdline.getOptionValue(INDEX_OPTION[0]) ?
-                cmdline.getOptionValue(INDEX_OPTION[0]) : String.format("clueweb%s", clueWebVersion);
+        final String indexName      = null != cmdline.getOptionValue(INDEX_INPUT_OPTION[0]) ?
+                cmdline.getOptionValue(INDEX_INPUT_OPTION[0]) : String.format("clueweb%s", clueWebVersion);
 
         if (!clueWebVersion.equals("09") && !clueWebVersion.equals("12")) {
             HelpFormatter formatter = new HelpFormatter();
