@@ -39,7 +39,13 @@ public class ClueWebWarcMapper extends Mapper<LongWritable, ClueWebWarcRecord, T
             // headers
             Set<Map.Entry<String, String>> headers = value.getHeaderMetadata();
             for (Map.Entry<String, String> entry : headers) {
-                doc.put(new Text(entry.getKey()), new Text(entry.getValue()));
+                switch (entry.getKey()) {
+                    case "WARC-TREC-ID":
+                    case "WARC-Target-URI":
+                    case "WARC-Warcinfo-ID":
+                        doc.put(new Text(entry.getKey()), new Text(entry.getValue()));
+                }
+
             }
 
             // contents
@@ -127,7 +133,8 @@ public class ClueWebWarcMapper extends Mapper<LongWritable, ClueWebWarcRecord, T
             for (final Element e : metaElements) {
                 final String typeAttr    = e.getAttributeValue(type);
                 final String contentAttr = e.getAttributeValue("content");
-                if (null != typeAttr && null != contentAttr && typeAttr.equals(what)) {
+                if (null != typeAttr && null != contentAttr &&
+                        typeAttr.trim().toLowerCase().equals(what.trim().toLowerCase())) {
                     metaTagContents = contentAttr;
                     break;
                 }
