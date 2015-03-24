@@ -1,0 +1,62 @@
+{
+    "clueweb_template" : {
+        "template" : "clueweb*",
+        "settings" : {
+            "index.query.default_field" : "body"
+        }
+        "mappings" : {
+            "warcrecord" : {
+                "_all" : {
+                    "enabled" : false
+                },
+                "_source" : {
+                    "enabled" : true
+                },
+                "properties" : {
+                    "WARC-TREC-ID" : {
+                        "type" : "string",
+                        "index" : "not_analyzed"
+                    },
+                    "WARC-Target-URI" : {
+                        "type" : "string",
+                        "similarity" : "BM25",
+                        "index" : "analyzed"
+                    },
+                    "WARC-Warcinfo-ID" : {
+                        "type" : "string",
+                        "index" : "not_analyzed"
+                    },
+                    "title" : {
+                        "type" : "string",
+                        "similarity" : "BM25",
+                        "index" : "analyzed"
+                    },
+                    "body" : {
+                        "type" : "string",
+                        "similarity" : "BM25",
+                        "index" : "analyzed"
+                    },
+                    "body_length" : {
+                        "type" : "long"
+                    },
+                    "meta_desc" : {
+                        "type" : "string",
+                        "similarity" : "BM25",
+                        "index" : "analyzed"
+                    },
+                    "meta_keywords" : {
+                        "type" : "string",
+                        "similarity" : "BM25",
+                        "index" : "analyzed"
+                    },
+                    "page_rank" : {
+                        "type" : "float"
+                    },
+                    "spam_rank" : {
+                        "type" : "byte"
+                    }
+                }
+            }
+        }
+    }
+}
