@@ -41,7 +41,8 @@ public class CluewebMapReducer extends Reducer<Text, MapWritable, NullWritable, 
     }
 
     @Override
-    public void reduce(Text key, Iterable<MapWritable> values, Context context) throws IOException, InterruptedException {
+    public void reduce(Text key, Iterable<MapWritable> values, Context context) throws IOException, InterruptedException
+    {
         MapWritable outWritable = mTemplate;
 
         final Text anchorKey = new Text("anchor_texts");
