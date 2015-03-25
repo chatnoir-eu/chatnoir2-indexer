@@ -10,7 +10,7 @@
                     "enabled" : false
                 },
                 "_source" : {
-                    "enabled" : true
+                    "enabled" : false
                 },
                 "properties" : {
                     "WARC-TREC-ID" : {

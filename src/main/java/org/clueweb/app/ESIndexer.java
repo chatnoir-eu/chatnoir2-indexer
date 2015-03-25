@@ -58,6 +58,31 @@ public class ESIndexer extends Configured implements Tool
     public static final String[] INDEX_INPUT_OPTION            = { "index",       "i" };
 
     /**
+     * Hadoop counters.
+     */
+    public static enum RecordCounters {
+        /**
+         * Total records read.
+         */
+        RECORDS,
+
+        /**
+         * Number of skipped records (e.g. too long or empty content).
+         */
+        SKIPPED_RECORDS,
+
+        /**
+         * Number of actual JSON docs generated.
+         */
+        GENERATED_DOCS,
+
+        /**
+         * Number of documents with no plain-text content after reduce stage.
+         */
+        NO_CONTENT
+    }
+
+    /**
      * Run this tool.
      */
     @Override @SuppressWarnings("static-access")
@@ -172,8 +197,14 @@ public class ESIndexer extends Configured implements Tool
         job.waitForCompletion(true);
 
         final Counters counters = job.getCounters();
-        int numDocs = (int)counters.findCounter(ClueWebWarcMapper.Records.PAGES).getValue();
-        LOG.info("Read " + numDocs + " records.");
+        long numDocs         = counters.findCounter(RecordCounters.RECORDS).getValue();
+        long numSkipped      = counters.findCounter(RecordCounters.SKIPPED_RECORDS).getValue();
+        long numGenerated    = counters.findCounter(RecordCounters.GENERATED_DOCS).getValue();
+        long numEmptyContent = counters.findCounter(RecordCounters.NO_CONTENT).getValue();
+        LOG.info(String.format("Read %d records total.", numDocs));
+        LOG.info(String.format("Skipped %d records.", numSkipped));
+        LOG.info(String.format("Generated %d JSON documents.", numGenerated));
+        LOG.info(String.format("Skipped %d documents due to no or empty plain-text content.", numEmptyContent));
 
         return 0;
     }

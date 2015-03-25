@@ -5,6 +5,7 @@ import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.MapWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
+import org.clueweb.app.ESIndexer;
 import org.clueweb.warc.ClueWebWarcRecord;
 
 import java.io.IOException;
@@ -20,17 +21,20 @@ import java.util.Set;
  */
 public class ClueWebWarcMapper extends Mapper<LongWritable, ClueWebWarcRecord, Text, MapWritable>
 {
-    /**
-     * Counter enum.
-     */
-    public static enum Records { PAGES }
-
     public void map(final LongWritable key, final ClueWebWarcRecord value, final Context context) throws IOException, InterruptedException
     {
+        context.getCounter(ESIndexer.RecordCounters.RECORDS).increment(1);
+
         // disable Jericho log
         Config.LoggerProvider = LoggerProvider.DISABLED;
 
         final String docId = value.getDocid();
+
+        // ignore large files
+        if (value.getByteContent().length > 8000000) {
+            context.getCounter(ESIndexer.RecordCounters.SKIPPED_RECORDS).increment(1);
+            return;
+        }
 
         if (null != docId) {
             final Text docIdText    = new Text(docId);
@@ -59,9 +63,7 @@ public class ClueWebWarcMapper extends Mapper<LongWritable, ClueWebWarcRecord, T
             doc.put(new Text("meta_keywords"), new Text(getMetaTagContents(bodySource, "name", "keywords", 400)));
             //doc.put(new Text("raw_html"),      new Text(rawHTML.trim()));
             doc.put(new Text("body"),          new Text(renderedBody));
-            doc.put(new Text("body_length"),   new LongWritable(renderedBody.length()));
-
-            context.getCounter(Records.PAGES).increment(1);
+            doc.put(new Text("body_length"), new LongWritable(renderedBody.length()));
             context.write(docIdText, doc);
         }
     }

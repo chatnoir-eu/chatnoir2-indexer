@@ -2,6 +2,7 @@ package org.clueweb.mapreduce;
 
 import org.apache.hadoop.io.*;
 import org.apache.hadoop.mapreduce.Reducer;
+import org.clueweb.app.ESIndexer;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -49,7 +50,7 @@ public class CluewebMapReducer extends Reducer<Text, MapWritable, NullWritable, 
         for (MapWritable value : values) {
             // accumulate anchor texts instead of overwriting
             if (value.keySet().contains(anchorKey)) {
-                anchorTexts.add(value.get(anchorKey).toString());
+                anchorTexts.add(cleanUpString(value.get(anchorKey).toString()));
                 value.remove(anchorKey);
             }
             outWritable.putAll(value);
@@ -60,10 +61,27 @@ public class CluewebMapReducer extends Reducer<Text, MapWritable, NullWritable, 
         // prettify Text fields by replacing broken Unicode replacement characters with zero-width spaces
         for (Writable k : outWritable.keySet()) {
             if (outWritable.get(k) instanceof Text) {
-                outWritable.put(k, new Text(outWritable.get(k).toString().replaceAll("\ufffd", "\u200b")));
+                outWritable.put(k, new Text(cleanUpString(outWritable.get(k).toString())));
             }
         }
 
-        context.write(NullWritable.get(), outWritable);
+        // only write record if there is content
+        if (outWritable.get(new Text("body")).toString().trim().length() > 0) {
+            context.write(NullWritable.get(), outWritable);
+            context.getCounter(ESIndexer.RecordCounters.GENERATED_DOCS).increment(1);
+        } else {
+            context.getCounter(ESIndexer.RecordCounters.NO_CONTENT).increment(1);
+        }
+    }
+
+    /**
+     * Clean up Strings by replacing broken Unicode replacement characters with zero-width spaces.
+     *
+     * @param str the String to clean
+     * @return cleaned String
+     */
+    private String cleanUpString(final String str)
+    {
+        return str.replaceAll("\ufffd", "\u200b");
     }
 }
