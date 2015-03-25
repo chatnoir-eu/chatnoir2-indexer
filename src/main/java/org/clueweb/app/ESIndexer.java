@@ -202,7 +202,7 @@ public class ESIndexer extends Configured implements Tool
         long numGenerated    = counters.findCounter(RecordCounters.GENERATED_DOCS).getValue();
         long numEmptyContent = counters.findCounter(RecordCounters.NO_CONTENT).getValue();
         LOG.info(String.format("Read %d records total.", numDocs));
-        LOG.info(String.format("Skipped %d records.", numSkipped));
+        LOG.info(String.format("Skipped %d oversized records.", numSkipped));
         LOG.info(String.format("Generated %d JSON documents.", numGenerated));
         LOG.info(String.format("Skipped %d documents due to no or empty plain-text content.", numEmptyContent));
 
