@@ -51,7 +51,7 @@ public class ClueWebWarcMapper extends Mapper<LongWritable, ClueWebWarcRecord, T
         noHtmlCounter   = context.getCounter(RecordCounters.NO_HTML);
 
         // disable Jericho log
-        //Config.LoggerProvider = LoggerProvider.DISABLED;
+        Config.LoggerProvider = LoggerProvider.DISABLED;
     }
 
     public void map(final LongWritable key, final ClueWebWarcRecord value, final Context context) throws IOException, InterruptedException
@@ -68,10 +68,10 @@ public class ClueWebWarcMapper extends Mapper<LongWritable, ClueWebWarcRecord, T
         }
         WARC_TREC_ID_VALUE.set(docId);
 
-        LOG.debug(String.format("Mapping document %s", docId));
+        LOG.info(String.format("Mapping document %s", docId));
 
         // ignore large files
-        if (value.getByteContent().length > 4000000) {
+        if (value.getByteContent().length > 4 * 1024 * 1024) {
             LOG.warn(String.format("Document %s with size %dbytes skipped", docId, value.getByteContent().length));
             tooLargeCounter.increment(1);
             return;
@@ -101,8 +101,16 @@ public class ClueWebWarcMapper extends Mapper<LongWritable, ClueWebWarcRecord, T
                 return;
             }
 
-            bodySource = new Source(rawHTML);
-            final String renderedBody = renderHTMLToText(bodySource);
+            bodySource                = new Source(rawHTML);
+            final Renderer renderer   = getHTMLToTextRenderer(bodySource);
+            final long estimatedSized = renderer.getEstimatedMaximumOutputLength();
+            if (estimatedSized > 20 * 1024 * 1024) {
+                LOG.warn(String.format("Document %s with estimated rendered size of %dbytes skipped", docId, estimatedSized));
+                tooLargeCounter.increment(1);
+                return;
+            }
+
+            final String renderedBody = renderer.toString().trim();
 
             TITLE_VALUE.set(getDocTitle(bodySource, 90));
             META_DESC_VALUE.set(getMetaTagContents(bodySource, "name", "description", 400));
@@ -110,12 +118,12 @@ public class ClueWebWarcMapper extends Mapper<LongWritable, ClueWebWarcRecord, T
             BODY_VALUE.set(renderedBody);
             BODY_LENGTH_VALUE.set(renderedBody.length());
 
-            OUTPUT_DOC.put(WARC_TREC_ID_KEY, WARC_TREC_ID_VALUE);
-            OUTPUT_DOC.put(TITLE_KEY, TITLE_VALUE);
-            OUTPUT_DOC.put(META_DESC_KEY, META_DESC_VALUE);
+            OUTPUT_DOC.put(WARC_TREC_ID_KEY,  WARC_TREC_ID_VALUE);
+            OUTPUT_DOC.put(TITLE_KEY,         TITLE_VALUE);
+            OUTPUT_DOC.put(META_DESC_KEY,     META_DESC_VALUE);
             OUTPUT_DOC.put(META_KEYWORDS_KEY, META_KEYWORDS_VALUE);
-            OUTPUT_DOC.put(BODY_KEY, BODY_VALUE);
-            OUTPUT_DOC.put(BODY_LENGTH_KEY, BODY_LENGTH_VALUE);
+            OUTPUT_DOC.put(BODY_KEY,          BODY_VALUE);
+            OUTPUT_DOC.put(BODY_LENGTH_KEY,   BODY_LENGTH_VALUE);
             context.write(WARC_TREC_ID_VALUE, OUTPUT_DOC);
         } catch (final StackOverflowError ex) {
             // HTML too deeply nested
@@ -129,12 +137,12 @@ public class ClueWebWarcMapper extends Mapper<LongWritable, ClueWebWarcRecord, T
     }
 
     /**
-     * Render plaintext from Source document.
+     * Configure and return a Renderer for a Source document.
      *
      * @param source Jericho Source object
-     * @return parsed plain text
+     * @return configured Renderer
      */
-    private String renderHTMLToText(final Source source)
+    private Renderer getHTMLToTextRenderer(final Source source)
     {
         return source.
                 getRenderer().
@@ -144,9 +152,7 @@ public class ClueWebWarcMapper extends Mapper<LongWritable, ClueWebWarcRecord, T
                 setMaxLineLength(600).
                 setNewLine("\n").
                 setBlockIndentSize(0).
-                setListIndentSize(0).
-                toString().
-                trim();
+                setListIndentSize(0);
     }
 
     /**
