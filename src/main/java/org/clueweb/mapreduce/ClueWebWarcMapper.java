@@ -31,7 +31,7 @@ public class ClueWebWarcMapper extends Mapper<LongWritable, ClueWebWarcRecord, T
         final String docId = value.getDocid();
 
         // ignore large files
-        if (value.getByteContent().length > 8000000) {
+        if (value.getByteContent().length > 4000000) {
             context.getCounter(ESIndexer.RecordCounters.SKIPPED_RECORDS).increment(1);
             return;
         }
