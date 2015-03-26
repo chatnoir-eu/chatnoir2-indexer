@@ -40,9 +40,9 @@ public class CluewebMapReducer extends Reducer<Text, MapWritable, NullWritable, 
 
         for (final MapWritable value : values) {
             // accumulate anchor texts instead of overwriting values
-            if (value.keySet().contains(ANCHOR_TEXT_KEY)) {
-                ANCHOR_TEXTS_LIST.add(cleanUpString(value.get(ANCHOR_TEXT_KEY).toString()));
-                value.remove(ANCHOR_TEXT_KEY);
+            if (value.keySet().contains(ANCHOR_TEXTS_KEY)) {
+                ANCHOR_TEXTS_LIST.add(cleanUpString(value.get(ANCHOR_TEXTS_KEY).toString()));
+                value.remove(ANCHOR_TEXTS_KEY);
             }
 
             // add all remaining keys to output map
@@ -50,7 +50,7 @@ public class CluewebMapReducer extends Reducer<Text, MapWritable, NullWritable, 
         }
 
         // append accumulated anchor texts
-        OUTPUT_DOC.put(ANCHOR_TEXT_KEY, new ArrayWritable(ANCHOR_TEXTS_LIST.toArray(new String[ANCHOR_TEXTS_LIST.size()])));
+        OUTPUT_DOC.put(ANCHOR_TEXTS_KEY, new ArrayWritable(ANCHOR_TEXTS_LIST.toArray(new String[ANCHOR_TEXTS_LIST.size()])));
 
         // prettify Text fields by replacing broken Unicode replacement characters with zero-width spaces
         for (Writable k : OUTPUT_DOC.keySet()) {
@@ -81,7 +81,7 @@ public class CluewebMapReducer extends Reducer<Text, MapWritable, NullWritable, 
         OUTPUT_DOC.put(WARC_TARGET_URI_KEY, EMPTY_TEXT);
         OUTPUT_DOC.put(META_DESC_KEY,       EMPTY_TEXT);
         OUTPUT_DOC.put(META_KEYWORDS_KEY,   EMPTY_TEXT);
-        OUTPUT_DOC.put(ANCHOR_TEXT_KEY,     EMPTY_ARRAY_WRITABLE);
+        OUTPUT_DOC.put(ANCHOR_TEXTS_KEY,     EMPTY_ARRAY_WRITABLE);
         OUTPUT_DOC.put(TITLE_KEY,           EMPTY_TEXT);
         OUTPUT_DOC.put(BODY_KEY,            EMPTY_TEXT);
         OUTPUT_DOC.put(BODY_LENGTH_KEY,     EMPTY_LONG_WRITABLE);

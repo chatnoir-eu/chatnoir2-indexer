@@ -20,7 +20,7 @@ public interface ClueWebMapReduceBase
     public static final Text BODY_LENGTH_KEY     = new Text("body_length");
     public static final Text SPAM_RANK_KEY       = new Text("spam_rank");
     public static final Text PAGE_RANK_KEY       = new Text("page_rank");
-    public static final Text ANCHOR_TEXT_KEY     = new Text("anchor_texts");
+    public static final Text ANCHOR_TEXTS_KEY    = new Text("anchor_texts");
 
     public static final MapWritable OUTPUT_DOC = new MapWritable();
 

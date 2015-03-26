@@ -46,7 +46,7 @@ public class ClueWebAnchorMapper extends Mapper<LongWritable, Text, Text, MapWri
             WARC_TREC_ID.set(tmpId);
             ANCHOR_TEXT_VALUE.set(tmpValue);
 
-            OUTPUT_DOC.put(ANCHOR_TEXT_KEY, ANCHOR_TEXT_VALUE);
+            OUTPUT_DOC.put(ANCHOR_TEXTS_KEY, ANCHOR_TEXT_VALUE);
             context.write(WARC_TREC_ID, OUTPUT_DOC);
         }
     }
