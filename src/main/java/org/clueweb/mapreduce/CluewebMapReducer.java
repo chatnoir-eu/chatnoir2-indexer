@@ -50,7 +50,7 @@ public class CluewebMapReducer extends Reducer<Text, MapWritable, NullWritable, 
         }
 
         // append accumulated anchor texts
-        OUTPUT_DOC.put(ClueWebMapReduceBase.ANCHOR_TEXT_KEY, new ArrayWritable(ANCHOR_TEXTS_LIST.toArray(new String[ANCHOR_TEXTS_LIST.size()])));
+        OUTPUT_DOC.put(ANCHOR_TEXT_KEY, new ArrayWritable(ANCHOR_TEXTS_LIST.toArray(new String[ANCHOR_TEXTS_LIST.size()])));
 
         // prettify Text fields by replacing broken Unicode replacement characters with zero-width spaces
         for (Writable k : OUTPUT_DOC.keySet()) {
