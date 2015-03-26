@@ -55,7 +55,9 @@ public class CluewebMapReducer extends Reducer<Text, MapWritable, NullWritable, 
         // prettify Text fields by replacing broken Unicode replacement characters with zero-width spaces
         for (Writable k : OUTPUT_DOC.keySet()) {
             if (OUTPUT_DOC.get(k) instanceof Text) {
-                OUTPUT_DOC.put(k, new Text(cleanUpString(OUTPUT_DOC.get(k).toString())));
+                final Text t = ((Text) OUTPUT_DOC.get(k));
+                t.set(cleanUpString(t.toString()));
+                OUTPUT_DOC.put(k, t);
             }
         }
 
