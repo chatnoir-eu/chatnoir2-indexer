@@ -1,10 +1,15 @@
 package org.clueweb.mapreduce;
 
-import net.htmlparser.jericho.*;
+import net.htmlparser.jericho.Config;
+import net.htmlparser.jericho.Element;
+import net.htmlparser.jericho.LoggerProvider;
+import net.htmlparser.jericho.Source;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.MapWritable;
 import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Counter;
 import org.apache.hadoop.mapreduce.Mapper;
+import org.apache.log4j.*;
 import org.clueweb.app.ESIndexer;
 import org.clueweb.warc.ClueWebWarcRecord;
 
@@ -21,55 +26,84 @@ import java.util.Set;
  */
 public class ClueWebWarcMapper extends Mapper<LongWritable, ClueWebWarcRecord, Text, MapWritable>
 {
-    public void map(final LongWritable key, final ClueWebWarcRecord value, final Context context) throws IOException, InterruptedException
+    protected static Logger logger;
+    protected static Counter recordsCounter;
+    protected static Counter tooLargeCounter;
+    protected static Counter tooDeepCounter;
+    protected static Counter nullIdCounter;
+
+    @Override
+    protected void setup(final Context context) throws IOException, InterruptedException
     {
-        context.getCounter(ESIndexer.RecordCounters.RECORDS).increment(1);
+        super.setup(context);
+
+        logger = Logger.getLogger(getClass());
+
+        recordsCounter  = context.getCounter(ESIndexer.RecordCounters.RECORDS);
+        tooLargeCounter = context.getCounter(ESIndexer.RecordCounters.SKIPPED_RECORDS_TOO_LARGE);
+        tooDeepCounter  = context.getCounter(ESIndexer.RecordCounters.SKIPPED_RECORDS_TOO_DEEP);
+        nullIdCounter   = context.getCounter(ESIndexer.RecordCounters.SKIPPED_RECORDS_NULL_ID);
 
         // disable Jericho log
         Config.LoggerProvider = LoggerProvider.DISABLED;
+    }
+
+    public void map(final LongWritable key, final ClueWebWarcRecord value, final Context context) throws IOException, InterruptedException
+    {
+        recordsCounter.increment(1);
 
         final String docId = value.getDocid();
 
-        // ignore large files
-        if (value.getByteContent().length > 4000000) {
-            context.getCounter(ESIndexer.RecordCounters.SKIPPED_RECORDS).increment(1);
+        if (null == docId) {
+            logger.info(String.format("Skipped document #%d with null ID", key.get()));
+            nullIdCounter.increment(1);
             return;
         }
 
-        if (null != docId) {
-            final Text docIdText    = new Text(docId);
-            final MapWritable doc   = new MapWritable();
+        // ignore large files
+        if (value.getByteContent().length > 4000000) {
+            logger.info(String.format("Document %s with size %dbytes skipped", docId, value.getByteContent().length));
+            tooLargeCounter.increment(1);
+            return;
+        }
 
-            // headers
-            Set<Map.Entry<String, String>> headers = value.getHeaderMetadata();
-            for (Map.Entry<String, String> entry : headers) {
-                switch (entry.getKey()) {
-                    case "WARC-TREC-ID":
-                    case "WARC-Target-URI":
-                    case "WARC-Warcinfo-ID":
-                        doc.put(new Text(entry.getKey()), new Text(entry.getValue()));
-                }
+        final Text docIdText  = new Text(docId);
+        final MapWritable doc = new MapWritable();
 
+        // headers
+        Set<Map.Entry<String, String>> headers = value.getHeaderMetadata();
+        for (Map.Entry<String, String> entry : headers) {
+            switch (entry.getKey()) {
+                case "WARC-TREC-ID":
+                case "WARC-Target-URI":
+                case "WARC-Warcinfo-ID":
+                    doc.put(new Text(entry.getKey()), new Text(entry.getValue()));
             }
+        }
 
-            try {
-                // contents
-                final String rawHTML = value.getContent();
-                final Source bodySource = new Source(rawHTML);
-                final String renderedBody = renderHTMLToText(bodySource);
+        Source bodySource = null;
+        try {
+            // contents
+            final String rawHTML = value.getContent();
+            bodySource = new Source(rawHTML);
+            final String renderedBody = renderHTMLToText(bodySource);
 
-                doc.put(new Text("WARC-TREC-ID"), docIdText);
-                doc.put(new Text("title"), new Text(getDocTitle(bodySource, 90)));
-                doc.put(new Text("meta_desc"), new Text(getMetaTagContents(bodySource, "name", "description", 400)));
-                doc.put(new Text("meta_keywords"), new Text(getMetaTagContents(bodySource, "name", "keywords", 400)));
-                //doc.put(new Text("raw_html"),      new Text(rawHTML.trim()));
-                doc.put(new Text("body"), new Text(renderedBody));
-                doc.put(new Text("body_length"), new LongWritable(renderedBody.length()));
-                context.write(docIdText, doc);
-            } catch (final StackOverflowError ex) {
-                // HTML too deeply nested
-                context.getCounter(ESIndexer.RecordCounters.SKIPPED_RECORDS).increment(1);
+            doc.put(new Text("WARC-TREC-ID"), docIdText);
+            doc.put(new Text("title"), new Text(getDocTitle(bodySource, 90)));
+            doc.put(new Text("meta_desc"), new Text(getMetaTagContents(bodySource, "name", "description", 400)));
+            doc.put(new Text("meta_keywords"), new Text(getMetaTagContents(bodySource, "name", "keywords", 400)));
+            //doc.put(new Text("raw_html"),      new Text(rawHTML.trim()));
+            doc.put(new Text("body"), new Text(renderedBody));
+            doc.put(new Text("body_length"), new LongWritable(renderedBody.length()));
+            context.write(docIdText, doc);
+        } catch (final StackOverflowError ex) {
+            // HTML too deeply nested
+            if (null == bodySource) {
+                logger.info(String.format("Document %s with deep nesting level skipped", docId));
+            } else {
+                logger.info(String.format("Document %s with approximate nesting level of %d skipped", docId, bodySource.getMaxDepthIndicator()));
             }
+            tooDeepCounter.increment(1);
         }
     }
 
