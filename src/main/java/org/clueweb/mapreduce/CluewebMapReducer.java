@@ -40,9 +40,9 @@ public class CluewebMapReducer extends Reducer<Text, MapWritable, NullWritable, 
 
         for (final MapWritable value : values) {
             // accumulate anchor texts instead of overwriting values
-            if (value.keySet().contains(ClueWebMapReduceBase.ANCHOR_TEXT_KEY)) {
+            if (value.keySet().contains(ANCHOR_TEXT_KEY)) {
                 ANCHOR_TEXTS_LIST.add(cleanUpString(value.get(ClueWebMapReduceBase.ANCHOR_TEXT_KEY).toString()));
-                value.remove(ClueWebMapReduceBase.ANCHOR_TEXT_KEY);
+                value.remove(ANCHOR_TEXT_KEY);
             }
 
             // add all remaining keys to output map
@@ -62,7 +62,7 @@ public class CluewebMapReducer extends Reducer<Text, MapWritable, NullWritable, 
         }
 
         // only write record if there is content
-        if (OUTPUT_DOC.get(ClueWebMapReduceBase.BODY_KEY).toString().trim().length() > 0) {
+        if (OUTPUT_DOC.get(BODY_KEY).toString().trim().length() > 0) {
             context.write(NullWritable.get(), OUTPUT_DOC);
             generatedCounter.increment(1);
         } else {
