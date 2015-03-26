@@ -60,7 +60,6 @@ public class CluewebMapReducer extends Reducer<Text, MapWritable, NullWritable, 
         MapWritable templateMap = new MapWritable();
         templateMap.put(new Text("WARC-TREC-ID") ,                new Text(""));
         templateMap.put(new Text("WARC-Warcinfo-ID"),             new Text(""));
-        templateMap.put(new Text("WARC-Identified-Payload-Type"), new Text(""));
         templateMap.put(new Text("WARC-Target-URI"),              new Text(""));
         templateMap.put(new Text("meta_desc"),                    new Text(""));
         templateMap.put(new Text("meta_keywords"),                new Text(""));
