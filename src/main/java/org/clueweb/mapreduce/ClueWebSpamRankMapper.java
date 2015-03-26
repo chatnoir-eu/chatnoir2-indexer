@@ -15,16 +15,16 @@ import java.io.IOException;
  */
 public class ClueWebSpamRankMapper extends Mapper<LongWritable, Text, Text, MapWritable> implements ClueWebMapReduceBase
 {
-    protected static final Text warcTrecId            = new Text();
-    protected static final LongWritable spamRankValue = new LongWritable();
+    protected static final Text WARC_TREC_ID = new Text();
+    protected static final LongWritable SPAM_RANK_VALUE = new LongWritable();
 
     public void map(final LongWritable key, final Text value, final Context context) throws IOException, InterruptedException
     {
         final String[] parts = value.toString().split(" ");
-        warcTrecId.set(parts[1]);
-        spamRankValue.set(Long.parseLong(parts[0]));
+        WARC_TREC_ID.set(parts[1]);
+        SPAM_RANK_VALUE.set(Long.parseLong(parts[0]));
 
-        outputDoc.put(spamRankKey, spamRankValue);
-        context.write(warcTrecId, outputDoc);
+        OUTPUT_DOC.put(SPAM_RANK_KEY, SPAM_RANK_VALUE);
+        context.write(WARC_TREC_ID, OUTPUT_DOC);
     }
 }

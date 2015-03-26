@@ -9,25 +9,24 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * MapReduce Reducer for aggregating MapWritables.
+ * Reducer for aggregating ClueWeb MapWritables.
  *
  * @author Janek Bevendorff
  * @version 1
  */
 public class CluewebMapReducer extends Reducer<Text, MapWritable, NullWritable, MapWritable> implements ClueWebMapReduceBase
 {
-    protected static Logger logger;
+    protected static final Logger LOG = Logger.getLogger(CluewebMapReducer.class);
+
     protected static Counter generatedCounter;
     protected static Counter emptyCounter;
 
-    protected static final ArrayList<String> anchorTextsList = new ArrayList<>();
+    protected static final ArrayList<String> ANCHOR_TEXTS_LIST = new ArrayList<>();
 
     @Override
     protected void setup(final Context context) throws IOException, InterruptedException
     {
         super.setup(context);
-
-        logger = Logger.getLogger(getClass());
 
         generatedCounter = context.getCounter(RecordCounters.GENERATED_DOCS);
         emptyCounter     = context.getCounter(RecordCounters.NO_CONTENT);
@@ -37,35 +36,35 @@ public class CluewebMapReducer extends Reducer<Text, MapWritable, NullWritable, 
     public void reduce(final Text key, final Iterable<MapWritable> values, final Context context) throws IOException, InterruptedException
     {
         resetOutputMapWritable();
-        anchorTextsList.clear();
+        ANCHOR_TEXTS_LIST.clear();
 
         for (final MapWritable value : values) {
             // accumulate anchor texts instead of overwriting values
-            if (value.keySet().contains(ClueWebMapReduceBase.anchorTextKey)) {
-                anchorTextsList.add(cleanUpString(value.get(ClueWebMapReduceBase.anchorTextKey).toString()));
-                value.remove(ClueWebMapReduceBase.anchorTextKey);
+            if (value.keySet().contains(ClueWebMapReduceBase.ANCHOR_TEXT_KEY)) {
+                ANCHOR_TEXTS_LIST.add(cleanUpString(value.get(ClueWebMapReduceBase.ANCHOR_TEXT_KEY).toString()));
+                value.remove(ClueWebMapReduceBase.ANCHOR_TEXT_KEY);
             }
 
             // add all remaining keys to output map
-            outputDoc.putAll(value);
+            OUTPUT_DOC.putAll(value);
         }
 
         // append accumulated anchor texts
-        outputDoc.put(ClueWebMapReduceBase.anchorTextKey, new ArrayWritable(anchorTextsList.toArray(new String[anchorTextsList.size()])));
+        OUTPUT_DOC.put(ClueWebMapReduceBase.ANCHOR_TEXT_KEY, new ArrayWritable(ANCHOR_TEXTS_LIST.toArray(new String[ANCHOR_TEXTS_LIST.size()])));
 
         // prettify Text fields by replacing broken Unicode replacement characters with zero-width spaces
-        for (Writable k : outputDoc.keySet()) {
-            if (outputDoc.get(k) instanceof Text) {
-                outputDoc.put(k, new Text(cleanUpString(outputDoc.get(k).toString())));
+        for (Writable k : OUTPUT_DOC.keySet()) {
+            if (OUTPUT_DOC.get(k) instanceof Text) {
+                OUTPUT_DOC.put(k, new Text(cleanUpString(OUTPUT_DOC.get(k).toString())));
             }
         }
 
         // only write record if there is content
-        if (outputDoc.get(ClueWebMapReduceBase.bodyKey).toString().trim().length() > 0) {
-            context.write(NullWritable.get(), outputDoc);
+        if (OUTPUT_DOC.get(ClueWebMapReduceBase.BODY_KEY).toString().trim().length() > 0) {
+            context.write(NullWritable.get(), OUTPUT_DOC);
             generatedCounter.increment(1);
         } else {
-            logger.warn(String.format("Document %s skipped, no content", key.toString()));
+            LOG.warn(String.format("Document %s skipped, no content", key.toString()));
             emptyCounter.increment(1);
         }
     }
@@ -75,17 +74,17 @@ public class CluewebMapReducer extends Reducer<Text, MapWritable, NullWritable, 
      */
     private void resetOutputMapWritable()
     {
-        outputDoc.put(ClueWebMapReduceBase.warcTrecIdKey,    emptyText);
-        outputDoc.put(ClueWebMapReduceBase.warcInfoIdKey,    emptyText);
-        outputDoc.put(ClueWebMapReduceBase.warcTargetUriKey, emptyText);
-        outputDoc.put(ClueWebMapReduceBase.metaDescKey,      emptyText);
-        outputDoc.put(ClueWebMapReduceBase.metaKeywordsKey,  emptyText);
-        outputDoc.put(ClueWebMapReduceBase.anchorTextKey,    emptyArrayWritable);
-        outputDoc.put(ClueWebMapReduceBase.titleKey,         emptyText);
-        outputDoc.put(ClueWebMapReduceBase.bodyKey,          emptyText);
-        outputDoc.put(ClueWebMapReduceBase.bodyLengthKey,    emptyLongWritable);
-        outputDoc.put(ClueWebMapReduceBase.pageRankKey,      emptyFloatWritable);
-        outputDoc.put(ClueWebMapReduceBase.spamRankKey,      emptyLongWritable);
+        OUTPUT_DOC.put(WARC_TREC_ID_KEY,    EMPTY_TEXT);
+        OUTPUT_DOC.put(WARC_INFO_ID_KEY,    EMPTY_TEXT);
+        OUTPUT_DOC.put(WARC_TARGET_URI_KEY, EMPTY_TEXT);
+        OUTPUT_DOC.put(META_DESC_KEY,       EMPTY_TEXT);
+        OUTPUT_DOC.put(META_KEYWORDS_KEY,   EMPTY_TEXT);
+        OUTPUT_DOC.put(ANCHOR_TEXT_KEY,     EMPTY_ARRAY_WRITABLE);
+        OUTPUT_DOC.put(TITLE_KEY,           EMPTY_TEXT);
+        OUTPUT_DOC.put(BODY_KEY,            EMPTY_TEXT);
+        OUTPUT_DOC.put(BODY_LENGTH_KEY,     EMPTY_LONG_WRITABLE);
+        OUTPUT_DOC.put(PAGE_RANK_KEY,       EMPTY_FLOAT_WRITABLE);
+        OUTPUT_DOC.put(SPAM_RANK_KEY,       EMPTY_LONG_WRITABLE);
     }
 
     /**

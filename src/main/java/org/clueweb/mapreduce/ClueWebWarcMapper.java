@@ -1,15 +1,12 @@
 package org.clueweb.mapreduce;
 
-import net.htmlparser.jericho.Config;
-import net.htmlparser.jericho.Element;
-import net.htmlparser.jericho.LoggerProvider;
-import net.htmlparser.jericho.Source;
+import net.htmlparser.jericho.*;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.MapWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Counter;
 import org.apache.hadoop.mapreduce.Mapper;
-import org.apache.log4j.*;
+import org.apache.log4j.Logger;
 import org.clueweb.warc.ClueWebWarcRecord;
 
 import java.io.IOException;
@@ -25,30 +22,27 @@ import java.util.Set;
  */
 public class ClueWebWarcMapper extends Mapper<LongWritable, ClueWebWarcRecord, Text, MapWritable> implements ClueWebMapReduceBase
 {
-    protected static Logger logger;
+    protected static final Logger LOG = Logger.getLogger(ClueWebWarcMapper.class);
+
     protected static Counter recordsCounter;
     protected static Counter tooLargeCounter;
     protected static Counter tooDeepCounter;
     protected static Counter nullIdCounter;
     protected static Counter noHtmlCounter;
 
-    protected static final Text warcTrecIdValue         = new Text();
-    protected static final Text warcInfoIdValue         = new Text();
-    protected static final Text warcTargetUriValue      = new Text();
-    protected static final Text titleValue              = new Text();
-    protected static final Text metaDescValue           = new Text();
-    protected static final Text metaKeywordsValue       = new Text();
-    protected static final Text bodyValue               = new Text();
-    protected static final LongWritable bodyLengthValue = new LongWritable();
-
-    protected static final MapWritable outputDoc = new MapWritable();
+    protected static final Text WARC_TREC_ID_VALUE = new Text();
+    protected static final Text WARC_INFO_ID_VALUE = new Text();
+    protected static final Text WARC_TARGET_URI_VALUE = new Text();
+    protected static final Text TITLE_VALUE = new Text();
+    protected static final Text META_DESC_VALUE = new Text();
+    protected static final Text META_KEYWORDS_VALUE = new Text();
+    protected static final Text BODY_VALUE = new Text();
+    protected static final LongWritable BODY_LENGTH_VALUE = new LongWritable();
 
     @Override
     protected void setup(final Context context) throws IOException, InterruptedException
     {
         super.setup(context);
-
-        logger = Logger.getLogger(getClass());
 
         recordsCounter  = context.getCounter(RecordCounters.RECORDS);
         tooLargeCounter = context.getCounter(RecordCounters.SKIPPED_RECORDS_TOO_LARGE);
@@ -57,28 +51,28 @@ public class ClueWebWarcMapper extends Mapper<LongWritable, ClueWebWarcRecord, T
         noHtmlCounter   = context.getCounter(RecordCounters.NO_HTML);
 
         // disable Jericho log
-        Config.LoggerProvider = LoggerProvider.DISABLED;
+        //Config.LoggerProvider = LoggerProvider.DISABLED;
     }
 
     public void map(final LongWritable key, final ClueWebWarcRecord value, final Context context) throws IOException, InterruptedException
     {
         recordsCounter.increment(1);
-        outputDoc.clear();
+        OUTPUT_DOC.clear();
 
         final String docId = value.getDocid();
 
         if (null == docId) {
-            logger.warn(String.format("Skipped document #%d with null ID", key.get()));
+            LOG.warn(String.format("Skipped document #%d with null ID", key.get()));
             nullIdCounter.increment(1);
             return;
         }
-        warcTrecIdValue.set(docId);
+        WARC_TREC_ID_VALUE.set(docId);
 
-        logger.debug(String.format("Mapping document %s", docId));
+        LOG.debug(String.format("Mapping document %s", docId));
 
         // ignore large files
         if (value.getByteContent().length > 4000000) {
-            logger.warn(String.format("Document %s with size %dbytes skipped", docId, value.getByteContent().length));
+            LOG.warn(String.format("Document %s with size %dbytes skipped", docId, value.getByteContent().length));
             tooLargeCounter.increment(1);
             return;
         }
@@ -88,11 +82,11 @@ public class ClueWebWarcMapper extends Mapper<LongWritable, ClueWebWarcRecord, T
         for (final Map.Entry<String, String> entry : headers) {
             final String k = entry.getKey();
             if (k.equals("WARC-Target-URI")) {
-                warcTargetUriValue.set(entry.getValue());
-                outputDoc.put(warcTargetUriKey, warcTargetUriValue);
+                WARC_TARGET_URI_VALUE.set(entry.getValue());
+                OUTPUT_DOC.put(WARC_TARGET_URI_KEY, WARC_TARGET_URI_VALUE);
             } else if (k.equals("WARC-Warcinfo-ID")) {
-                warcInfoIdValue.set(entry.getValue());
-                outputDoc.put(warcInfoIdKey, warcInfoIdValue);
+                WARC_INFO_ID_VALUE.set(entry.getValue());
+                OUTPUT_DOC.put(WARC_INFO_ID_KEY, WARC_INFO_ID_VALUE);
             }
         }
 
@@ -102,7 +96,7 @@ public class ClueWebWarcMapper extends Mapper<LongWritable, ClueWebWarcRecord, T
 
             final int pos = rawHTML.indexOf('<');
             if (-1 == pos) {
-                logger.warn(String.format("Document %s without HTML tags skipped", docId));
+                LOG.warn(String.format("Document %s without HTML tags skipped", docId));
                 noHtmlCounter.increment(1);
                 return;
             }
@@ -110,25 +104,25 @@ public class ClueWebWarcMapper extends Mapper<LongWritable, ClueWebWarcRecord, T
             bodySource = new Source(rawHTML);
             final String renderedBody = renderHTMLToText(bodySource);
 
-            titleValue.set(getDocTitle(bodySource, 90));
-            metaDescValue.set(getMetaTagContents(bodySource, "name", "description", 400));
-            metaKeywordsValue.set(getMetaTagContents(bodySource, "name", "keywords", 400));
-            bodyValue.set(renderedBody);
-            bodyLengthValue.set(renderedBody.length());
+            TITLE_VALUE.set(getDocTitle(bodySource, 90));
+            META_DESC_VALUE.set(getMetaTagContents(bodySource, "name", "description", 400));
+            META_KEYWORDS_VALUE.set(getMetaTagContents(bodySource, "name", "keywords", 400));
+            BODY_VALUE.set(renderedBody);
+            BODY_LENGTH_VALUE.set(renderedBody.length());
 
-            outputDoc.put(warcTrecIdKey, warcTrecIdValue);
-            outputDoc.put(titleKey, titleValue);
-            outputDoc.put(metaDescKey,metaDescValue);
-            outputDoc.put(metaKeywordsKey, metaKeywordsValue);
-            outputDoc.put(bodyKey, bodyValue);
-            outputDoc.put(bodyLengthKey, bodyLengthValue);
-            context.write(warcTrecIdValue, outputDoc);
+            OUTPUT_DOC.put(WARC_TREC_ID_KEY, WARC_TREC_ID_VALUE);
+            OUTPUT_DOC.put(TITLE_KEY, TITLE_VALUE);
+            OUTPUT_DOC.put(META_DESC_KEY, META_DESC_VALUE);
+            OUTPUT_DOC.put(META_KEYWORDS_KEY, META_KEYWORDS_VALUE);
+            OUTPUT_DOC.put(BODY_KEY, BODY_VALUE);
+            OUTPUT_DOC.put(BODY_LENGTH_KEY, BODY_LENGTH_VALUE);
+            context.write(WARC_TREC_ID_VALUE, OUTPUT_DOC);
         } catch (final StackOverflowError ex) {
             // HTML too deeply nested
             if (null == bodySource) {
-                logger.warn(String.format("Document %s with deep nesting level skipped", docId));
+                LOG.warn(String.format("Document %s with deep nesting level skipped", docId));
             } else {
-                logger.warn(String.format("Document %s with approximate nesting level of %d skipped", docId, bodySource.getMaxDepthIndicator()));
+                LOG.warn(String.format("Document %s with approximate nesting level of %d skipped", docId, bodySource.getMaxDepthIndicator()));
             }
             tooDeepCounter.increment(1);
         }
@@ -145,9 +139,12 @@ public class ClueWebWarcMapper extends Mapper<LongWritable, ClueWebWarcRecord, T
         return source.
                 getRenderer().
                 setIncludeHyperlinkURLs(false).
+                setTableCellSeparator("").
                 setHRLineLength(0).
+                setMaxLineLength(600).
                 setNewLine("\n").
                 setBlockIndentSize(0).
+                setListIndentSize(0).
                 toString().
                 trim();
     }

@@ -16,16 +16,16 @@ import java.io.IOException;
  */
 public class ClueWebPageRankMapper extends Mapper<LongWritable, Text, Text, MapWritable> implements ClueWebMapReduceBase
 {
-    protected static final Text warcTrecId             = new Text();
-    protected static final FloatWritable pageRankValue = new FloatWritable();
+    protected static final Text WARC_TREC_ID = new Text();
+    protected static final FloatWritable PAGE_RANK_VALUE = new FloatWritable();
 
     public void map(final LongWritable key, final Text value, final Context context) throws IOException, InterruptedException
     {
         final String[] parts = value.toString().split("\t");
 
-        warcTrecId.set(parts[0]);
-        pageRankValue.set(Float.parseFloat(parts[1]));
-        outputDoc.put(pageRankKey, pageRankValue);
-        context.write(warcTrecId, outputDoc);
+        WARC_TREC_ID.set(parts[0]);
+        PAGE_RANK_VALUE.set(Float.parseFloat(parts[1]));
+        OUTPUT_DOC.put(PAGE_RANK_KEY, PAGE_RANK_VALUE);
+        context.write(WARC_TREC_ID, OUTPUT_DOC);
     }
 }

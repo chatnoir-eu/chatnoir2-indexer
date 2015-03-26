@@ -3,31 +3,31 @@ package org.clueweb.mapreduce;
 import org.apache.hadoop.io.*;
 
 /**
- * Base class of ClueWeb mappers.
+ * Base interface for ClueWeb mappers and reducers.
  *
  * @author Janek Bevendorff
  * @version 1
  */
 public interface ClueWebMapReduceBase
 {
-    public static final Text warcTrecIdKey    = new Text("WARC-TREC-ID");
-    public static final Text warcInfoIdKey    = new Text("WARC-Warcinfo-ID");
-    public static final Text warcTargetUriKey = new Text("WARC-Target-URI");
-    public static final Text titleKey         = new Text("title");
-    public static final Text metaDescKey      = new Text("meta_desc");
-    public static final Text metaKeywordsKey  = new Text("meta_keywords");
-    public static final Text bodyKey          = new Text("body");
-    public static final Text bodyLengthKey    = new Text("body_length");
-    public static final Text spamRankKey      = new Text("spam_rank");
-    public static final Text pageRankKey      = new Text("page_rank");
-    public static final Text anchorTextKey    = new Text("anchor_texts");
+    public static final Text WARC_TREC_ID_KEY    = new Text("WARC-TREC-ID");
+    public static final Text WARC_INFO_ID_KEY    = new Text("WARC-Warcinfo-ID");
+    public static final Text WARC_TARGET_URI_KEY = new Text("WARC-Target-URI");
+    public static final Text TITLE_KEY           = new Text("title");
+    public static final Text META_DESC_KEY       = new Text("meta_desc");
+    public static final Text META_KEYWORDS_KEY   = new Text("meta_keywords");
+    public static final Text BODY_KEY            = new Text("body");
+    public static final Text BODY_LENGTH_KEY     = new Text("body_length");
+    public static final Text SPAM_RANK_KEY       = new Text("spam_rank");
+    public static final Text PAGE_RANK_KEY       = new Text("page_rank");
+    public static final Text ANCHOR_TEXT_KEY     = new Text("anchor_texts");
 
-    public static final MapWritable outputDoc = new MapWritable();
+    public static final MapWritable OUTPUT_DOC = new MapWritable();
 
-    public static final Text emptyText                   = new Text();
-    public static final LongWritable emptyLongWritable   = new LongWritable();
-    public static final FloatWritable emptyFloatWritable = new FloatWritable();
-    public static final ArrayWritable emptyArrayWritable = new ArrayWritable(new String[0]);
+    public static final Text EMPTY_TEXT                    = new Text();
+    public static final LongWritable EMPTY_LONG_WRITABLE   = new LongWritable();
+    public static final FloatWritable EMPTY_FLOAT_WRITABLE = new FloatWritable();
+    public static final ArrayWritable EMPTY_ARRAY_WRITABLE = new ArrayWritable(new String[0]);
 
     /**
      * MapReduce counters.

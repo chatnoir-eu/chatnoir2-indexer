@@ -22,20 +22,20 @@ public class ClueWebAnchorMapper extends Mapper<LongWritable, Text, Text, MapWri
      */
     public static final int MAX_LENGTH = 400;
 
-    protected static final Text warcTrecId      = new Text();
-    protected static final Text anchorTextValue = new Text();
-    protected static Pattern regex;
+    protected static final Text WARC_TREC_ID = new Text();
+    protected static final Text ANCHOR_TEXT_VALUE = new Text();
+    protected static Pattern REGEX;
 
     @Override
     protected void setup(final Context context)
     {
-        regex = Pattern.compile("(clueweb\\d{2}-\\w{2}\\d{4}-\\d{2}-\\d{5})\\s+(.*)");
+        REGEX = Pattern.compile("(clueweb\\d{2}-\\w{2}\\d{4}-\\d{2}-\\d{5})\\s+(.*)");
     }
 
     public void map(final LongWritable key, final Text value, final Context context) throws IOException, InterruptedException
     {
         final String strValue = value.toString();
-        final Matcher m = regex.matcher(strValue);
+        final Matcher m = REGEX.matcher(strValue);
 
         if (m.matches() && null != m.group(1) && null != m.group(2)) {
             final String tmpId = m.group(1);
@@ -43,11 +43,11 @@ public class ClueWebAnchorMapper extends Mapper<LongWritable, Text, Text, MapWri
             if (MAX_LENGTH < tmpValue.length()) {
                 tmpValue = tmpValue.substring(0, MAX_LENGTH);
             }
-            warcTrecId.set(tmpId);
-            anchorTextValue.set(tmpValue);
+            WARC_TREC_ID.set(tmpId);
+            ANCHOR_TEXT_VALUE.set(tmpValue);
 
-            outputDoc.put(anchorTextKey, anchorTextValue);
-            context.write(warcTrecId, outputDoc);
+            OUTPUT_DOC.put(ANCHOR_TEXT_KEY, ANCHOR_TEXT_VALUE);
+            context.write(WARC_TREC_ID, OUTPUT_DOC);
         }
     }
 }
