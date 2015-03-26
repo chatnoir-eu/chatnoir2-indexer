@@ -41,7 +41,7 @@ public class CluewebMapReducer extends Reducer<Text, MapWritable, NullWritable, 
         for (final MapWritable value : values) {
             // accumulate anchor texts instead of overwriting values
             if (value.keySet().contains(ANCHOR_TEXT_KEY)) {
-                ANCHOR_TEXTS_LIST.add(cleanUpString(value.get(ClueWebMapReduceBase.ANCHOR_TEXT_KEY).toString()));
+                ANCHOR_TEXTS_LIST.add(cleanUpString(value.get(ANCHOR_TEXT_KEY).toString()));
                 value.remove(ANCHOR_TEXT_KEY);
             }
 
