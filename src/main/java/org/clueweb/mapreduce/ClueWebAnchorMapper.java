@@ -26,10 +26,10 @@ public class ClueWebAnchorMapper extends Mapper<LongWritable, Text, Text, MapWri
     {
         MapWritable doc = new MapWritable();
         String strValue = value.toString();
-        Pattern r = Pattern.compile("(clueweb\\d{2}-\\w{2}\\d{4}-\\d{2}-\\d{5})\\s+(.*)");
+        Pattern r = Pattern.compile("^(clueweb\\d{2}-\\w{2}\\d{4}-\\d{2}-\\d{5})\\s+(.*)$");
         Matcher m = r.matcher(strValue);
 
-        if (m.matches() && null != m.group(1) && null != m.group(2)) {
+        if (null != m.group(1) && null != m.group(2)) {
             String warcId     = m.group(1);
             String anchorText = m.group(2);
             if (MAX_LENGTH < anchorText.length()) {

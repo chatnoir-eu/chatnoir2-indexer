@@ -1,7 +1,9 @@
 package org.clueweb.mapreduce;
 
 import org.apache.hadoop.io.*;
+import org.apache.hadoop.mapreduce.Counter;
 import org.apache.hadoop.mapreduce.Reducer;
+import org.apache.log4j.Logger;
 import org.clueweb.app.ESIndexer;
 
 import java.io.IOException;
@@ -15,6 +17,21 @@ import java.util.ArrayList;
  */
 public class CluewebMapReducer extends Reducer<Text, MapWritable, NullWritable, MapWritable>
 {
+    protected static Logger logger;
+    protected static Counter generatedCounter;
+    protected static Counter emptyCounter;
+
+    @Override
+    protected void setup(final Context context) throws IOException, InterruptedException
+    {
+        super.setup(context);
+
+        logger = Logger.getLogger(getClass());
+
+        generatedCounter = context.getCounter(ESIndexer.RecordCounters.GENERATED_DOCS);
+        emptyCounter     = context.getCounter(ESIndexer.RecordCounters.NO_CONTENT);
+    }
+
     @Override
     public void reduce(Text key, Iterable<MapWritable> values, Context context) throws IOException, InterruptedException
     {
@@ -44,9 +61,10 @@ public class CluewebMapReducer extends Reducer<Text, MapWritable, NullWritable, 
         // only write record if there is content
         if (outWritable.get(new Text("body")).toString().trim().length() > 0) {
             context.write(NullWritable.get(), outWritable);
-            context.getCounter(ESIndexer.RecordCounters.GENERATED_DOCS).increment(1);
+            generatedCounter.increment(1);
         } else {
-            context.getCounter(ESIndexer.RecordCounters.NO_CONTENT).increment(1);
+            logger.info(String.format("Document %s skipped, no content", key.toString()));
+            emptyCounter.increment(1);
         }
     }
 
