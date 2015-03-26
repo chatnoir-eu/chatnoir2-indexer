@@ -13,14 +13,18 @@ import java.io.IOException;
  * @author Janek Bevendorff
  * @version 1
  */
-public class ClueWebSpamRankMapper extends Mapper<LongWritable, Text, Text, MapWritable>
+public class ClueWebSpamRankMapper extends Mapper<LongWritable, Text, Text, MapWritable> implements ClueWebMapReduceBase
 {
-    public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException
-    {
-        MapWritable doc = new MapWritable();
-        String[] parts  = value.toString().split(" ");
+    protected static final Text warcTrecId            = new Text();
+    protected static final LongWritable spamRankValue = new LongWritable();
 
-        doc.put(new Text("spam_rank"), new LongWritable(Long.parseLong(parts[0])));
-        context.write(new Text(parts[1]), doc);
+    public void map(final LongWritable key, final Text value, final Context context) throws IOException, InterruptedException
+    {
+        final String[] parts = value.toString().split(" ");
+        warcTrecId.set(parts[1]);
+        spamRankValue.set(Long.parseLong(parts[0]));
+
+        outputDoc.put(spamRankKey, spamRankValue);
+        context.write(warcTrecId, outputDoc);
     }
 }

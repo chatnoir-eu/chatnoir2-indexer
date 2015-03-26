@@ -58,41 +58,6 @@ public class ESIndexer extends Configured implements Tool
     public static final String[] INDEX_INPUT_OPTION            = { "index",       "i" };
 
     /**
-     * Hadoop counters.
-     */
-    public static enum RecordCounters {
-        /**
-         * Total records read.
-         */
-        RECORDS,
-
-        /**
-         * Number of skipped records due to null ID.
-         */
-        SKIPPED_RECORDS_NULL_ID,
-
-        /**
-         * Number of skipped records that are too large.
-         */
-        SKIPPED_RECORDS_TOO_LARGE,
-
-        /**
-         * Number of skipped records that are too deeply nested.
-         */
-        SKIPPED_RECORDS_TOO_DEEP,
-
-        /**
-         * Number of actual JSON docs generated.
-         */
-        GENERATED_DOCS,
-
-        /**
-         * Number of documents with no plain-text content after reduce stage.
-         */
-        NO_CONTENT
-    }
-
-    /**
      * Run this tool.
      */
     @Override @SuppressWarnings("static-access")
@@ -206,13 +171,13 @@ public class ESIndexer extends Configured implements Tool
 
         job.waitForCompletion(true);
 
-        final Counters counters = job.getCounters();
-        long numDocs            = counters.findCounter(RecordCounters.RECORDS).getValue();
-        long numSkippedTooLarge = counters.findCounter(RecordCounters.SKIPPED_RECORDS_TOO_LARGE).getValue();
-        long numSkippedTooDeep  = counters.findCounter(RecordCounters.SKIPPED_RECORDS_TOO_DEEP).getValue();
-        long numSkippedNullId   = counters.findCounter(RecordCounters.SKIPPED_RECORDS_NULL_ID).getValue();
-        long numGenerated       = counters.findCounter(RecordCounters.GENERATED_DOCS).getValue();
-        long numEmptyContent    = counters.findCounter(RecordCounters.NO_CONTENT).getValue();
+        final Counters counters       = job.getCounters();
+        final long numDocs            = counters.findCounter(ClueWebMapReduceBase.RecordCounters.RECORDS).getValue();
+        final long numSkippedTooLarge = counters.findCounter(ClueWebMapReduceBase.RecordCounters.SKIPPED_RECORDS_TOO_LARGE).getValue();
+        final long numSkippedTooDeep  = counters.findCounter(ClueWebMapReduceBase.RecordCounters.SKIPPED_RECORDS_TOO_DEEP).getValue();
+        final long numSkippedNullId   = counters.findCounter(ClueWebMapReduceBase.RecordCounters.SKIPPED_RECORDS_NULL_ID).getValue();
+        final long numGenerated       = counters.findCounter(ClueWebMapReduceBase.RecordCounters.GENERATED_DOCS).getValue();
+        final long numEmptyContent    = counters.findCounter(ClueWebMapReduceBase.RecordCounters.NO_CONTENT).getValue();
         LOG.info(String.format("Read %d records total.", numDocs));
         LOG.info(String.format("Skipped %d oversized records.", numSkippedTooLarge));
         LOG.info(String.format("Skipped %d too deeply nested records.", numSkippedTooDeep));

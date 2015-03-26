@@ -4,7 +4,6 @@ import org.apache.hadoop.io.*;
 import org.apache.hadoop.mapreduce.Counter;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.log4j.Logger;
-import org.clueweb.app.ESIndexer;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,11 +14,13 @@ import java.util.ArrayList;
  * @author Janek Bevendorff
  * @version 1
  */
-public class CluewebMapReducer extends Reducer<Text, MapWritable, NullWritable, MapWritable>
+public class CluewebMapReducer extends Reducer<Text, MapWritable, NullWritable, MapWritable> implements ClueWebMapReduceBase
 {
     protected static Logger logger;
     protected static Counter generatedCounter;
     protected static Counter emptyCounter;
+
+    protected static final ArrayList<String> anchorTextsList = new ArrayList<>();
 
     @Override
     protected void setup(final Context context) throws IOException, InterruptedException
@@ -28,68 +29,63 @@ public class CluewebMapReducer extends Reducer<Text, MapWritable, NullWritable, 
 
         logger = Logger.getLogger(getClass());
 
-        generatedCounter = context.getCounter(ESIndexer.RecordCounters.GENERATED_DOCS);
-        emptyCounter     = context.getCounter(ESIndexer.RecordCounters.NO_CONTENT);
+        generatedCounter = context.getCounter(RecordCounters.GENERATED_DOCS);
+        emptyCounter     = context.getCounter(RecordCounters.NO_CONTENT);
     }
 
     @Override
-    public void reduce(Text key, Iterable<MapWritable> values, Context context) throws IOException, InterruptedException
+    public void reduce(final Text key, final Iterable<MapWritable> values, final Context context) throws IOException, InterruptedException
     {
-        MapWritable outWritable = getMapTemplate();
+        resetOutputMapWritable();
+        anchorTextsList.clear();
 
-        final Text anchorKey = new Text("anchor_texts");
-        ArrayList<String> anchorTexts = new ArrayList<>();
-
-        for (MapWritable value : values) {
+        for (final MapWritable value : values) {
             // accumulate anchor texts instead of overwriting values
-            if (value.keySet().contains(anchorKey)) {
-                anchorTexts.add(cleanUpString(value.get(anchorKey).toString()));
-                value.remove(anchorKey);
+            if (value.keySet().contains(ClueWebMapReduceBase.anchorTextKey)) {
+                anchorTextsList.add(cleanUpString(value.get(ClueWebMapReduceBase.anchorTextKey).toString()));
+                value.remove(ClueWebMapReduceBase.anchorTextKey);
             }
-            outWritable.putAll(value);
+
+            // add all remaining keys to output map
+            outputDoc.putAll(value);
         }
 
-        outWritable.put(anchorKey, new ArrayWritable(anchorTexts.toArray(new String[anchorTexts.size()])));
+        // append accumulated anchor texts
+        outputDoc.put(ClueWebMapReduceBase.anchorTextKey, new ArrayWritable(anchorTextsList.toArray(new String[anchorTextsList.size()])));
 
         // prettify Text fields by replacing broken Unicode replacement characters with zero-width spaces
-        for (Writable k : outWritable.keySet()) {
-            if (outWritable.get(k) instanceof Text) {
-                outWritable.put(k, new Text(cleanUpString(outWritable.get(k).toString())));
+        for (Writable k : outputDoc.keySet()) {
+            if (outputDoc.get(k) instanceof Text) {
+                outputDoc.put(k, new Text(cleanUpString(outputDoc.get(k).toString())));
             }
         }
 
         // only write record if there is content
-        if (outWritable.get(new Text("body")).toString().trim().length() > 0) {
-            context.write(NullWritable.get(), outWritable);
+        if (outputDoc.get(ClueWebMapReduceBase.bodyKey).toString().trim().length() > 0) {
+            context.write(NullWritable.get(), outputDoc);
             generatedCounter.increment(1);
         } else {
-            logger.info(String.format("Document %s skipped, no content", key.toString()));
+            logger.warn(String.format("Document %s skipped, no content", key.toString()));
             emptyCounter.increment(1);
         }
     }
 
     /**
-     * Generate MapWritable template containing all values with empty values.
-     *
-     * @return MapWritable template
+     * Reset output MapWritable with empty values.
      */
-    private MapWritable getMapTemplate()
+    private void resetOutputMapWritable()
     {
-        MapWritable templateMap = new MapWritable();
-        templateMap.put(new Text("WARC-TREC-ID") ,                new Text(""));
-        templateMap.put(new Text("WARC-Warcinfo-ID"),             new Text(""));
-        templateMap.put(new Text("WARC-Target-URI"),              new Text(""));
-        templateMap.put(new Text("meta_desc"),                    new Text(""));
-        templateMap.put(new Text("meta_keywords"),                new Text(""));
-        templateMap.put(new Text("anchor_texts"),                 new ArrayWritable(new String[0]));
-        templateMap.put(new Text("title"),                        new Text(""));
-        templateMap.put(new Text("body"),                         new Text(""));
-        templateMap.put(new Text("body_length"),                  new LongWritable(0L));
-        //templateMap.put(new Text("raw_html"),                     new Text(""));
-        templateMap.put(new Text("page_rank"),                    new FloatWritable(0.0F));
-        templateMap.put(new Text("spam_rank"),                    new LongWritable(0L));
-
-        return templateMap;
+        outputDoc.put(ClueWebMapReduceBase.warcTrecIdKey,    emptyText);
+        outputDoc.put(ClueWebMapReduceBase.warcInfoIdKey,    emptyText);
+        outputDoc.put(ClueWebMapReduceBase.warcTargetUriKey, emptyText);
+        outputDoc.put(ClueWebMapReduceBase.metaDescKey,      emptyText);
+        outputDoc.put(ClueWebMapReduceBase.metaKeywordsKey,  emptyText);
+        outputDoc.put(ClueWebMapReduceBase.anchorTextKey,    emptyArrayWritable);
+        outputDoc.put(ClueWebMapReduceBase.titleKey,         emptyText);
+        outputDoc.put(ClueWebMapReduceBase.bodyKey,          emptyText);
+        outputDoc.put(ClueWebMapReduceBase.bodyLengthKey,    emptyLongWritable);
+        outputDoc.put(ClueWebMapReduceBase.pageRankKey,      emptyFloatWritable);
+        outputDoc.put(ClueWebMapReduceBase.spamRankKey,      emptyLongWritable);
     }
 
     /**

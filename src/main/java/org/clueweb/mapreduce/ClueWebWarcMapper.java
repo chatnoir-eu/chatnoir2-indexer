@@ -10,7 +10,6 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Counter;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.log4j.*;
-import org.clueweb.app.ESIndexer;
 import org.clueweb.warc.ClueWebWarcRecord;
 
 import java.io.IOException;
@@ -24,13 +23,25 @@ import java.util.Set;
  * @author Janek Bevendorff
  * @version 1
  */
-public class ClueWebWarcMapper extends Mapper<LongWritable, ClueWebWarcRecord, Text, MapWritable>
+public class ClueWebWarcMapper extends Mapper<LongWritable, ClueWebWarcRecord, Text, MapWritable> implements ClueWebMapReduceBase
 {
     protected static Logger logger;
     protected static Counter recordsCounter;
     protected static Counter tooLargeCounter;
     protected static Counter tooDeepCounter;
     protected static Counter nullIdCounter;
+    protected static Counter noHtmlCounter;
+
+    protected static final Text warcTrecIdValue         = new Text();
+    protected static final Text warcInfoIdValue         = new Text();
+    protected static final Text warcTargetUriValue      = new Text();
+    protected static final Text titleValue              = new Text();
+    protected static final Text metaDescValue           = new Text();
+    protected static final Text metaKeywordsValue       = new Text();
+    protected static final Text bodyValue               = new Text();
+    protected static final LongWritable bodyLengthValue = new LongWritable();
+
+    protected static final MapWritable outputDoc = new MapWritable();
 
     @Override
     protected void setup(final Context context) throws IOException, InterruptedException
@@ -39,10 +50,11 @@ public class ClueWebWarcMapper extends Mapper<LongWritable, ClueWebWarcRecord, T
 
         logger = Logger.getLogger(getClass());
 
-        recordsCounter  = context.getCounter(ESIndexer.RecordCounters.RECORDS);
-        tooLargeCounter = context.getCounter(ESIndexer.RecordCounters.SKIPPED_RECORDS_TOO_LARGE);
-        tooDeepCounter  = context.getCounter(ESIndexer.RecordCounters.SKIPPED_RECORDS_TOO_DEEP);
-        nullIdCounter   = context.getCounter(ESIndexer.RecordCounters.SKIPPED_RECORDS_NULL_ID);
+        recordsCounter  = context.getCounter(RecordCounters.RECORDS);
+        tooLargeCounter = context.getCounter(RecordCounters.SKIPPED_RECORDS_TOO_LARGE);
+        tooDeepCounter  = context.getCounter(RecordCounters.SKIPPED_RECORDS_TOO_DEEP);
+        nullIdCounter   = context.getCounter(RecordCounters.SKIPPED_RECORDS_NULL_ID);
+        noHtmlCounter   = context.getCounter(RecordCounters.NO_HTML);
 
         // disable Jericho log
         Config.LoggerProvider = LoggerProvider.DISABLED;
@@ -51,57 +63,72 @@ public class ClueWebWarcMapper extends Mapper<LongWritable, ClueWebWarcRecord, T
     public void map(final LongWritable key, final ClueWebWarcRecord value, final Context context) throws IOException, InterruptedException
     {
         recordsCounter.increment(1);
+        outputDoc.clear();
 
         final String docId = value.getDocid();
 
         if (null == docId) {
-            logger.info(String.format("Skipped document #%d with null ID", key.get()));
+            logger.warn(String.format("Skipped document #%d with null ID", key.get()));
             nullIdCounter.increment(1);
             return;
         }
+        warcTrecIdValue.set(docId);
+
+        logger.debug(String.format("Mapping document %s", docId));
 
         // ignore large files
         if (value.getByteContent().length > 4000000) {
-            logger.info(String.format("Document %s with size %dbytes skipped", docId, value.getByteContent().length));
+            logger.warn(String.format("Document %s with size %dbytes skipped", docId, value.getByteContent().length));
             tooLargeCounter.increment(1);
             return;
         }
 
-        final Text docIdText  = new Text(docId);
-        final MapWritable doc = new MapWritable();
-
-        // headers
-        Set<Map.Entry<String, String>> headers = value.getHeaderMetadata();
-        for (Map.Entry<String, String> entry : headers) {
-            switch (entry.getKey()) {
-                case "WARC-TREC-ID":
-                case "WARC-Target-URI":
-                case "WARC-Warcinfo-ID":
-                    doc.put(new Text(entry.getKey()), new Text(entry.getValue()));
+        // WARC headers
+        final Set<Map.Entry<String, String>> headers = value.getHeaderMetadata();
+        for (final Map.Entry<String, String> entry : headers) {
+            final String k = entry.getKey();
+            if (k.equals("WARC-Target-URI")) {
+                warcTargetUriValue.set(entry.getValue());
+                outputDoc.put(warcTargetUriKey, warcTargetUriValue);
+            } else if (k.equals("WARC-Warcinfo-ID")) {
+                warcInfoIdValue.set(entry.getValue());
+                outputDoc.put(warcInfoIdKey, warcInfoIdValue);
             }
         }
 
         Source bodySource = null;
         try {
-            // contents
             final String rawHTML = value.getContent();
+
+            final int pos = rawHTML.indexOf('<');
+            if (-1 == pos) {
+                logger.warn(String.format("Document %s without HTML tags skipped", docId));
+                noHtmlCounter.increment(1);
+                return;
+            }
+
             bodySource = new Source(rawHTML);
             final String renderedBody = renderHTMLToText(bodySource);
 
-            doc.put(new Text("WARC-TREC-ID"), docIdText);
-            doc.put(new Text("title"), new Text(getDocTitle(bodySource, 90)));
-            doc.put(new Text("meta_desc"), new Text(getMetaTagContents(bodySource, "name", "description", 400)));
-            doc.put(new Text("meta_keywords"), new Text(getMetaTagContents(bodySource, "name", "keywords", 400)));
-            //doc.put(new Text("raw_html"),      new Text(rawHTML.trim()));
-            doc.put(new Text("body"), new Text(renderedBody));
-            doc.put(new Text("body_length"), new LongWritable(renderedBody.length()));
-            context.write(docIdText, doc);
+            titleValue.set(getDocTitle(bodySource, 90));
+            metaDescValue.set(getMetaTagContents(bodySource, "name", "description", 400));
+            metaKeywordsValue.set(getMetaTagContents(bodySource, "name", "keywords", 400));
+            bodyValue.set(renderedBody);
+            bodyLengthValue.set(renderedBody.length());
+
+            outputDoc.put(warcTrecIdKey, warcTrecIdValue);
+            outputDoc.put(titleKey, titleValue);
+            outputDoc.put(metaDescKey,metaDescValue);
+            outputDoc.put(metaKeywordsKey, metaKeywordsValue);
+            outputDoc.put(bodyKey, bodyValue);
+            outputDoc.put(bodyLengthKey, bodyLengthValue);
+            context.write(warcTrecIdValue, outputDoc);
         } catch (final StackOverflowError ex) {
             // HTML too deeply nested
             if (null == bodySource) {
-                logger.info(String.format("Document %s with deep nesting level skipped", docId));
+                logger.warn(String.format("Document %s with deep nesting level skipped", docId));
             } else {
-                logger.info(String.format("Document %s with approximate nesting level of %d skipped", docId, bodySource.getMaxDepthIndicator()));
+                logger.warn(String.format("Document %s with approximate nesting level of %d skipped", docId, bodySource.getMaxDepthIndicator()));
             }
             tooDeepCounter.increment(1);
         }

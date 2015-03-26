@@ -15,29 +15,39 @@ import java.util.regex.Pattern;
  * @author Janek Bevendorff
  * @version 1
  */
-public class ClueWebAnchorMapper extends Mapper<LongWritable, Text, Text, MapWritable>
+public class ClueWebAnchorMapper extends Mapper<LongWritable, Text, Text, MapWritable> implements ClueWebMapReduceBase
 {
     /**
      * Cut anchor texts after MAX_LENGTH characters.
      */
     public static final int MAX_LENGTH = 400;
 
-    public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException
+    protected static final Text warcTrecId      = new Text();
+    protected static final Text anchorTextValue = new Text();
+    protected static Pattern regex;
+
+    @Override
+    protected void setup(final Context context)
     {
-        MapWritable doc = new MapWritable();
-        String strValue = value.toString();
-        Pattern r = Pattern.compile("^(clueweb\\d{2}-\\w{2}\\d{4}-\\d{2}-\\d{5})\\s+(.*)$");
-        Matcher m = r.matcher(strValue);
+        regex = Pattern.compile("(clueweb\\d{2}-\\w{2}\\d{4}-\\d{2}-\\d{5})\\s+(.*)");
+    }
 
-        if (null != m.group(1) && null != m.group(2)) {
-            String warcId     = m.group(1);
-            String anchorText = m.group(2);
-            if (MAX_LENGTH < anchorText.length()) {
-                anchorText = anchorText.substring(0, MAX_LENGTH);
+    public void map(final LongWritable key, final Text value, final Context context) throws IOException, InterruptedException
+    {
+        final String strValue = value.toString();
+        final Matcher m = regex.matcher(strValue);
+
+        if (m.matches() && null != m.group(1) && null != m.group(2)) {
+            final String tmpId = m.group(1);
+            String tmpValue    = m.group(2);
+            if (MAX_LENGTH < tmpValue.length()) {
+                tmpValue = tmpValue.substring(0, MAX_LENGTH);
             }
+            warcTrecId.set(tmpId);
+            anchorTextValue.set(tmpValue);
 
-            doc.put(new Text("anchor_texts"), new Text(anchorText));
-            context.write(new Text(warcId), doc);
+            outputDoc.put(anchorTextKey, anchorTextValue);
+            context.write(warcTrecId, outputDoc);
         }
     }
 }

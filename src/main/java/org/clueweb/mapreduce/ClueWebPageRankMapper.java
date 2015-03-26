@@ -14,14 +14,18 @@ import java.io.IOException;
  * @author Janek Bevendorff
  * @version 1
  */
-public class ClueWebPageRankMapper extends Mapper<LongWritable, Text, Text, MapWritable>
+public class ClueWebPageRankMapper extends Mapper<LongWritable, Text, Text, MapWritable> implements ClueWebMapReduceBase
 {
-    public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException
-    {
-        MapWritable doc = new MapWritable();
-        String[] parts  = value.toString().split("\t");
+    protected static final Text warcTrecId             = new Text();
+    protected static final FloatWritable pageRankValue = new FloatWritable();
 
-        doc.put(new Text("page_rank"), new FloatWritable(Float.parseFloat(parts[1])));
-        context.write(new Text(parts[0]), doc);
+    public void map(final LongWritable key, final Text value, final Context context) throws IOException, InterruptedException
+    {
+        final String[] parts = value.toString().split("\t");
+
+        warcTrecId.set(parts[0]);
+        pageRankValue.set(Float.parseFloat(parts[1]));
+        outputDoc.put(pageRankKey, pageRankValue);
+        context.write(warcTrecId, outputDoc);
     }
 }
