@@ -52,19 +52,24 @@ public class ClueWebWarcMapper extends Mapper<LongWritable, ClueWebWarcRecord, T
 
             }
 
-            // contents
-            final String rawHTML      = value.getContent();
-            final Source bodySource   = new Source(rawHTML);
-            final String renderedBody = renderHTMLToText(bodySource);
+            try {
+                // contents
+                final String rawHTML = value.getContent();
+                final Source bodySource = new Source(rawHTML);
+                final String renderedBody = renderHTMLToText(bodySource);
 
-            doc.put(new Text("WARC-TREC-ID"), docIdText);
-            doc.put(new Text("title"),         new Text(getDocTitle(bodySource, 90)));
-            doc.put(new Text("meta_desc"),     new Text(getMetaTagContents(bodySource, "name", "description", 400)));
-            doc.put(new Text("meta_keywords"), new Text(getMetaTagContents(bodySource, "name", "keywords", 400)));
-            //doc.put(new Text("raw_html"),      new Text(rawHTML.trim()));
-            doc.put(new Text("body"),          new Text(renderedBody));
-            doc.put(new Text("body_length"), new LongWritable(renderedBody.length()));
-            context.write(docIdText, doc);
+                doc.put(new Text("WARC-TREC-ID"), docIdText);
+                doc.put(new Text("title"), new Text(getDocTitle(bodySource, 90)));
+                doc.put(new Text("meta_desc"), new Text(getMetaTagContents(bodySource, "name", "description", 400)));
+                doc.put(new Text("meta_keywords"), new Text(getMetaTagContents(bodySource, "name", "keywords", 400)));
+                //doc.put(new Text("raw_html"),      new Text(rawHTML.trim()));
+                doc.put(new Text("body"), new Text(renderedBody));
+                doc.put(new Text("body_length"), new LongWritable(renderedBody.length()));
+                context.write(docIdText, doc);
+            } catch (final StackOverflowError ex) {
+                // HTML too deeply nested
+                context.getCounter(ESIndexer.RecordCounters.SKIPPED_RECORDS).increment(1);
+            }
         }
     }
 
