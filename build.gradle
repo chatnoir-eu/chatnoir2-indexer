@@ -16,5 +16,6 @@ dependencies {
     compile "org.elasticsearch:elasticsearch:1.4.4"
     compile "org.elasticsearch:elasticsearch-hadoop:2.1.0.Beta3"
     compile "net.htmlparser.jericho:jericho-html:3.3"
+    compile "org.jsoup:jsoup:1.8.1"
     compile "org.slf4j:slf4j-api:1.4.3"
 }

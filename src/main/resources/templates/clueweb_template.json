@@ -2,15 +2,479 @@
     "clueweb_template" : {
         "template" : "clueweb*",
         "settings" : {
-            "index.query.default_field" : "body"
-        }
+            "index.query.default_field" : "body",
+            "index" : {
+                "number_of_replicas" : 0
+            },
+            "analysis" : {
+                "filter" : {
+                    "url_filter" : {
+                        "type" : "stop",
+                        "stopwords" : [
+                            "http", "https", "ftp", "ftps", "sftp",
+                            "www", "com", "net", "org", "info", "edu", "int", "gov", "mil", "arpa",
+                            "us", "co", "uk", "de", "fr", "ru", "cn", "to", "it", "ca", "nz", "nl", "be", "at", "ch", "eu", "no", "es", "pl", "tr", "tv"
+                        ]
+                    },
+                    "ar_stop_filter" : {
+                        "type" : "stop",
+                        "stopwords" : [
+                            "_arabic_"
+                        ]
+                    },
+                    "bg_stop_filter" : {
+                        "type" : "stop",
+                        "stopwords" : [
+                            "_bulgarian_"
+                        ]
+                    },
+                    "ca_stop_filter" : {
+                        "type" : "stop",
+                        "stopwords" : [
+                            "_catalan_"
+                        ]
+                    },
+                    "cs_stop_filter" : {
+                        "type" : "stop",
+                        "stopwords" : [
+                            "_czech_"
+                        ]
+                    },
+                    "da_stop_filter" : {
+                        "type" : "stop",
+                        "stopwords" : [
+                            "_danish_"
+                        ]
+                    },
+                    "de_stop_filter" : {
+                        "type" : "stop",
+                        "stopwords" : [
+                            "_german_"
+                        ]
+                    },
+                    "de_stem_filter" : {
+                        "type" : "stemmer",
+                        "name" : "minimal_german"
+                    },
+                    "el_stop_filter" : {
+                        "type" : "stop",
+                        "stopwords" : [
+                            "_greek_"
+                        ]
+                    },
+                    "en_stop_filter" : {
+                        "type" : "stop",
+                        "stopwords" : [
+                            "_english_"
+                        ]
+                    },
+                    "en_stem_filter" : {
+                        "type" : "stemmer",
+                        "name" : "minimal_english"
+                    },
+                    "es_stop_filter" : {
+                        "type" : "stop",
+                        "stopwords" : [
+                            "_spanish_"
+                        ]
+                    },
+                    "es_stem_filter" : {
+                        "type" : "stemmer",
+                        "name" : "light_spanish"
+                    },
+                    "eu_stop_filter" : {
+                        "type" : "stop",
+                        "stopwords" : [
+                            "_basque_"
+                        ]
+                    },
+                    "fa_stop_filter" : {
+                        "type" : "stop",
+                        "stopwords" : [
+                            "_persian_"
+                        ]
+                    },
+                    "fi_stop_filter" : {
+                        "type" : "stop",
+                        "stopwords" : [
+                            "_finnish_"
+                        ]
+                    },
+                    "fi_stem_filter" : {
+                        "type" : "stemmer",
+                        "name" : "light_finish"
+                    },
+                    "fr_stop_filter" : {
+                        "type" : "stop",
+                        "stopwords" : [
+                            "_french_"
+                        ]
+                    },
+                    "fr_stem_filter" : {
+                        "type" : "stemmer",
+                        "name" : "minimal_french"
+                    },
+                    "hi_stop_filter" : {
+                        "type" : "stop",
+                        "stopwords" : [
+                            "_hindi_"
+                        ]
+                    },
+                    "hu_stop_filter" : {
+                        "type" : "stop",
+                        "stopwords" : [
+                            "_hungarian_"
+                        ]
+                    },
+                    "hu_stem_filter" : {
+                        "type" : "stemmer",
+                        "name" : "light_hungarian"
+                    },
+                    "hy_stop_filter" : {
+                        "type" : "stop",
+                        "stopwords" : [
+                            "_armenian_"
+                        ]
+                    },
+                    "id_stop_filter" : {
+                        "type" : "stop",
+                        "stopwords" : [
+                            "_indonesian_"
+                        ]
+                    },
+                    "it_stop_filter" : {
+                        "type" : "stop",
+                        "stopwords" : [
+                            "_italian_"
+                        ]
+                    },
+                    "it_stem_filter" : {
+                        "type" : "stemmer",
+                        "name" : "light_italian"
+                    },
+                    "nl_stop_filter" : {
+                        "type" : "stop",
+                        "stopwords" : [
+                            "_dutch_"
+                        ]
+                    },
+                    "no_stop_filter" : {
+                        "type" : "stop",
+                        "stopwords" : [
+                            "_norwegian_"
+                        ]
+                    },
+                    "pt_stop_filter" : {
+                        "type" : "stop",
+                        "stopwords" : [
+                            "_portuguese_"
+                        ]
+                    },
+                    "pt_stem_filter" : {
+                        "type" : "stemmer",
+                        "name" : "minimal_portuguese"
+                    },
+                    "ro_stop_filter" : {
+                        "type" : "stop",
+                        "stopwords" : [
+                            "_romanian_"
+                        ]
+                    },
+                    "ru_stop_filter" : {
+                        "type" : "stop",
+                        "stopwords" : [
+                            "_russian_"
+                        ]
+                    },
+                    "ru_stem_filter" : {
+                        "type" : "stemmer",
+                        "name" : "light_russian"
+                    },
+                    "sv_stop_filter" : {
+                        "type" : "stop",
+                        "stopwords" : [
+                            "_swedish_"
+                        ]
+                    },
+                    "sv_stem_filter" : {
+                        "type" : "stemmer",
+                        "name" : "light_swedish"
+                    },
+                    "tr_stop_filter" : {
+                        "type" : "stop",
+                        "stopwords" : [
+                            "_turkish_"
+                        ]
+                    }
+                },
+                "analyzer" : {
+                    "url_analyzer" : {
+                        "type" : "custom",
+                        "tokenizer" : "uax_url_email",
+                        "filter" : [ "url_filter" ]
+                    },
+                    "ar" : {
+                        "type" : "custom",
+                        "filter" : [
+                            "icu_normalizer",
+                            "ar_stop_filter",
+                            "icu_folding"
+                        ],
+                        "tokenizer" : "icu_tokenizer"
+                    },
+                    "bg" : {
+                        "type" : "custom",
+                        "filter" : [
+                            "icu_normalizer",
+                            "bg_stop_filter",
+                            "icu_folding"
+                        ],
+                        "tokenizer" : "icu_tokenizer"
+                    },
+                    "ca" : {
+                        "type" : "custom",
+                        "filter" : [
+                            "icu_normalizer",
+                            "ca_stop_filter",
+                            "icu_folding"
+                        ],
+                        "tokenizer" : "icu_tokenizer"
+                    },
+                    "cs" : {
+                        "type" : "custom",
+                        "filter" : [
+                            "icu_normalizer",
+                            "cs_stop_filter",
+                            "icu_folding"
+                        ],
+                        "tokenizer" : "icu_tokenizer"
+                    },
+                    "da" : {
+                        "type" : "custom",
+                        "filter" : [
+                            "icu_normalizer",
+                            "da_stop_filter",
+                            "icu_folding"
+                        ],
+                        "tokenizer" : "icu_tokenizer"
+                    },
+                    "de" : {
+                        "type" : "custom",
+                        "filter" : [
+                            "icu_normalizer",
+                            "de_stop_filter",
+                            "de_stem_filter",
+                            "icu_folding"
+                        ],
+                        "tokenizer" : "icu_tokenizer"
+                    },
+                    "el" : {
+                        "type" : "custom",
+                        "filter" : [
+                            "icu_normalizer",
+                            "el_stop_filter",
+                            "icu_folding"
+                        ],
+                        "tokenizer" : "icu_tokenizer"
+                    },
+                    "en" : {
+                        "type" : "custom",
+                        "filter" : [
+                            "icu_normalizer",
+                            "en_stop_filter",
+                            "en_stem_filter",
+                            "icu_folding"
+                        ],
+                        "tokenizer" : "icu_tokenizer"
+                    },
+                    "es" : {
+                        "type" : "custom",
+                        "filter" : [
+                            "icu_normalizer",
+                            "es_stop_filter",
+                            "es_stem_filter",
+                            "icu_folding"
+                        ],
+                        "tokenizer" : "icu_tokenizer"
+                    },
+                    "eu" : {
+                        "type" : "custom",
+                        "filter" : [
+                            "icu_normalizer",
+                            "eu_stop_filter",
+                            "icu_folding"
+                        ],
+                        "tokenizer" : "icu_tokenizer"
+                    },
+                    "fa" : {
+                        "type" : "custom",
+                        "filter" : [
+                            "icu_normalizer",
+                            "fa_stop_filter",
+                            "icu_folding"
+                        ],
+                        "tokenizer" : "icu_tokenizer"
+                    },
+                    "fi" : {
+                        "type" : "custom",
+                        "filter" : [
+                            "icu_normalizer",
+                            "fi_stop_filter",
+                            "fi_stem_filter",
+                            "icu_folding"
+                        ],
+                        "tokenizer" : "icu_tokenizer"
+                    },
+                    "fr" : {
+                        "type" : "custom",
+                        "filter" : [
+                            "icu_normalizer",
+                            "elision",
+                            "fr_stop_filter",
+                            "fr_stem_filter",
+                            "icu_folding"
+                        ],
+                        "tokenizer" : "icu_tokenizer"
+                    },
+                    "hi" : {
+                        "type" : "custom",
+                        "filter" : [
+                            "icu_normalizer",
+                            "hi_stop_filter",
+                            "icu_folding"
+                        ],
+                        "tokenizer" : "icu_tokenizer"
+                    },
+                    "hu" : {
+                        "type" : "custom",
+                        "filter" : [
+                            "icu_normalizer",
+                            "hu_stop_filter",
+                            "hu_stem_filter",
+                            "icu_folding"
+                        ],
+                        "tokenizer" : "icu_tokenizer"
+                    },
+                    "hy" : {
+                        "type" : "custom",
+                        "filter" : [
+                            "icu_normalizer",
+                            "hy_stop_filter",
+                            "icu_folding"
+                        ],
+                        "tokenizer" : "icu_tokenizer"
+                    },
+                    "id" : {
+                        "type" : "custom",
+                        "filter" : [
+                            "icu_normalizer",
+                            "id_stop_filter",
+                            "icu_folding"
+                        ],
+                        "tokenizer" : "icu_tokenizer"
+                    },
+                    "it" : {
+                        "type" : "custom",
+                        "filter" : [
+                            "icu_normalizer",
+                            "it_stop_filter",
+                            "it_stem_filter",
+                            "icu_folding"
+                        ],
+                        "tokenizer" : "icu_tokenizer"
+                    },
+                    "nl" : {
+                        "type" : "custom",
+                        "filter" : [
+                            "icu_normalizer",
+                            "nl_stop_filter",
+                            "icu_folding"
+                        ],
+                        "tokenizer" : "icu_tokenizer"
+                    },
+                    "no" : {
+                        "type" : "custom",
+                        "filter" : [
+                            "icu_normalizer",
+                            "no_stop_filter",
+                            "icu_folding"
+                        ],
+                        "tokenizer" : "icu_tokenizer"
+                    },
+                    "pt" : {
+                        "type" : "custom",
+                        "filter" : [
+                            "icu_normalizer",
+                            "pt_stop_filter",
+                            "pt_stem_filter",
+                            "icu_folding"
+                        ],
+                        "tokenizer" : "icu_tokenizer"
+                    },
+                    "ro" : {
+                        "type" : "custom",
+                        "filter" : [
+                            "icu_normalizer",
+                            "ro_stop_filter",
+                            "icu_folding"
+                        ],
+                        "tokenizer" : "icu_tokenizer"
+                    },
+                    "ru" : {
+                        "type" : "custom",
+                        "filter" : [
+                            "icu_normalizer",
+                            "ru_stop_filter",
+                            "ru_stem_filter",
+                            "icu_folding"
+                        ],
+                        "tokenizer" : "icu_tokenizer"
+                    },
+                    "sv" : {
+                        "type" : "custom",
+                        "filter" : [
+                            "icu_normalizer",
+                            "sv_stop_filter",
+                            "sv_stem_filter",
+                            "icu_folding"
+                        ],
+                        "tokenizer" : "icu_tokenizer"
+                    },
+                    "tr" : {
+                        "type" : "custom",
+                        "filter" : [
+                            "icu_normalizer",
+                            "tr_stop_filter",
+                            "icu_folding"
+                        ],
+                        "tokenizer" : "icu_tokenizer"
+                    },
+                    "lowercase" : {
+                        "type" : "custom",
+                        "filter" : [
+                            "icu_normalizer",
+                            "icu_folding"
+                        ],
+                        "tokenizer" : "keyword"
+                    },
+                    "default" : {
+                        "type" : "custom",
+                        "filter" : [
+                            "icu_normalizer",
+                            "icu_folding"
+                        ],
+                        "tokenizer" : "icu_tokenizer"
+                    }
+                }
+            }
+        },
         "mappings" : {
             "warcrecord" : {
                 "_all" : {
                     "enabled" : false
                 },
                 "_source" : {
-                    "enabled" : false
+                    "enabled" : true
                 },
                 "properties" : {
                     "WARC-TREC-ID" : {
@@ -20,7 +484,8 @@
                     "WARC-Target-URI" : {
                         "type" : "string",
                         "similarity" : "BM25",
-                        "index" : "analyzed"
+                        "index" : "analyzed",
+                        "analyzer" : "url_analyzer"
                     },
                     "WARC-Warcinfo-ID" : {
                         "type" : "string",
@@ -29,12 +494,17 @@
                     "title" : {
                         "type" : "string",
                         "similarity" : "BM25",
-                        "index" : "analyzed"
+                        "index" : "analyzed",
+                        "_analyzer" : { "path" : "lang" }
                     },
                     "body" : {
                         "type" : "string",
                         "similarity" : "BM25",
-                        "index" : "analyzed"
+                        "index" : "analyzed",
+                        "_analyzer" : { "path" : "lang" }
+                    },
+                    "lang" : {
+                        "type" : "string"
                     },
                     "body_length" : {
                         "type" : "long"
@@ -42,12 +512,14 @@
                     "meta_desc" : {
                         "type" : "string",
                         "similarity" : "BM25",
-                        "index" : "analyzed"
+                        "index" : "analyzed",
+                        "_analyzer" : { "path" : "lang" }
                     },
                     "meta_keywords" : {
                         "type" : "string",
                         "similarity" : "BM25",
-                        "index" : "analyzed"
+                        "index" : "analyzed",
+                        "_analyzer" : { "path" : "lang" }
                     },
                     "page_rank" : {
                         "type" : "float"

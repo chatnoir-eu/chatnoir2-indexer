@@ -1,15 +1,24 @@
 package org.clueweb.mapreduce;
 
-import net.htmlparser.jericho.*;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.MapWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Counter;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.log4j.Logger;
+import org.clueweb.app.HtmlToPlainText;
 import org.clueweb.warc.ClueWebWarcRecord;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.*;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -33,11 +42,14 @@ public class ClueWebWarcMapper extends Mapper<LongWritable, ClueWebWarcRecord, T
     protected static final Text WARC_TREC_ID_VALUE = new Text();
     protected static final Text WARC_INFO_ID_VALUE = new Text();
     protected static final Text WARC_TARGET_URI_VALUE = new Text();
+    protected static final Text LANG_VALUE = new Text();
     protected static final Text TITLE_VALUE = new Text();
     protected static final Text META_DESC_VALUE = new Text();
     protected static final Text META_KEYWORDS_VALUE = new Text();
     protected static final Text BODY_VALUE = new Text();
     protected static final LongWritable BODY_LENGTH_VALUE = new LongWritable();
+
+    protected static  final HtmlToPlainText HTML_TO_PLAIN_TEXT = new HtmlToPlainText();
 
     @Override
     protected void setup(final Context context) throws IOException, InterruptedException
@@ -51,7 +63,7 @@ public class ClueWebWarcMapper extends Mapper<LongWritable, ClueWebWarcRecord, T
         noHtmlCounter   = context.getCounter(RecordCounters.NO_HTML);
 
         // disable Jericho log
-        Config.LoggerProvider = LoggerProvider.DISABLED;
+        net.htmlparser.jericho.Config.LoggerProvider = net.htmlparser.jericho.LoggerProvider.DISABLED;
     }
 
     public void map(final LongWritable key, final ClueWebWarcRecord value, final Context context) throws IOException, InterruptedException
@@ -68,7 +80,7 @@ public class ClueWebWarcMapper extends Mapper<LongWritable, ClueWebWarcRecord, T
         }
         WARC_TREC_ID_VALUE.set(docId);
 
-        LOG.info(String.format("Mapping document %s", docId));
+        LOG.debug(String.format("Mapping document %s", docId));
 
         // ignore large files
         if (value.getByteContent().length > 4 * 1024 * 1024) {
@@ -90,27 +102,29 @@ public class ClueWebWarcMapper extends Mapper<LongWritable, ClueWebWarcRecord, T
             }
         }
 
-        Source bodySource = null;
+        net.htmlparser.jericho.Source bodySource = null;
         try {
             final String rawHTML = value.getContent();
 
-            final int pos = rawHTML.indexOf('<');
+            /*final int pos = rawHTML.indexOf('<');
             if (-1 == pos) {
                 LOG.warn(String.format("Document %s without HTML tags skipped", docId));
                 noHtmlCounter.increment(1);
                 return;
-            }
+            }*/
 
-            bodySource                = new Source(rawHTML);
-            final Renderer renderer   = getHTMLToTextRenderer(bodySource);
+            bodySource                = new net.htmlparser.jericho.Source(rawHTML);
+            /*final Renderer renderer   = getHTMLToTextRenderer(bodySource);
             final long estimatedSized = renderer.getEstimatedMaximumOutputLength();
             if (estimatedSized > 20 * 1024 * 1024) {
                 LOG.warn(String.format("Document %s with estimated rendered size of %dbytes skipped", docId, estimatedSized));
                 tooLargeCounter.increment(1);
                 return;
-            }
+            }*/
 
-            final String renderedBody = renderer.toString().trim();
+            //final String renderedBody = renderer.toString().trim();
+            final Document jsoupDoc = Jsoup.parse(rawHTML);
+            final String renderedBody = HTML_TO_PLAIN_TEXT.getPlainText(jsoupDoc);
 
             TITLE_VALUE.set(getDocTitle(bodySource, 90));
             META_DESC_VALUE.set(getMetaTagContents(bodySource, "name", "description", 400));
@@ -118,6 +132,33 @@ public class ClueWebWarcMapper extends Mapper<LongWritable, ClueWebWarcRecord, T
             BODY_VALUE.set(renderedBody);
             BODY_LENGTH_VALUE.set(renderedBody.length());
 
+            // language detection
+            final URL url            = new URL("http://betaweb020.medien.uni-weimar.de:9200/_langdetect");
+            final URLConnection conn = url.openConnection();
+            conn.setDoOutput(true);
+            final PrintStream ps = new PrintStream(conn.getOutputStream());
+            ps.print(renderedBody);
+            ps.close();
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            String line;
+            final StringBuilder strBuilder = new StringBuilder();
+            while (null != (line = br.readLine())) {
+                strBuilder.append(line);
+            }
+            br.close();
+
+            String lang = "en";
+            final JSONObject json;
+            try {
+                json = new JSONObject(strBuilder.toString());
+                lang = json.getJSONArray("languages").getJSONObject(0).getString("language");
+            } catch (JSONException e) {
+                LOG.warn(String.format("JSON error: %s", e.getMessage()));
+            }
+            LANG_VALUE.set(lang);
+
+            OUTPUT_DOC.put(LANG_KEY,          LANG_VALUE);
             OUTPUT_DOC.put(WARC_TREC_ID_KEY,  WARC_TREC_ID_VALUE);
             OUTPUT_DOC.put(TITLE_KEY,         TITLE_VALUE);
             OUTPUT_DOC.put(META_DESC_KEY,     META_DESC_VALUE);
@@ -142,7 +183,7 @@ public class ClueWebWarcMapper extends Mapper<LongWritable, ClueWebWarcRecord, T
      * @param source Jericho Source object
      * @return configured Renderer
      */
-    private Renderer getHTMLToTextRenderer(final Source source)
+    /*private Renderer getHTMLToTextRenderer(final Source source)
     {
         return source.
                 getRenderer().
@@ -153,7 +194,7 @@ public class ClueWebWarcMapper extends Mapper<LongWritable, ClueWebWarcRecord, T
                 setNewLine("\n").
                 setBlockIndentSize(0).
                 setListIndentSize(0);
-    }
+    }*/
 
     /**
      * Get title from source document.
@@ -162,25 +203,29 @@ public class ClueWebWarcMapper extends Mapper<LongWritable, ClueWebWarcRecord, T
      * @param maxLength maximum length of content to return, content that is longer will be truncated
      * @return document title
      */
-    private String getDocTitle(final Source source, final int maxLength)
+    private String getDocTitle(final net.htmlparser.jericho.Source source, final int maxLength)
     {
-        String title;
-        final List<Element> titleElements = source.getAllElements("title");
-        if (0 != titleElements.size()) {
-            title = titleElements.
-                    get(0).
-                    getTextExtractor().
-                    setIncludeAttributes(false).
-                    toString().
-                    trim();
-        } else {
-            // use body as title if no real title found
-            title = source.
-                    getTextExtractor().
-                    setIncludeAttributes(false).
-                    toString().
-                    trim();
-        }
+        String title = "";
+        try {
+            final List<net.htmlparser.jericho.Element> titleElements = source.getAllElements("title");
+            if (0 != titleElements.size()) {
+                title = titleElements.
+                        get(0).
+                        getTextExtractor().
+                        setIncludeAttributes(false).
+                        toString().
+                        trim();
+            }
+
+            if (title.isEmpty()) {
+                // use body as title if no real title found
+                title = source.
+                        getTextExtractor().
+                        setIncludeAttributes(false).
+                        toString().
+                        trim();
+            }
+        } catch (NullPointerException ignored) { }
 
         // truncate title to maxLength characters
         return truncateSnippet(title, maxLength);
@@ -195,26 +240,28 @@ public class ClueWebWarcMapper extends Mapper<LongWritable, ClueWebWarcRecord, T
      * @param maxLength maximum length of content to return, content that is longer will be truncated (-1 for no limit)
      * @return meta tag contents, empty string of none found
      */
-    private String getMetaTagContents(final Source source, final String type, final String what, final int maxLength)
+    private String getMetaTagContents(final net.htmlparser.jericho.Source source, final String type, final String what, final int maxLength)
     {
         String metaTagContents = "";
 
-        final List<Element> metaElements = source.getAllElements("meta");
-        if (0 != metaElements.size()) {
-            for (final Element e : metaElements) {
-                final String typeAttr    = e.getAttributeValue(type);
-                final String contentAttr = e.getAttributeValue("content");
-                if (null != typeAttr && null != contentAttr &&
-                        typeAttr.trim().toLowerCase().equals(what.trim().toLowerCase())) {
-                    metaTagContents = contentAttr;
-                    break;
+        try {
+            final List<net.htmlparser.jericho.Element> metaElements = source.getAllElements("meta");
+            if (0 != metaElements.size()) {
+                for (final net.htmlparser.jericho.Element e : metaElements) {
+                    final String typeAttr = e.getAttributeValue(type);
+                    final String contentAttr = e.getAttributeValue("content");
+                    if (null != typeAttr && null != contentAttr &&
+                            typeAttr.trim().toLowerCase().equals(what.trim().toLowerCase())) {
+                        metaTagContents = contentAttr;
+                        break;
+                    }
                 }
             }
-        }
 
-        if (-1 != maxLength) {
-            return truncateSnippet(metaTagContents, maxLength);
-        }
+            if (-1 != maxLength) {
+                return truncateSnippet(metaTagContents, maxLength);
+            }
+        } catch (NullPointerException ignored) { }
 
         return metaTagContents.trim();
     }

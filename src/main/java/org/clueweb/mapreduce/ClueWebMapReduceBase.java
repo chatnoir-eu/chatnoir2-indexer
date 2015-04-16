@@ -10,24 +10,25 @@ import org.apache.hadoop.io.*;
  */
 public interface ClueWebMapReduceBase
 {
-    public static final Text WARC_TREC_ID_KEY    = new Text("WARC-TREC-ID");
-    public static final Text WARC_INFO_ID_KEY    = new Text("WARC-Warcinfo-ID");
-    public static final Text WARC_TARGET_URI_KEY = new Text("WARC-Target-URI");
-    public static final Text TITLE_KEY           = new Text("title");
-    public static final Text META_DESC_KEY       = new Text("meta_desc");
-    public static final Text META_KEYWORDS_KEY   = new Text("meta_keywords");
-    public static final Text BODY_KEY            = new Text("body");
-    public static final Text BODY_LENGTH_KEY     = new Text("body_length");
-    public static final Text SPAM_RANK_KEY       = new Text("spam_rank");
-    public static final Text PAGE_RANK_KEY       = new Text("page_rank");
-    public static final Text ANCHOR_TEXTS_KEY    = new Text("anchor_texts");
+    Text WARC_TREC_ID_KEY    = new Text("WARC-TREC-ID");
+    Text WARC_INFO_ID_KEY    = new Text("WARC-Warcinfo-ID");
+    Text WARC_TARGET_URI_KEY = new Text("WARC-Target-URI");
+    Text LANG_KEY            = new Text("lang");
+    Text TITLE_KEY           = new Text("title");
+    Text META_DESC_KEY       = new Text("meta_desc");
+    Text META_KEYWORDS_KEY   = new Text("meta_keywords");
+    Text BODY_KEY            = new Text("body");
+    Text BODY_LENGTH_KEY     = new Text("body_length");
+    Text SPAM_RANK_KEY       = new Text("spam_rank");
+    Text PAGE_RANK_KEY       = new Text("page_rank");
+    Text ANCHOR_TEXTS_KEY    = new Text("anchor_texts");
 
-    public static final MapWritable OUTPUT_DOC = new MapWritable();
+    MapWritable OUTPUT_DOC = new MapWritable();
 
-    public static final Text EMPTY_TEXT                    = new Text();
-    public static final LongWritable EMPTY_LONG_WRITABLE   = new LongWritable();
-    public static final FloatWritable EMPTY_FLOAT_WRITABLE = new FloatWritable();
-    public static final ArrayWritable EMPTY_ARRAY_WRITABLE = new ArrayWritable(new String[0]);
+    Text EMPTY_TEXT                    = new Text();
+    LongWritable EMPTY_LONG_WRITABLE   = new LongWritable();
+    FloatWritable EMPTY_FLOAT_WRITABLE = new FloatWritable();
+    ArrayWritable EMPTY_ARRAY_WRITABLE = new ArrayWritable(new String[0]);
 
     /**
      * MapReduce counters.

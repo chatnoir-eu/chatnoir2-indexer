@@ -10,7 +10,6 @@
 	</contentEntry>
 	<levels>
 		<level name="Gradle: org.apache.hadoop:hadoop-client:2.6.0" value="project"/>
-		<level name="Gradle: net.htmlparser.jericho:jericho-html:3.3" value="project"/>
 		<level name="Gradle: org.slf4j:slf4j-api:1.7.6" value="project"/>
 		<level name="Gradle: org.apache.hadoop:hadoop-annotations:2.6.0" value="project"/>
 		<level name="Gradle: commons-cli:commons-cli:1.2" value="project"/>
@@ -240,5 +239,7 @@
 		<level name="Gradle: com.twitter:parquet-jackson:1.4.3" value="project"/>
 		<level name="Gradle: com.twitter:parquet-hadoop:1.4.3" value="project"/>
 		<level name="Gradle: org.apache.spark:spark-sql_2.10:1.1.0" value="project"/>
+		<level name="Gradle: org.jsoup:jsoup:1.8.1" value="project"/>
+		<level name="Gradle: net.htmlparser.jericho:jericho-html:3.3" value="project"/>
 	</levels>
 </component>

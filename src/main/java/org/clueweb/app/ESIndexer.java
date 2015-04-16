@@ -149,7 +149,7 @@ public class ESIndexer extends Configured implements Tool
         conf.set("es.resource",          conf.get("es.resource", String.format("%s/warcrecord", indexName)));
         conf.set("es.input.json",        "no");
         conf.set("es.index.auto.create", "yes");
-        conf.set("es.batch.size.bytes",  "50mb");
+        conf.set("es.batch.size.bytes",  "20mb");
 
         final Job job = Job.getInstance(conf);
         job.setJobName(String.format("clueweb%s-esindex-%s", clueWebVersion, UUID.randomUUID()));
