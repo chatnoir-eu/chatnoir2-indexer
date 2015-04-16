@@ -34,7 +34,7 @@ public interface ClueWebMapReduceBase
     /**
      * MapReduce counters.
      */
-    public static enum RecordCounters {
+    enum RecordCounters {
         /**
          * Total records read.
          */
@@ -54,11 +54,6 @@ public interface ClueWebMapReduceBase
          * Number of skipped records that are too deeply nested.
          */
         SKIPPED_RECORDS_TOO_DEEP,
-
-        /**
-         * Number of documents with no HTML content.
-         */
-        NO_HTML,
 
         /**
          * Number of actual JSON docs generated.
