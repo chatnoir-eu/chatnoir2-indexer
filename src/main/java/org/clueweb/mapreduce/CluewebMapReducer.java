@@ -4,8 +4,16 @@ import org.apache.hadoop.io.*;
 import org.apache.hadoop.mapreduce.Counter;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.log4j.Logger;
+import org.clueweb.app.ESIndexer;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Set;
 
@@ -23,6 +31,7 @@ public class CluewebMapReducer extends Reducer<Text, MapWritable, NullWritable, 
     protected static Counter emptyCounter;
 
     protected static final ArrayList<String> ANCHOR_TEXTS_LIST = new ArrayList<>();
+    protected static final Text LANG_VALUE = new Text();
 
     @Override
     protected void setup(final Context context) throws IOException, InterruptedException
@@ -63,7 +72,35 @@ public class CluewebMapReducer extends Reducer<Text, MapWritable, NullWritable, 
         }
 
         // only write record if there is content
-        if (OUTPUT_DOC.get(BODY_KEY).toString().trim().length() > 0) {
+        final String content = OUTPUT_DOC.get(BODY_KEY).toString().trim();
+        if (!content.isEmpty()) {
+            // language detection
+            final URL url            = new URL(String.format("http://%s/_langdetect", ESIndexer.getTargetHost()));
+            final URLConnection conn = url.openConnection();
+            conn.setDoOutput(true);
+            final PrintStream ps = new PrintStream(conn.getOutputStream());
+            ps.print(content);
+            ps.close();
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            String line;
+            final StringBuilder strBuilder = new StringBuilder();
+            while (null != (line = br.readLine())) {
+                strBuilder.append(line);
+            }
+            br.close();
+
+            String lang = "en";
+            final JSONObject json;
+            try {
+                json = new JSONObject(strBuilder.toString());
+                lang = json.getJSONArray("languages").getJSONObject(0).getString("language");
+            } catch (JSONException e) {
+                LOG.warn(String.format("JSON error: %s", e.getMessage()));
+            }
+            LANG_VALUE.set(lang);
+            OUTPUT_DOC.put(LANG_KEY, LANG_VALUE);
+
             context.write(NullWritable.get(), OUTPUT_DOC);
             generatedCounter.increment(1);
         } else {

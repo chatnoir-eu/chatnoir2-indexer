@@ -6,20 +6,12 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Counter;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.log4j.Logger;
-import org.clueweb.app.ESIndexer;
 import org.clueweb.app.HtmlToPlainText;
 import org.clueweb.warc.ClueWebWarcRecord;
-import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.*;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -42,7 +34,6 @@ public class ClueWebWarcMapper extends Mapper<LongWritable, ClueWebWarcRecord, T
     protected static final Text WARC_TREC_ID_VALUE = new Text();
     protected static final Text WARC_INFO_ID_VALUE = new Text();
     protected static final Text WARC_TARGET_URI_VALUE = new Text();
-    protected static final Text LANG_VALUE = new Text();
     protected static final Text TITLE_VALUE = new Text();
     protected static final Text META_DESC_VALUE = new Text();
     protected static final Text META_KEYWORDS_VALUE = new Text();
@@ -124,33 +115,6 @@ public class ClueWebWarcMapper extends Mapper<LongWritable, ClueWebWarcRecord, T
             BODY_VALUE.set(renderedBody);
             BODY_LENGTH_VALUE.set(renderedBody.length());
 
-            // language detection
-            final URL url            = new URL(String.format("http://%s/_langdetect", ESIndexer.getTargetHost()));
-            final URLConnection conn = url.openConnection();
-            conn.setDoOutput(true);
-            final PrintStream ps = new PrintStream(conn.getOutputStream());
-            ps.print(renderedBody);
-            ps.close();
-
-            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            String line;
-            final StringBuilder strBuilder = new StringBuilder();
-            while (null != (line = br.readLine())) {
-                strBuilder.append(line);
-            }
-            br.close();
-
-            String lang = "en";
-            final JSONObject json;
-            try {
-                json = new JSONObject(strBuilder.toString());
-                lang = json.getJSONArray("languages").getJSONObject(0).getString("language");
-            } catch (JSONException e) {
-                LOG.warn(String.format("JSON error: %s", e.getMessage()));
-            }
-            LANG_VALUE.set(lang);
-
-            OUTPUT_DOC.put(LANG_KEY,          LANG_VALUE);
             OUTPUT_DOC.put(WARC_TREC_ID_KEY,  WARC_TREC_ID_VALUE);
             OUTPUT_DOC.put(TITLE_KEY,         TITLE_VALUE);
             OUTPUT_DOC.put(META_DESC_KEY,     META_DESC_VALUE);
