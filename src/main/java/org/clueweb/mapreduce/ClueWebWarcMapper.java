@@ -37,7 +37,7 @@ public class ClueWebWarcMapper extends Mapper<LongWritable, ClueWebWarcRecord, T
     protected static Counter tooLargeCounter;
     protected static Counter tooDeepCounter;
     protected static Counter nullIdCounter;
-    protected static Counter noHtmlCounter;
+    //protected static Counter noHtmlCounter;
 
     protected static final Text WARC_TREC_ID_VALUE = new Text();
     protected static final Text WARC_INFO_ID_VALUE = new Text();
@@ -60,7 +60,7 @@ public class ClueWebWarcMapper extends Mapper<LongWritable, ClueWebWarcRecord, T
         tooLargeCounter = context.getCounter(RecordCounters.SKIPPED_RECORDS_TOO_LARGE);
         tooDeepCounter  = context.getCounter(RecordCounters.SKIPPED_RECORDS_TOO_DEEP);
         nullIdCounter   = context.getCounter(RecordCounters.SKIPPED_RECORDS_NULL_ID);
-        noHtmlCounter   = context.getCounter(RecordCounters.NO_HTML);
+        //noHtmlCounter   = context.getCounter(RecordCounters.NO_HTML);
 
         // disable Jericho log
         net.htmlparser.jericho.Config.LoggerProvider = net.htmlparser.jericho.LoggerProvider.DISABLED;
