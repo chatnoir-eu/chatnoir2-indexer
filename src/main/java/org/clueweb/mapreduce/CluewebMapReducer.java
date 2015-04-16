@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Set;
 
 /**
  * Reducer for aggregating ClueWeb MapWritables.
@@ -40,7 +41,7 @@ public class CluewebMapReducer extends Reducer<Text, MapWritable, NullWritable, 
 
         for (final MapWritable value : values) {
             // accumulate anchor texts instead of overwriting values
-            if (value.keySet().contains(ANCHOR_TEXTS_KEY)) {
+            if (value.containsKey(ANCHOR_TEXTS_KEY)) {
                 ANCHOR_TEXTS_LIST.add(cleanUpString(value.get(ANCHOR_TEXTS_KEY).toString()));
                 value.remove(ANCHOR_TEXTS_KEY);
             }
@@ -86,8 +87,8 @@ public class CluewebMapReducer extends Reducer<Text, MapWritable, NullWritable, 
         OUTPUT_DOC.put(TITLE_KEY,           EMPTY_TEXT);
         OUTPUT_DOC.put(BODY_KEY,            EMPTY_TEXT);
         OUTPUT_DOC.put(BODY_LENGTH_KEY,     EMPTY_LONG_WRITABLE);
-        OUTPUT_DOC.put(PAGE_RANK_KEY,       EMPTY_FLOAT_WRITABLE);
-        OUTPUT_DOC.put(SPAM_RANK_KEY,       EMPTY_LONG_WRITABLE);
+        OUTPUT_DOC.put(PAGE_RANK_KEY,       NEUTRAL_FLOAT_WRITABLE);
+        OUTPUT_DOC.put(SPAM_RANK_KEY,       NEUTRAL_LONG_WRITABLE);
     }
 
     /**

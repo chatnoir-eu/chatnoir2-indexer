@@ -25,10 +25,11 @@ public interface ClueWebMapReduceBase
 
     MapWritable OUTPUT_DOC = new MapWritable();
 
-    Text EMPTY_TEXT                    = new Text();
-    LongWritable EMPTY_LONG_WRITABLE   = new LongWritable();
-    FloatWritable EMPTY_FLOAT_WRITABLE = new FloatWritable();
-    ArrayWritable EMPTY_ARRAY_WRITABLE = new ArrayWritable(new String[0]);
+    Text EMPTY_TEXT                      = new Text();
+    LongWritable EMPTY_LONG_WRITABLE     = new LongWritable(0);
+    LongWritable NEUTRAL_LONG_WRITABLE   = new LongWritable(1);
+    FloatWritable NEUTRAL_FLOAT_WRITABLE = new FloatWritable(1.0f);
+    ArrayWritable EMPTY_ARRAY_WRITABLE   = new ArrayWritable(new String[0]);
 
     /**
      * MapReduce counters.
