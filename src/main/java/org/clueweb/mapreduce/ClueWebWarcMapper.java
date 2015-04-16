@@ -6,6 +6,7 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Counter;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.log4j.Logger;
+import org.clueweb.app.ESIndexer;
 import org.clueweb.app.HtmlToPlainText;
 import org.clueweb.warc.ClueWebWarcRecord;
 import org.codehaus.jettison.json.JSONException;
@@ -124,7 +125,7 @@ public class ClueWebWarcMapper extends Mapper<LongWritable, ClueWebWarcRecord, T
             BODY_LENGTH_VALUE.set(renderedBody.length());
 
             // language detection
-            final URL url            = new URL("http://betaweb020.medien.uni-weimar.de:9200/_langdetect");
+            final URL url            = new URL(String.format("http://%s/_langdetect", ESIndexer.getTargetHost()));
             final URLConnection conn = url.openConnection();
             conn.setDoOutput(true);
             final PrintStream ps = new PrintStream(conn.getOutputStream());

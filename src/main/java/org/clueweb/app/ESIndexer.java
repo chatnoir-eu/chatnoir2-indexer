@@ -57,6 +57,12 @@ public class ESIndexer extends Configured implements Tool
     public static final String[] ANCHOR_INPUT_OPTION           = { "anchortexts", "a" };
     public static final String[] INDEX_INPUT_OPTION            = { "index",       "i" };
 
+    private static String mTargetHost = "betaweb020.medien.uni-weimar.de:9200";
+
+    public static String getTargetHost() {
+        return mTargetHost;
+    }
+
     /**
      * Run this tool.
      */
@@ -145,7 +151,7 @@ public class ESIndexer extends Configured implements Tool
         conf.setBoolean("mapreduce.map.speculative", false);
         conf.setBoolean("mapreduce.reduce.speculative", false);
 
-        conf.set("es.nodes",             conf.get("es.nodes", "betaweb020.medien.uni-weimar.de:9200"));
+        conf.set("es.nodes",             mTargetHost = conf.get("es.nodes", mTargetHost));
         conf.set("es.resource",          conf.get("es.resource", String.format("%s/warcrecord", indexName)));
         conf.set("es.input.json",        "no");
         conf.set("es.index.auto.create", "yes");
