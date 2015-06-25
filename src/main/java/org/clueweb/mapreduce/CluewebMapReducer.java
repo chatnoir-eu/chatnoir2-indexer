@@ -113,18 +113,21 @@ public class CluewebMapReducer extends Reducer<Text, MapWritable, NullWritable, 
      */
     private void resetOutputMapWritable()
     {
-        OUTPUT_DOC.put(WARC_TREC_ID_KEY,    EMPTY_TEXT);
-        OUTPUT_DOC.put(WARC_INFO_ID_KEY,    EMPTY_TEXT);
-        OUTPUT_DOC.put(WARC_TARGET_URI_KEY, EMPTY_TEXT);
-        OUTPUT_DOC.put(LANG_KEY,            EMPTY_TEXT);
-        OUTPUT_DOC.put(META_DESC_KEY,       EMPTY_TEXT);
-        OUTPUT_DOC.put(META_KEYWORDS_KEY,   EMPTY_TEXT);
-        OUTPUT_DOC.put(ANCHOR_TEXTS_KEY,    EMPTY_ARRAY_WRITABLE);
-        OUTPUT_DOC.put(TITLE_KEY,           EMPTY_TEXT);
-        OUTPUT_DOC.put(BODY_KEY,            EMPTY_TEXT);
-        OUTPUT_DOC.put(BODY_LENGTH_KEY,     EMPTY_LONG_WRITABLE);
-        OUTPUT_DOC.put(PAGE_RANK_KEY,       NEUTRAL_FLOAT_WRITABLE);
-        OUTPUT_DOC.put(SPAM_RANK_KEY,       NEUTRAL_LONG_WRITABLE);
+        OUTPUT_DOC.put(WARC_TREC_ID_KEY,         EMPTY_TEXT);
+        OUTPUT_DOC.put(WARC_INFO_ID_KEY,         EMPTY_TEXT);
+        OUTPUT_DOC.put(WARC_TARGET_URI_KEY,      EMPTY_TEXT);
+        OUTPUT_DOC.put(WARC_TARGET_HOSTNAME_KEY, EMPTY_TEXT);
+        OUTPUT_DOC.put(WARC_TARGET_PATH_KEY,     EMPTY_TEXT);
+        OUTPUT_DOC.put(WARC_TARGET_QUERY_KEY,    EMPTY_TEXT);
+        OUTPUT_DOC.put(LANG_KEY,                 EMPTY_TEXT);
+        OUTPUT_DOC.put(META_DESC_KEY,            EMPTY_TEXT);
+        OUTPUT_DOC.put(META_KEYWORDS_KEY,        EMPTY_TEXT);
+        OUTPUT_DOC.put(ANCHOR_TEXTS_KEY,         EMPTY_ARRAY_WRITABLE);
+        OUTPUT_DOC.put(TITLE_KEY,                EMPTY_TEXT);
+        OUTPUT_DOC.put(BODY_KEY,                 EMPTY_TEXT);
+        OUTPUT_DOC.put(BODY_LENGTH_KEY,          EMPTY_LONG_WRITABLE);
+        OUTPUT_DOC.put(PAGE_RANK_KEY,            NEUTRAL_FLOAT_WRITABLE);
+        OUTPUT_DOC.put(SPAM_RANK_KEY,            NEUTRAL_LONG_WRITABLE);
     }
 
     /**

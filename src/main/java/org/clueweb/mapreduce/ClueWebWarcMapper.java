@@ -12,6 +12,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.*;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -28,12 +29,16 @@ public class ClueWebWarcMapper extends Mapper<LongWritable, ClueWebWarcRecord, T
 
     protected static Counter recordsCounter;
     protected static Counter tooLargeCounter;
+    protected static Counter tooSmallCounter;
     protected static Counter tooDeepCounter;
     protected static Counter nullIdCounter;
 
     protected static final Text WARC_TREC_ID_VALUE = new Text();
     protected static final Text WARC_INFO_ID_VALUE = new Text();
     protected static final Text WARC_TARGET_URI_VALUE = new Text();
+    protected static final Text WARC_TARGET_HOSTNAME_VALUE = new Text();
+    protected static final Text WARC_TARGET_PATH_VALUE = new Text();
+    protected static final Text WARC_TARGET_QUERY_VALUE = new Text();
     protected static final Text TITLE_VALUE = new Text();
     protected static final Text META_DESC_VALUE = new Text();
     protected static final Text META_KEYWORDS_VALUE = new Text();
@@ -49,6 +54,7 @@ public class ClueWebWarcMapper extends Mapper<LongWritable, ClueWebWarcRecord, T
 
         recordsCounter  = context.getCounter(RecordCounters.RECORDS);
         tooLargeCounter = context.getCounter(RecordCounters.SKIPPED_RECORDS_TOO_LARGE);
+        tooSmallCounter = context.getCounter(RecordCounters.SKIPPED_RECORDS_TOO_SMALL);
         tooDeepCounter  = context.getCounter(RecordCounters.SKIPPED_RECORDS_TOO_DEEP);
         nullIdCounter   = context.getCounter(RecordCounters.SKIPPED_RECORDS_NULL_ID);
 
@@ -74,7 +80,7 @@ public class ClueWebWarcMapper extends Mapper<LongWritable, ClueWebWarcRecord, T
 
         // ignore large files
         if (value.getByteContent().length > 4 * 1024 * 1024) {
-            LOG.warn(String.format("Document %s with size %dbytes skipped", docId, value.getByteContent().length));
+            LOG.warn(String.format("Document %s with size %dbytes skipped (too large)", docId, value.getByteContent().length));
             tooLargeCounter.increment(1);
             return;
         }
@@ -85,7 +91,16 @@ public class ClueWebWarcMapper extends Mapper<LongWritable, ClueWebWarcRecord, T
             final String k = entry.getKey();
             if (k.equals("WARC-Target-URI")) {
                 WARC_TARGET_URI_VALUE.set(entry.getValue());
+                try {
+                    final URL url = new URL(entry.getValue());
+                    WARC_TARGET_HOSTNAME_VALUE.set(url.getHost());
+                    WARC_TARGET_PATH_VALUE.set(url.getPath());
+                    WARC_TARGET_QUERY_VALUE.set(url.getQuery());
+                } catch (final Exception ignored) { }
                 OUTPUT_DOC.put(WARC_TARGET_URI_KEY, WARC_TARGET_URI_VALUE);
+                OUTPUT_DOC.put(WARC_TARGET_HOSTNAME_KEY, WARC_TARGET_HOSTNAME_VALUE);
+                OUTPUT_DOC.put(WARC_TARGET_PATH_KEY, WARC_TARGET_PATH_VALUE);
+                OUTPUT_DOC.put(WARC_TARGET_QUERY_KEY, WARC_TARGET_QUERY_VALUE);
             } else if (k.equals("WARC-Warcinfo-ID")) {
                 WARC_INFO_ID_VALUE.set(entry.getValue());
                 OUTPUT_DOC.put(WARC_INFO_ID_KEY, WARC_INFO_ID_VALUE);
@@ -108,6 +123,13 @@ public class ClueWebWarcMapper extends Mapper<LongWritable, ClueWebWarcRecord, T
             //final String renderedBody = renderer.toString().trim();
             final Document jsoupDoc = Jsoup.parse(rawHTML);
             final String renderedBody = HTML_TO_PLAIN_TEXT.getPlainText(jsoupDoc);
+
+            // ignore if rendered body too small
+            if (value.getByteContent().length < 350) {
+                LOG.warn(String.format("Document %s with size %dbytes skipped (too small)", docId, value.getByteContent().length));
+                tooSmallCounter.increment(1);
+                return;
+            }
 
             TITLE_VALUE.set(getDocTitle(bodySource, 90));
             META_DESC_VALUE.set(getMetaTagContents(bodySource, "name", "description", 400));

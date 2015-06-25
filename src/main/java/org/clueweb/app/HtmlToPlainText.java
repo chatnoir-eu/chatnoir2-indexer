@@ -61,7 +61,7 @@ public class HtmlToPlainText {
             if (node instanceof TextNode)
                 append(((TextNode) node).text()); // TextNodes carry all user-readable text in the DOM.
             else if (name.equals("li"))
-                append("\n * ");
+                append("\n   ");
         }
 
         // hit when all of the node's children (if any) have been visited

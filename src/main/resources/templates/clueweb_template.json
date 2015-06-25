@@ -8,10 +8,9 @@
             },
             "analysis" : {
                 "filter" : {
-                    "url_filter" : {
+                    "host_stop_filter" : {
                         "type" : "stop",
                         "stopwords" : [
-                            "http", "https", "ftp", "ftps", "sftp",
                             "www", "com", "net", "org", "info", "edu", "int", "gov", "mil", "arpa",
                             "us", "co", "uk", "de", "fr", "ru", "cn", "to", "it", "ca", "nz", "nl", "be", "at", "ch", "eu", "no", "es", "pl", "tr", "tv"
                         ]
@@ -208,10 +207,18 @@
                     }
                 },
                 "analyzer" : {
-                    "url_analyzer" : {
+                    "host_analyzer" : {
                         "type" : "custom",
-                        "tokenizer" : "uax_url_email",
-                        "filter" : [ "url_filter" ]
+                        "tokenizer" : "host_tokenizer",
+                        "filter" : [ "host_stop_filter" ]
+                    },
+                    "path_analyzer" : {
+                        "type" : "custom",
+                        "tokenizer" : "path_tokenizer"
+                    },
+                    "query_analyzer" : {
+                        "type" : "custom",
+                        "tokenizer" : "query_tokenizer"
                     },
                     "ar" : {
                         "type" : "custom",
@@ -465,6 +472,20 @@
                         ],
                         "tokenizer" : "icu_tokenizer"
                     }
+                },
+                "tokenizer" : {
+                    "host_tokenizer" : {
+                        "type": "path_hierarchy",
+                        "delimiter" : "."
+                    },
+                    "path_tokenizer" : {
+                        "type": "path_hierarchy",
+                        "delimiter" : "/"
+                    },
+                    "query_tokenizer" : {
+                        "type": "path_hierarchy",
+                        "delimiter" : "&"
+                    }
                 }
             }
         },
@@ -474,22 +495,39 @@
                     "enabled" : false
                 },
                 "_source" : {
-                    "enabled" : true
+                    "enabled" : true,
+                    "excludes" : [ "warc_target_hostname", "warc_target_path", "warc_target_query" ]
                 },
                 "properties" : {
-                    "WARC-TREC-ID" : {
+                    "warc_trec_id" : {
                         "type" : "string",
                         "index" : "not_analyzed"
                     },
-                    "WARC-Target-URI" : {
+                    "warc_info_id" : {
+                        "type" : "string",
+                        "index" : "not_analyzed"
+                    },
+                    "warc_target_uri" : {
+                        "type" : "string",
+                        "index" : "not_analyzed"
+                    },
+                    "warc_target_hostname" : {
                         "type" : "string",
                         "similarity" : "BM25",
                         "index" : "analyzed",
-                        "analyzer" : "url_analyzer"
+                        "analyzer" : "host_analyzer"
                     },
-                    "WARC-Warcinfo-ID" : {
+                    "warc_target_path" : {
                         "type" : "string",
-                        "index" : "not_analyzed"
+                        "similarity" : "BM25",
+                        "index" : "analyzed",
+                        "analyzer" : "path_analyzer"
+                    },
+                    "warc_target_query" : {
+                        "type" : "string",
+                        "similarity" : "BM25",
+                        "index" : "analyzed",
+                        "analyzer" : "query_analyzer"
                     },
                     "title" : {
                         "type" : "string",
