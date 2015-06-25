@@ -150,6 +150,8 @@ public class ESIndexer extends Configured implements Tool
 
         conf.setBoolean("mapreduce.map.speculative", false);
         conf.setBoolean("mapreduce.reduce.speculative", false);
+        conf.setBoolean("mapred.map.tasks.speculative.execution", false);
+        conf.setBoolean("mapred.reduce.tasks.speculative.execution", false);
 
         conf.set("es.nodes",                   mTargetHost = conf.get("es.nodes", mTargetHost));
         conf.set("es.resource",                conf.get("es.resource", String.format("%s/warcrecord", indexName)));

@@ -99,6 +99,7 @@ public class ClueWebWarcMapper extends Mapper<LongWritable, ClueWebWarcRecord, T
                 } catch (final Exception ignored) { }
                 OUTPUT_DOC.put(WARC_TARGET_URI_KEY, WARC_TARGET_URI_VALUE);
                 OUTPUT_DOC.put(WARC_TARGET_HOSTNAME_KEY, WARC_TARGET_HOSTNAME_VALUE);
+                OUTPUT_DOC.put(WARC_TARGET_HOSTNAME_RAW_KEY, WARC_TARGET_HOSTNAME_VALUE);
                 OUTPUT_DOC.put(WARC_TARGET_PATH_KEY, WARC_TARGET_PATH_VALUE);
                 OUTPUT_DOC.put(WARC_TARGET_QUERY_KEY, WARC_TARGET_QUERY_VALUE);
             } else if (k.equals("WARC-Warcinfo-ID")) {
