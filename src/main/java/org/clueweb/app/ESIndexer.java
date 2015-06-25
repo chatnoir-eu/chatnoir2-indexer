@@ -132,7 +132,7 @@ public class ESIndexer extends Configured implements Tool
         final String inputPageRanks = cmdline.getOptionValue(PAGERANK_INPUT_OPTION[0]);
         final String inputAnchors   = cmdline.getOptionValue(ANCHOR_INPUT_OPTION[0]);
         final String indexName      = null != cmdline.getOptionValue(INDEX_INPUT_OPTION[0]) ?
-                cmdline.getOptionValue(INDEX_INPUT_OPTION[0]) : String.format("clueweb%s", clueWebVersion);
+                cmdline.getOptionValue(INDEX_INPUT_OPTION[0]) : String.format("webis_clueweb%s", clueWebVersion);
 
         if (!clueWebVersion.equals("09") && !clueWebVersion.equals("12")) {
             HelpFormatter formatter = new HelpFormatter();
