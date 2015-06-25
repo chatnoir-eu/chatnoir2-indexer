@@ -151,11 +151,16 @@ public class ESIndexer extends Configured implements Tool
         conf.setBoolean("mapreduce.map.speculative", false);
         conf.setBoolean("mapreduce.reduce.speculative", false);
 
-        conf.set("es.nodes",             mTargetHost = conf.get("es.nodes", mTargetHost));
-        conf.set("es.resource",          conf.get("es.resource", String.format("%s/warcrecord", indexName)));
-        conf.set("es.input.json",        "no");
-        conf.set("es.index.auto.create", "yes");
-        conf.set("es.batch.size.bytes",  "20mb");
+        conf.set("es.nodes",                   mTargetHost = conf.get("es.nodes", mTargetHost));
+        conf.set("es.resource",                conf.get("es.resource", String.format("%s/warcrecord", indexName)));
+        conf.set("es.input.json",              "false");
+        conf.set("es.index.auto.create",       "yes");
+        conf.set("es.http.timeout",            "5m");
+        conf.set("es.http.retries",            "50");
+        conf.set("es.batch.size.entries",      "10000");
+        conf.set("es.batch.size.bytes",        "20mb");
+        conf.set("es.batch.write.retry.count", "50");
+        conf.set("es.batch.write.refresh",     "false");
 
         final Job job = Job.getInstance(conf);
         job.setJobName(String.format("clueweb%s-esindex-%s", clueWebVersion, UUID.randomUUID()));

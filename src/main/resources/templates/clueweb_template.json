@@ -504,7 +504,8 @@
                         "_analyzer" : { "path" : "lang" }
                     },
                     "lang" : {
-                        "type" : "string"
+                        "type" : "string",
+                        "index" : "not_analyzed"
                     },
                     "body_length" : {
                         "type" : "long"

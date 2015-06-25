@@ -90,15 +90,14 @@ public class CluewebMapReducer extends Reducer<Text, MapWritable, NullWritable, 
             }
             br.close();
 
-            String lang = "en";
             final JSONObject json;
             try {
                 json = new JSONObject(strBuilder.toString());
-                lang = json.getJSONArray("languages").getJSONObject(0).getString("language");
+                LANG_VALUE.set(json.getJSONArray("languages").getJSONObject(0).getString("language"));
             } catch (JSONException e) {
-                LOG.warn(String.format("JSON error: %s", e.getMessage()));
+                LANG_VALUE.set("en");
+                LOG.warn(String.format("JSON error: %s%nOriginal JSON string was: %s", e.getMessage(), strBuilder.toString()));
             }
-            LANG_VALUE.set(lang);
             OUTPUT_DOC.put(LANG_KEY, LANG_VALUE);
 
             context.write(NullWritable.get(), OUTPUT_DOC);
