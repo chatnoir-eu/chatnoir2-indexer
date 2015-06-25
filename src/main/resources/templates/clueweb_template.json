@@ -582,6 +582,12 @@
                         "index" : "analyzed",
                         "_analyzer" : { "path" : "lang" }
                     },
+                    "anchor_texts" : {
+                        "type" : "string",
+                        "similarity" : "BM25",
+                        "index" : "analyzed",
+                        "_analyzer" : { "path" : "lang" }
+                    },
                     "page_rank" : {
                         "type" : "float"
                     },
