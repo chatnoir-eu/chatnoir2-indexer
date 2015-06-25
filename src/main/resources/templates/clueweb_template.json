@@ -1,6 +1,6 @@
 {
     "clueweb_template" : {
-        "template" : "clueweb*",
+        "template" : "webis_clueweb*",
         "settings" : {
             "index.query.default_field" : "body",
             "index" : {
