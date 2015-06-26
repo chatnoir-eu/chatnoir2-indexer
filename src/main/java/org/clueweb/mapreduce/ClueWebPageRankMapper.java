@@ -21,10 +21,10 @@ public class ClueWebPageRankMapper extends Mapper<LongWritable, Text, Text, MapW
 
     public void map(final LongWritable key, final Text value, final Context context) throws IOException, InterruptedException
     {
-        final String[] parts = value.toString().split("\t");
+        final String[] parts = value.toString().split("\\s+");
 
         WARC_TREC_ID.set(parts[0]);
-        PAGE_RANK_VALUE.set(Float.parseFloat(parts[1]));
+        PAGE_RANK_VALUE.set(Float.valueOf(parts[1]));
         OUTPUT_DOC.put(PAGE_RANK_KEY, PAGE_RANK_VALUE);
         context.write(WARC_TREC_ID, OUTPUT_DOC);
     }

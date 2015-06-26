@@ -22,7 +22,7 @@ public class ClueWebSpamRankMapper extends Mapper<LongWritable, Text, Text, MapW
     {
         final String[] parts = value.toString().split("\\s+");
         WARC_TREC_ID.set(parts[1]);
-        SPAM_RANK_VALUE.set(Long.parseLong(parts[0]));
+        SPAM_RANK_VALUE.set(Long.valueOf(parts[0]));
 
         OUTPUT_DOC.put(SPAM_RANK_KEY, SPAM_RANK_VALUE);
         context.write(WARC_TREC_ID, OUTPUT_DOC);
