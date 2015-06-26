@@ -20,7 +20,7 @@ public class ClueWebSpamRankMapper extends Mapper<LongWritable, Text, Text, MapW
 
     public void map(final LongWritable key, final Text value, final Context context) throws IOException, InterruptedException
     {
-        final String[] parts = value.toString().split(" ");
+        final String[] parts = value.toString().split("\\s+");
         WARC_TREC_ID.set(parts[1]);
         SPAM_RANK_VALUE.set(Long.parseLong(parts[0]));
 
