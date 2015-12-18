@@ -131,6 +131,33 @@
                         "type" : "stemmer",
                         "name" : "minimal_french"
                     },
+                    "gl_stop_filter" : {
+                        "type" : "stop",
+                        "stopwords" : [
+                            "_galician_"
+                        ]
+                    },
+                    "gl_stem_filter" : {
+                        "type" : "stemmer",
+                        "name" : "minimal_galician"
+                    },
+                    "he_stop_filter" : {
+                        "type" : "stop",
+                        "stopwords" : [
+                            "״", "׳", "של", "רב", "פי", "עם", "עליו", "עליהם", "על", "עד", "מן", "מכל",
+                            "מי", "מהם", "מה", "מ", "למה", "לכל", "לי", "לו", "להיות", "לה", "לא", "כן", "כמה",
+                            "כלי", "כל", "כי", "יש", "ימים", "יותר", "יד", "י", "זה", "ז", "ועל", "ומי", "ולא", "וכן",
+                            "וכל", "והיא", "והוא", "ואם", "ו", "הרבה", "הנה", "היו", "היה", "היא", "הזה", "הוא",
+                            "דבר", "ד", "ג", "בני", "בכל", "בו", "בה", "בא", "את", "אשר", "אם", "אלה", "אל",
+                            "אך", "איש", "אין", "אחת", "אחר", "אחד", "אז", "אותו", "־", "^", "?", ";", ":", "1",
+                            ".", "-", "*", "\"", "!", "שלשה", "בעל", "פני", ")", "גדול", "שם", "עלי", "עולם",
+                            "מקום", "לעולם", "לנו", "להם", "ישראל", "יודע", "זאת", "השמים", "הזאת", "הדברים", "הדבר",
+                            "הבית", "האמת", "דברי", "במקום", "בהם", "אמרו", "אינם", "אחרי", "אותם", "אדם", "(",
+                            "חלק", "שני", "שכל", "שאר", "ש", "ר", "פעמים", "נעשה", "ן", "ממנו", "מלא", "מזה", "ם",
+                            "לפי", "ל", "כמו", "כבר", "כ", "זו", "ומה", "ולכל", "ובין", "ואין", "הן", "היתה", "הא", "ה",
+                            "בל", "בין", "בזה", "ב", "אף", "אי", "אותה", "או", "אבל", "א"
+                        ]
+                    },
                     "hi_stop_filter" : {
                         "type" : "stop",
                         "stopwords" : [
@@ -169,6 +196,25 @@
                         "type" : "stemmer",
                         "name" : "light_italian"
                     },
+                    "ja_pos_filter" : {
+                        "type" : "kuromoji_part_of_speech",
+                        "stoptags" : [
+                            "\\u52a9\\u8a5e-\\u683c\\u52a9\\u8a5e-\\u4e00\\u822c",
+                            "\\u52a9\\u8a5e-\\u7d42\\u52a9\\u8a5e"
+                        ]
+                    },
+                    "lt_stop_filter" : {
+                        "type" : "stop",
+                        "stopwords" : [
+                            "_lithuanian_"
+                        ]
+                    },
+                    "lv_stop_filter" : {
+                        "type" : "stop",
+                        "stopwords" : [
+                            "_latvian_"
+                        ]
+                    },
                     "nl_stop_filter" : {
                         "type" : "stop",
                         "stopwords" : [
@@ -190,6 +236,10 @@
                     "pt_stem_filter" : {
                         "type" : "stemmer",
                         "name" : "minimal_portuguese"
+                    },
+                    "pl_stem_filter" : {
+                        "type" : "stemmer",
+                        "name" : "polish_stem"
                     },
                     "ro_stop_filter" : {
                         "type" : "stop",
@@ -217,6 +267,12 @@
                         "type" : "stemmer",
                         "name" : "light_swedish"
                     },
+                    "th_stop_filter" : {
+                        "type" : "stop",
+                        "stopwords" : [
+                            "_thai_"
+                        ]
+                    },
                     "tr_stop_filter" : {
                         "type" : "stop",
                         "stopwords" : [
@@ -238,7 +294,7 @@
                         "type" : "custom",
                         "tokenizer" : "query_tokenizer"
                     },
-                    "ar" : {
+                    "ar_analyzer" : {
                         "type" : "custom",
                         "filter" : [
                             "icu_normalizer",
@@ -247,7 +303,7 @@
                         ],
                         "tokenizer" : "icu_tokenizer"
                     },
-                    "bg" : {
+                    "bg_analyzer" : {
                         "type" : "custom",
                         "filter" : [
                             "icu_normalizer",
@@ -256,7 +312,7 @@
                         ],
                         "tokenizer" : "icu_tokenizer"
                     },
-                    "ca" : {
+                    "ca_analyzer" : {
                         "type" : "custom",
                         "filter" : [
                             "icu_normalizer",
@@ -265,7 +321,7 @@
                         ],
                         "tokenizer" : "icu_tokenizer"
                     },
-                    "cs" : {
+                    "cs_analyzer" : {
                         "type" : "custom",
                         "filter" : [
                             "icu_normalizer",
@@ -274,7 +330,7 @@
                         ],
                         "tokenizer" : "icu_tokenizer"
                     },
-                    "da" : {
+                    "da_analyzer" : {
                         "type" : "custom",
                         "filter" : [
                             "icu_normalizer",
@@ -283,7 +339,7 @@
                         ],
                         "tokenizer" : "icu_tokenizer"
                     },
-                    "de" : {
+                    "de_analyzer" : {
                         "type" : "custom",
                         "filter" : [
                             "icu_normalizer",
@@ -293,7 +349,7 @@
                         ],
                         "tokenizer" : "icu_tokenizer"
                     },
-                    "el" : {
+                    "el_analyzer" : {
                         "type" : "custom",
                         "filter" : [
                             "icu_normalizer",
@@ -302,7 +358,7 @@
                         ],
                         "tokenizer" : "icu_tokenizer"
                     },
-                    "en" : {
+                    "en_analyzer" : {
                         "type" : "custom",
                         "filter" : [
                             "icu_normalizer",
@@ -312,7 +368,7 @@
                         ],
                         "tokenizer" : "icu_tokenizer"
                     },
-                    "es" : {
+                    "es_analyzer" : {
                         "type" : "custom",
                         "filter" : [
                             "icu_normalizer",
@@ -322,7 +378,7 @@
                         ],
                         "tokenizer" : "icu_tokenizer"
                     },
-                    "eu" : {
+                    "eu_analyzer" : {
                         "type" : "custom",
                         "filter" : [
                             "icu_normalizer",
@@ -331,7 +387,7 @@
                         ],
                         "tokenizer" : "icu_tokenizer"
                     },
-                    "fa" : {
+                    "fa_analyzer" : {
                         "type" : "custom",
                         "filter" : [
                             "icu_normalizer",
@@ -340,7 +396,7 @@
                         ],
                         "tokenizer" : "icu_tokenizer"
                     },
-                    "fi" : {
+                    "fi_analyzer" : {
                         "type" : "custom",
                         "filter" : [
                             "icu_normalizer",
@@ -350,7 +406,7 @@
                         ],
                         "tokenizer" : "icu_tokenizer"
                     },
-                    "fr" : {
+                    "fr_analyzer" : {
                         "type" : "custom",
                         "filter" : [
                             "icu_normalizer",
@@ -361,7 +417,26 @@
                         ],
                         "tokenizer" : "icu_tokenizer"
                     },
-                    "hi" : {
+                    "gl_analyzer" : {
+                        "type" : "custom",
+                        "filter" : [
+                            "icu_normalizer",
+                            "gl_stop_filter",
+                            "gl_stem_filter",
+                            "icu_folding"
+                        ],
+                        "tokenizer" : "icu_tokenizer"
+                    },
+                    "he_analyzer" : {
+                        "type" : "custom",
+                        "filter" : [
+                            "icu_normalizer",
+                            "he_stop_filter",
+                            "icu_folding"
+                        ],
+                        "tokenizer" : "icu_tokenizer"
+                    },
+                    "hi_analyzer" : {
                         "type" : "custom",
                         "filter" : [
                             "icu_normalizer",
@@ -370,7 +445,7 @@
                         ],
                         "tokenizer" : "icu_tokenizer"
                     },
-                    "hu" : {
+                    "hu_analyzer" : {
                         "type" : "custom",
                         "filter" : [
                             "icu_normalizer",
@@ -380,7 +455,7 @@
                         ],
                         "tokenizer" : "icu_tokenizer"
                     },
-                    "hy" : {
+                    "hy_analyzer" : {
                         "type" : "custom",
                         "filter" : [
                             "icu_normalizer",
@@ -389,7 +464,7 @@
                         ],
                         "tokenizer" : "icu_tokenizer"
                     },
-                    "id" : {
+                    "id_analyzer" : {
                         "type" : "custom",
                         "filter" : [
                             "icu_normalizer",
@@ -398,7 +473,7 @@
                         ],
                         "tokenizer" : "icu_tokenizer"
                     },
-                    "it" : {
+                    "it_analyzer" : {
                         "type" : "custom",
                         "filter" : [
                             "icu_normalizer",
@@ -408,7 +483,40 @@
                         ],
                         "tokenizer" : "icu_tokenizer"
                     },
-                    "nl" : {
+                    "ja_analyzer" : {
+                        "type" : "custom",
+                        "filter" : [
+                            "kuromoji_baseform",
+                            "ja_pos_filter",
+                            "icu_normalizer",
+                            "icu_folding",
+                            "cjk_width"
+                        ],
+                        "tokenizer" : "kuromoji_tokenizer"
+                    },
+                    "ko_analyzer" : {
+                        "type" : "cjk",
+                        "filter" : [ ]
+                    },
+                    "lt_analyzer" : {
+                        "type" : "custom",
+                        "filter" : [
+                            "icu_normalizer",
+                            "lt_stop_filter",
+                            "icu_folding"
+                        ],
+                        "tokenizer" : "icu_tokenizer"
+                    },
+                    "lv_analyzer" : {
+                        "type" : "custom",
+                        "filter" : [
+                            "icu_normalizer",
+                            "lv_stop_filter",
+                            "icu_folding"
+                        ],
+                        "tokenizer" : "icu_tokenizer"
+                    },
+                    "nl_analyzer" : {
                         "type" : "custom",
                         "filter" : [
                             "icu_normalizer",
@@ -417,7 +525,7 @@
                         ],
                         "tokenizer" : "icu_tokenizer"
                     },
-                    "no" : {
+                    "no_analyzer" : {
                         "type" : "custom",
                         "filter" : [
                             "icu_normalizer",
@@ -426,7 +534,16 @@
                         ],
                         "tokenizer" : "icu_tokenizer"
                     },
-                    "pt" : {
+                    "pl_analyzer" : {
+                        "type" : "custom",
+                        "filter" : [
+                            "icu_normalizer",
+                            "pl_stem_filter",
+                            "icu_folding"
+                        ],
+                        "tokenizer" : "icu_tokenizer"
+                    },
+                    "pt_analyzer" : {
                         "type" : "custom",
                         "filter" : [
                             "icu_normalizer",
@@ -436,7 +553,7 @@
                         ],
                         "tokenizer" : "icu_tokenizer"
                     },
-                    "ro" : {
+                    "ro_analyzer" : {
                         "type" : "custom",
                         "filter" : [
                             "icu_normalizer",
@@ -445,7 +562,7 @@
                         ],
                         "tokenizer" : "icu_tokenizer"
                     },
-                    "ru" : {
+                    "ru_analyzer" : {
                         "type" : "custom",
                         "filter" : [
                             "icu_normalizer",
@@ -455,7 +572,7 @@
                         ],
                         "tokenizer" : "icu_tokenizer"
                     },
-                    "sv" : {
+                    "sv_analyzer" : {
                         "type" : "custom",
                         "filter" : [
                             "icu_normalizer",
@@ -465,7 +582,16 @@
                         ],
                         "tokenizer" : "icu_tokenizer"
                     },
-                    "tr" : {
+                    "th_analyzer" : {
+                        "type" : "custom",
+                        "filter" : [
+                            "icu_normalizer",
+                            "th_stop_filter",
+                            "icu_folding"
+                        ],
+                        "tokenizer" : "icu_tokenizer"
+                    },
+                    "tr_analyzer" : {
                         "type" : "custom",
                         "filter" : [
                             "icu_normalizer",
@@ -474,7 +600,16 @@
                         ],
                         "tokenizer" : "icu_tokenizer"
                     },
-                    "lowercase" : {
+                    "zh_analyzer" : {
+                        "type" : "custom",
+                        "filter" : [
+                            "smartcn_word",
+                            "icu_normalizer",
+                            "icu_folding"
+                        ],
+                        "tokenizer" : "smartcn_sentence"
+                    },
+                    "lowercase_analyzer" : {
                         "type" : "custom",
                         "filter" : [
                             "icu_normalizer",
@@ -482,7 +617,15 @@
                         ],
                         "tokenizer" : "keyword"
                     },
-                    "default" : {
+                    "meta_keyword_analyzer" : {
+                        "type" : "custom",
+                        "filter" : [
+                            "icu_normalizer",
+                            "icu_folding"
+                        ],
+                        "tokenizer" : "meta_keyword_tokenizer"
+                    },
+                    "default_analyzer" : {
                         "type" : "custom",
                         "filter" : [
                             "icu_normalizer",
@@ -495,6 +638,10 @@
                     "host_tokenizer" : {
                         "type": "pattern",
                         "pattern" : "\\."
+                    },
+                    "meta_keyword_tokenizer" : {
+                        "type": "pattern",
+                        "pattern" : "[, \\t]"
                     },
                     "path_tokenizer" : {
                         "type": "path_hierarchy",
@@ -516,6 +663,323 @@
                     "enabled" : true,
                     "excludes" : [ "warc_target_hostname", "warc_target_path", "warc_target_query" ]
                 },
+                "dynamic_templates" : [
+                    { "ar" : {
+                        "match" : "*_ar",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "string",
+                            "analyzer" : "ar_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    } },
+                    { "bg" : {
+                        "match" : "*_bg",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "string",
+                            "analyzer" : "bg_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    } },
+                    { "ca" : {
+                        "match" : "*_ca",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "string",
+                            "analyzer" : "ca_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    } },
+                    { "cs" : {
+                        "match" : "*_cs",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "string",
+                            "analyzer" : "cs_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    } },
+                    { "da" : {
+                        "match" : "*_da",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "string",
+                            "analyzer" : "da_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    } },
+                    { "de" : {
+                        "match" : "*_de",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "string",
+                            "analyzer" : "de_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    } },
+                    { "el" : {
+                        "match" : "*_el",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "string",
+                            "analyzer" : "el_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    } },
+                    { "en" : {
+                        "match" : "*_en",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "string",
+                            "analyzer" : "en_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    } },
+                    { "es" : {
+                        "match" : "*_es",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "string",
+                            "analyzer" : "es_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    } },
+                    { "eu" : {
+                        "match" : "*_eu",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "string",
+                            "analyzer" : "eu_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    } },
+                    { "fa" : {
+                        "match" : "*_fa",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "string",
+                            "analyzer" : "fa_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    } },
+                    { "fi" : {
+                        "match" : "*_fi",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "string",
+                            "analyzer" : "fi_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    } },
+                    { "fr" : {
+                        "match" : "*_fr",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "string",
+                            "analyzer" : "fr_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    } },
+                    { "gl" : {
+                        "match" : "*_gl",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "string",
+                            "analyzer" : "gl_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    } },
+                    { "he" : {
+                        "match" : "*_he",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "string",
+                            "analyzer" : "he_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    } },
+                    { "hi" : {
+                        "match" : "*_hi",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "string",
+                            "analyzer" : "hi_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    } },
+                    { "hu" : {
+                        "match" : "*_hu",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "string",
+                            "analyzer" : "hu_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    } },
+                    { "hy" : {
+                        "match" : "*_hy",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "string",
+                            "analyzer" : "hy_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    } },
+                    { "id" : {
+                        "match" : "*_id",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "string",
+                            "analyzer" : "id_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    } },
+                    { "it" : {
+                        "match" : "*_it",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "string",
+                            "analyzer" : "it_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    } },
+                    { "ja" : {
+                        "match" : "*_ja",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "string",
+                            "analyzer" : "ja_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    } },
+                    { "ko" : {
+                        "match" : "*_ko",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "string",
+                            "analyzer" : "ko_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    } },
+                    { "lt" : {
+                        "match" : "*_lt",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "string",
+                            "analyzer" : "lt_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    } },
+                    { "lv" : {
+                        "match" : "*_lv",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "string",
+                            "analyzer" : "lv_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    } },
+                    { "nl" : {
+                        "match" : "*_nl",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "string",
+                            "analyzer" : "nl_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    } },
+                    { "no" : {
+                        "match" : "*_no",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "string",
+                            "analyzer" : "no_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    } },
+                    { "pl" : {
+                        "match" : "*_pl",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "string",
+                            "analyzer" : "pl_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    } },
+                    { "pt" : {
+                        "match" : "*_pt",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "string",
+                            "analyzer" : "pt_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    } },
+                    { "ro" : {
+                        "match" : "*_ro",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "string",
+                            "analyzer" : "ro_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    } },
+                    { "ru" : {
+                        "match" : "*_ru",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "string",
+                            "analyzer" : "ru_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    } },
+                    { "sv" : {
+                        "match" : "*_sv",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "string",
+                            "analyzer" : "sv_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    } },
+                    { "th" : {
+                        "match" : "*_th",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "string",
+                            "analyzer" : "th_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    } },
+                    { "tr" : {
+                        "match" : "*_tr",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "string",
+                            "analyzer" : "tr_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    } },
+                    { "zh" : {
+                        "match" : "*_zh",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "string",
+                            "analyzer" : "zh_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    } },
+                    { "default" : {
+                        "match" : "*_*",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "string",
+                            "analyzer" : "default_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    } }
+                ],
                 "properties" : {
                     "warc_trec_id" : {
                         "type" : "string",
@@ -551,18 +1015,6 @@
                         "index" : "analyzed",
                         "analyzer" : "query_analyzer"
                     },
-                    "title" : {
-                        "type" : "string",
-                        "similarity" : "BM25",
-                        "index" : "analyzed",
-                        "_analyzer" : { "path" : "lang" }
-                    },
-                    "body" : {
-                        "type" : "string",
-                        "similarity" : "BM25",
-                        "index" : "analyzed",
-                        "_analyzer" : { "path" : "lang" }
-                    },
                     "lang" : {
                         "type" : "string",
                         "index" : "not_analyzed"
@@ -570,23 +1022,11 @@
                     "body_length" : {
                         "type" : "long"
                     },
-                    "meta_desc" : {
-                        "type" : "string",
-                        "similarity" : "BM25",
-                        "index" : "analyzed",
-                        "_analyzer" : { "path" : "lang" }
-                    },
                     "meta_keywords" : {
                         "type" : "string",
                         "similarity" : "BM25",
                         "index" : "analyzed",
-                        "_analyzer" : { "path" : "lang" }
-                    },
-                    "anchor_texts" : {
-                        "type" : "string",
-                        "similarity" : "BM25",
-                        "index" : "analyzed",
-                        "_analyzer" : { "path" : "lang" }
+                        "analyzer" : "meta_keyword_analyzer"
                     },
                     "page_rank" : {
                         "type" : "float"
