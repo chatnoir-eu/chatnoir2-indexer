@@ -1011,7 +1011,7 @@
                         "type" : "string",
                         "similarity" : "BM25",
                         "index" : "analyzed",
-                        "analyzer" : "path_analyzer"x
+                        "analyzer" : "path_analyzer"
                     },
                     "warc_target_query_string" : {
                         "type" : "string",
