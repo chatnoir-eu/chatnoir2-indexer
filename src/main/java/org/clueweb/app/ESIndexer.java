@@ -70,51 +70,51 @@ public class ESIndexer extends Configured implements Tool
     public int run(String[] args) throws Exception
     {
         final Options options = new Options();
-        options.addOption(OptionBuilder.
-                withArgName("09 | 12").
+        options.addOption(Option.builder(CLUEWEB_VERSION_INPUT_OPTION[1]).
+                argName("09 | 12").
                 hasArg().
-                withLongOpt(CLUEWEB_VERSION_INPUT_OPTION[0]).
-                withDescription("ClueWeb version").
-                isRequired().
-                create(CLUEWEB_VERSION_INPUT_OPTION[1]));
-        options.addOption(OptionBuilder.
-                withArgName("PATH").
+                longOpt(CLUEWEB_VERSION_INPUT_OPTION[0]).
+                desc("ClueWeb version").
+                required().
+                build());
+        options.addOption(Option.builder(WARC_INPUT_OPTION[1]).
+                argName("PATH").
                 hasArg().
-                withLongOpt(WARC_INPUT_OPTION[0]).
-                withDescription("input path for WARC records").
-                isRequired().
-                create(WARC_INPUT_OPTION[1]));
-        options.addOption(OptionBuilder.
-                withArgName("PATH").
+                longOpt(WARC_INPUT_OPTION[0]).
+                desc("input path for WARC records").
+                required().
+                build());
+        options.addOption(Option.builder(SPAMRANK_INPUT_OPTION[1]).
+                argName("PATH").
                 hasArg().
-                withLongOpt(SPAMRANK_INPUT_OPTION[0]).
-                withDescription("input path for spam ranks").
-                isRequired().
-                create(SPAMRANK_INPUT_OPTION[1]));
-        options.addOption(OptionBuilder.
-                withArgName("PATH").
+                longOpt(SPAMRANK_INPUT_OPTION[0]).
+                desc("input path for spam ranks").
+                required().
+                build());
+        options.addOption(Option.builder(PAGERANK_INPUT_OPTION[1]).
+                argName("PATH").
                 hasArg().
-                withLongOpt(PAGERANK_INPUT_OPTION[0]).
-                withDescription("input path for page ranks").
-                isRequired().
-                create(PAGERANK_INPUT_OPTION[1]));
-        options.addOption(OptionBuilder.
-                withArgName("PATH").
+                longOpt(PAGERANK_INPUT_OPTION[0]).
+                desc("input path for page ranks").
+                required().
+                build());
+        options.addOption(Option.builder(ANCHOR_INPUT_OPTION[1]).
+                argName("PATH").
                 hasArg().
-                withLongOpt(ANCHOR_INPUT_OPTION[0]).
-                withDescription("input path for anchor texts").
-                isRequired().
-                create(ANCHOR_INPUT_OPTION[1]));
-        options.addOption(OptionBuilder.
-                withArgName("NAME").
+                longOpt(ANCHOR_INPUT_OPTION[0]).
+                desc("input path for anchor texts").
+                required().
+                build());
+        options.addOption(Option.builder(INDEX_INPUT_OPTION[1]).
+                argName("NAME").
                 hasArg().
-                withLongOpt(INDEX_INPUT_OPTION[0]).
-                withDescription("index name (default: clueweb[VERSION])").
-                isRequired(false).
-                create(INDEX_INPUT_OPTION[1]));
+                longOpt(INDEX_INPUT_OPTION[0]).
+                desc("index name (default: clueweb[VERSION])").
+                required(false).
+                build());
 
         CommandLine cmdline;
-        final CommandLineParser parser = new GnuParser();
+        final CommandLineParser parser = new DefaultParser();
         try {
             cmdline = parser.parse(options, args);
         } catch (ParseException exp) {
