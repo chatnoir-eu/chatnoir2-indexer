@@ -21,6 +21,7 @@ import org.apache.commons.cli.*;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.BytesWritable;
 import org.apache.hadoop.io.MapWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Counters;
@@ -39,10 +40,9 @@ import org.elasticsearch.hadoop.mr.EsOutputFormat;
 import java.util.Arrays;
 
 /**
- * Elasticsearch Indexer for ClueWeb09/12 using Hadoop MapReduce.
+ * Elasticsearch Indexer for WARC JSON corpora using Hadoop MapReduce.
  *
  * @author Janek Bevendorff
- * @version 1
  */
 public class ESIndexer extends Configured implements Tool
 {

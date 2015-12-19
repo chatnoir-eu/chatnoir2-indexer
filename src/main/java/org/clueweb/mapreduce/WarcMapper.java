@@ -1,172 +1,234 @@
 package org.clueweb.mapreduce;
 
-import org.apache.hadoop.io.LongWritable;
+import com.cybozu.labs.langdetect.Detector;
+import com.cybozu.labs.langdetect.DetectorFactory;
+import com.cybozu.labs.langdetect.LangDetectException;
+import net.htmlparser.jericho.Source;
 import org.apache.hadoop.io.MapWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Counter;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.log4j.Logger;
 import org.clueweb.app.HtmlToPlainText;
-import org.clueweb.warc.ClueWebWarcRecord;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.*;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
- * MapReduce Mapper class for ClueWeb WARC records.
+ * Mapper class for WARC JSON records.
  *
  * @author Janek Bevendorff
- * @version 1
  */
-public class WarcMapper extends Mapper<LongWritable, ClueWebWarcRecord, Text, MapWritable> implements WarcMapReduceBase
+public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements WarcMapReduceBase
 {
     protected static final Logger LOG = Logger.getLogger(WarcMapper.class);
 
-    protected static Counter recordsCounter;
-    protected static Counter tooLargeCounter;
-    protected static Counter tooSmallCounter;
-    protected static Counter tooDeepCounter;
+    protected static Counter RECORDS_COUNTER;
+    protected static Counter PARSE_ERROR_COUNTER;
+    protected static Counter TOO_LARGE_COUNTER;
+    protected static Counter TOO_SMALL_COUNTER;
+    protected static Counter TOO_DEEP_COUNTER;
+    protected static Counter BINARY_COUNTER;
+    protected static Counter LANGDETECT_FAILED_COUNTER;
 
-    protected static final Text WARC_TREC_ID_VALUE = new Text();
-    protected static final Text WARC_INFO_ID_VALUE = new Text();
-    protected static final Text WARC_TARGET_URI_VALUE = new Text();
-    protected static final Text WARC_TARGET_HOSTNAME_VALUE = new Text();
-    protected static final Text WARC_TARGET_PATH_VALUE = new Text();
-    protected static final Text WARC_TARGET_QUERY_VALUE = new Text();
-    protected static final Text TITLE_VALUE = new Text();
-    protected static final Text META_DESC_VALUE = new Text();
-    protected static final Text META_KEYWORDS_VALUE = new Text();
-    protected static final Text BODY_VALUE = new Text();
-    protected static final LongWritable BODY_LENGTH_VALUE = new LongWritable();
-
-    protected static  final HtmlToPlainText HTML_TO_PLAIN_TEXT = new HtmlToPlainText();
+    protected static final HtmlToPlainText HTML_TO_PLAIN_TEXT = new HtmlToPlainText();
 
     @Override
     protected void setup(final Context context) throws IOException, InterruptedException
     {
         super.setup(context);
 
-        recordsCounter  = context.getCounter(RecordCounters.RECORDS);
-        tooLargeCounter = context.getCounter(RecordCounters.SKIPPED_RECORDS_TOO_LARGE);
-        tooSmallCounter = context.getCounter(RecordCounters.SKIPPED_RECORDS_TOO_SMALL);
-        tooDeepCounter  = context.getCounter(RecordCounters.SKIPPED_RECORDS_TOO_DEEP);
+        RECORDS_COUNTER           = context.getCounter(RecordCounters.RECORDS);
+        PARSE_ERROR_COUNTER       = context.getCounter(RecordCounters.SKIPPED_RECORDS_PARSE_ERROR);
+        TOO_LARGE_COUNTER         = context.getCounter(RecordCounters.SKIPPED_RECORDS_TOO_LARGE);
+        TOO_SMALL_COUNTER         = context.getCounter(RecordCounters.SKIPPED_RECORDS_TOO_SMALL);
+        TOO_DEEP_COUNTER          = context.getCounter(RecordCounters.SKIPPED_RECORDS_TOO_DEEP);
+        BINARY_COUNTER            = context.getCounter(RecordCounters.SKIPPED_RECORDS_BINARY);
+        LANGDETECT_FAILED_COUNTER = context.getCounter(RecordCounters.LANGDETECT_FAILED);
 
         // disable Jericho log
         net.htmlparser.jericho.Config.LoggerProvider = net.htmlparser.jericho.LoggerProvider.DISABLED;
+
+        try {
+            // TODO: use correct path
+            DetectorFactory.loadProfile("trunk/profile");
+        } catch (LangDetectException e) {
+            LOG.error("Couldn't load language detection profiles.");
+        }
     }
 
-    public void map(final LongWritable key, final ClueWebWarcRecord value, final Context context) throws IOException, InterruptedException
+    @Override
+    public void map(final Text key, final Text value, final Context context) throws IOException, InterruptedException
     {
-        recordsCounter.increment(1);
-        OUTPUT_DOC.clear();
+        RECORDS_COUNTER.increment(1);
+        final String valueStr = value.toString();
 
-        final String docId = value.getDocid();
-
-        WARC_TREC_ID_VALUE.set(docId);
-
-        LOG.debug(String.format("Mapping document %s", docId));
+        LOG.debug("Mapping document " + key);
 
         // ignore large files
-        if (value.getByteContent().length > 4 * 1024 * 1024) {
-            LOG.warn(String.format("Document %s with size %dbytes skipped (too large)", docId, value.getByteContent().length));
-            tooLargeCounter.increment(1);
+        if (valueStr.getBytes().length > 4 * 1024 * 1024) {
+            LOG.warn("Skipped document " + key + " with size " + valueStr.getBytes().length + "bytes (too large)");
+            TOO_LARGE_COUNTER.increment(1);
             return;
         }
 
-        // WARC headers
-        final Set<Map.Entry<String, String>> headers = value.getHeaderMetadata();
-        for (final Map.Entry<String, String> entry : headers) {
-            final String k = entry.getKey();
-            if (k.equals("WARC-Target-URI")) {
-                WARC_TARGET_URI_VALUE.set(entry.getValue());
-                try {
-                    final URL url = new URL(entry.getValue());
-                    WARC_TARGET_HOSTNAME_VALUE.set(url.getHost());
-                    WARC_TARGET_PATH_VALUE.set(url.getPath());
-                    WARC_TARGET_QUERY_VALUE.set(url.getQuery());
-                } catch (final Exception ignored) { }
-                OUTPUT_DOC.put(WARC_TARGET_URI_KEY, WARC_TARGET_URI_VALUE);
-                OUTPUT_DOC.put(WARC_TARGET_HOSTNAME_KEY, WARC_TARGET_HOSTNAME_VALUE);
-                OUTPUT_DOC.put(WARC_TARGET_HOSTNAME_RAW_KEY, WARC_TARGET_HOSTNAME_VALUE);
-                OUTPUT_DOC.put(WARC_TARGET_PATH_KEY, WARC_TARGET_PATH_VALUE);
-                OUTPUT_DOC.put(WARC_TARGET_QUERY_KEY, WARC_TARGET_QUERY_VALUE);
-            } else if (k.equals("WARC-Warcinfo-ID")) {
-                WARC_INFO_ID_VALUE.set(entry.getValue());
-                OUTPUT_DOC.put(WARC_INFO_ID_KEY, WARC_INFO_ID_VALUE);
-            }
-        }
-
-        net.htmlparser.jericho.Source bodySource = null;
         try {
-            final String rawHTML = value.getContent();
+            OUTPUT_MAP_DOC.clear();
+            final JSONObject inputJson  = new JSONObject(valueStr);
 
-            bodySource                = new net.htmlparser.jericho.Source(rawHTML);
-            /*final Renderer renderer   = getHTMLToTextRenderer(bodySource);
-            final long estimatedSized = renderer.getEstimatedMaximumOutputLength();
-            if (estimatedSized > 20 * 1024 * 1024) {
-                LOG.warn(String.format("Document %s with estimated rendered size of %dbytes skipped", docId, estimatedSized));
-                tooLargeCounter.increment(1);
+            // parse input JSON
+            final JSONObject metadata = inputJson.getJSONObject(INPUT_METADATA_KEY);
+            if (null == metadata) {
+                throw new JSONException("Missing 'metadata'");
+            }
+
+            final JSONObject payload = inputJson.getJSONObject(INPUT_PAYLOAD_KEY);
+            if (null == payload) {
+                throw new JSONException("Missing 'payload'");
+            }
+
+            final JSONObject contentHeaders = payload.getJSONObject(INPUT_PAYLOAD_HEADERS_KEY);
+            final String contentEncoding    = payload.getString(INPUT_PAYLOAD_ENCODING_KEY);
+            final String contentBody        = payload.getString(INPUT_PAYLOAD_BODY_KEY);
+            if (null == contentHeaders || null == contentEncoding || null == contentBody) {
+                throw new JSONException("Missing one of 'payload/[headers|encoding|body]'");
+            }
+
+            if (!contentEncoding.equals("plain")) {
+                BINARY_COUNTER.increment(1);
+                LOG.info("Skipped binary record " + key);
                 return;
+            }
+
+            // process WARC headers
+            Iterator it = metadata.keys();
+            while (it.hasNext()) {
+                final String k = (String) it.next();
+                if (k.equalsIgnoreCase("WARC-Record-ID")) {
+                    WARC_RECORD_ID_VALUE.set(metadata.getString(k));
+                    OUTPUT_MAP_DOC.put(WARC_RECORD_ID_KEY, WARC_RECORD_ID_VALUE);
+                } else if (k.equalsIgnoreCase("WARC-TREC-ID")) {
+                    WARC_TREC_ID_VALUE.set(metadata.getString(k));
+                    OUTPUT_MAP_DOC.put(WARC_TREC_ID_KEY, WARC_TREC_ID_VALUE);
+                } else if (k.equalsIgnoreCase("WARC-Target-URI")) {
+                    try {
+                        final URI targetURI = new URI(metadata.getString(k));
+                        WARC_TARGET_HOSTNAME_VALUE.set(targetURI.getHost());
+                        WARC_TARGET_PATH_VALUE.set(targetURI.getPath());
+                        WARC_TARGET_QUERY_STRING_VALUE.set(targetURI.getQuery());
+
+                        OUTPUT_MAP_DOC.put(WARC_TARGET_HOSTNAME_KEY, WARC_TARGET_HOSTNAME_VALUE);
+                        OUTPUT_MAP_DOC.put(WARC_TARGET_HOSTNAME_RAW_KEY, WARC_TARGET_HOSTNAME_RAW_VALUE);
+                        OUTPUT_MAP_DOC.put(WARC_TARGET_PATH_KEY, WARC_TARGET_PATH_VALUE);
+                        OUTPUT_MAP_DOC.put(WARC_TARGET_QUERY_STRING_KEY, WARC_TARGET_QUERY_STRING_VALUE);
+                    } catch (URISyntaxException ignored) {}
+
+                    WARC_TARGET_URI_VALUE.set(metadata.getString(k));
+                    OUTPUT_MAP_DOC.put(WARC_TARGET_URI_KEY, WARC_TARGET_URI_VALUE);
+                }
+            }
+
+            // process content (HTTP) headers
+            it = contentHeaders.keys();
+            while (it.hasNext()) {
+                final String k = (String) it.next();
+                if (k.equalsIgnoreCase("Content-Type")) {
+                    final String[] splits = contentHeaders.getString(k).split(";");
+                    CONTENT_TYPE_VALUE.set(splits[0].trim());
+                    OUTPUT_MAP_DOC.put(CONTENT_TYPE_KEY, CONTENT_TYPE_VALUE);
+                } else if (k.equalsIgnoreCase("Date")) {
+                    final Calendar c = Calendar.getInstance();
+                    final SimpleDateFormat dfInput  = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
+                    final SimpleDateFormat dfOutput = new SimpleDateFormat("yyyy-MM-ddTHH:mm:ssX");
+                    try {
+                        c.setTime(dfInput.parse(contentHeaders.getString(k)));
+                        DATE_VALUE.set(dfOutput.format(c.getTime()));
+                        OUTPUT_MAP_DOC.put(DATE_KEY, DATE_VALUE);
+                    } catch (ParseException ignored) { }
+                }
+            }
+
+            // create plaintext rendering from content body
+            final Document jsoupDoc = Jsoup.parse(contentBody);
+            final String renderedBody = HTML_TO_PLAIN_TEXT.getPlainText(jsoupDoc);
+            // ignore document if rendered body is too small
+            if (renderedBody.getBytes().length < 50) {
+                LOG.warn("Document " + key + " with size " + renderedBody.getBytes().length + "bytes skipped (too small)");
+                TOO_SMALL_COUNTER.increment(1);
+                return;
+            }
+
+            // language detection
+            String lang = "en";
+            try {
+                final Detector langDetector = DetectorFactory.create();
+                langDetector.append(renderedBody);
+                lang = langDetector.detect().substring(0, 2).toLowerCase();
+            } catch (LangDetectException e) {
+                LOG.warn("Language detection failed for document " + key + ", falling back to " + lang);
+                LANGDETECT_FAILED_COUNTER.increment(1);
+            }
+            LANG_VALUE.set(lang);
+            OUTPUT_MAP_DOC.put(LANG_KEY, LANG_VALUE);
+            /*final URL url            = new URL("http://localhost:9200/_langdetect");
+            final URLConnection conn = url.openConnection();
+            conn.setDoOutput(true);
+            final PrintStream ps = new PrintStream(conn.getOutputStream());
+            ps.print(renderedBody);
+            ps.close();
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            String line;
+            final StringBuilder strBuilder = new StringBuilder();
+            while (null != (line = br.readLine())) {
+                strBuilder.append(line);
+            }
+            br.close();
+
+
+            try {
+                final JSONObject json = new JSONObject(strBuilder.toString());
+                lang = json.getJSONArray("languages").getJSONObject(0).
+                        getString("language").substring(0, 2).toLowerCase();
+            } catch (JSONException e) {
+                LOG.warn("Language detection failed for document " + key + ", falling back to " + lang);
             }*/
 
-            //final String renderedBody = renderer.toString().trim();
-            final Document jsoupDoc = Jsoup.parse(rawHTML);
-            final String renderedBody = HTML_TO_PLAIN_TEXT.getPlainText(jsoupDoc);
+            // add rendered body to output document
+            BODY_LENGTH_VALUE.set(renderedBody.length());
+            BODY_VALUE.set(renderedBody);
+            OUTPUT_MAP_DOC.put(BODY_LENGTH_KEY, BODY_LENGTH_VALUE);
+            OUTPUT_MAP_DOC.put(new Text(BODY_BASE_KEY + LANG_VALUE), BODY_VALUE);
 
-            // ignore if rendered body too small
-            if (value.getByteContent().length < 350) {
-                LOG.warn(String.format("Document %s with size %dbytes skipped (too small)", docId, value.getByteContent().length));
-                tooSmallCounter.increment(1);
-                return;
-            }
-
+            // parse title and meta tags within body source
+            Source bodySource = new Source(contentBody);
             TITLE_VALUE.set(getDocTitle(bodySource, 90));
             META_DESC_VALUE.set(getMetaTagContents(bodySource, "name", "description", 400));
             META_KEYWORDS_VALUE.set(getMetaTagContents(bodySource, "name", "keywords", 400));
-            BODY_VALUE.set(renderedBody);
-            BODY_LENGTH_VALUE.set(renderedBody.length());
 
-            OUTPUT_DOC.put(WARC_TREC_ID_KEY,  WARC_TREC_ID_VALUE);
-            OUTPUT_DOC.put(TITLE_KEY,         TITLE_VALUE);
-            OUTPUT_DOC.put(META_DESC_KEY,     META_DESC_VALUE);
-            OUTPUT_DOC.put(META_KEYWORDS_KEY, META_KEYWORDS_VALUE);
-            OUTPUT_DOC.put(BODY_KEY,          BODY_VALUE);
-            OUTPUT_DOC.put(BODY_LENGTH_KEY,   BODY_LENGTH_VALUE);
-            context.write(WARC_TREC_ID_VALUE, OUTPUT_DOC);
-        } catch (final StackOverflowError ex) {
+            OUTPUT_MAP_DOC.put(new Text(TITLE_BASE_KEY + LANG_VALUE),     TITLE_VALUE);
+            OUTPUT_MAP_DOC.put(new Text(META_BASE_DESC_KEY + LANG_VALUE), META_DESC_VALUE);
+            OUTPUT_MAP_DOC.put(META_KEYWORDS_KEY,                         META_KEYWORDS_VALUE);
+
+            // write final document to context
+            context.write(WARC_TREC_ID_VALUE, OUTPUT_MAP_DOC);
+        } catch (StackOverflowError e) {
             // HTML too deeply nested
-            if (null == bodySource) {
-                LOG.warn(String.format("Document %s with deep nesting level skipped", docId));
-            } else {
-                LOG.warn(String.format("Document %s with approximate nesting level of %d skipped", docId, bodySource.getMaxDepthIndicator()));
-            }
-            tooDeepCounter.increment(1);
+            LOG.warn("Document " + key + " with deep HTML tag nesting level skipped");
+            TOO_DEEP_COUNTER.increment(1);
+        } catch (JSONException e) {
+            LOG.warn("Document " + key + " skipped due to JSON parsing error: " + e.getMessage());
+            PARSE_ERROR_COUNTER.increment(1);
         }
     }
-
-    /**
-     * Configure and return a Renderer for a Source document.
-     *
-     * @param source Jericho Source object
-     * @return configured Renderer
-     */
-    /*private Renderer getHTMLToTextRenderer(final Source source)
-    {
-        return source.
-                getRenderer().
-                setIncludeHyperlinkURLs(false).
-                setTableCellSeparator("").
-                setHRLineLength(0).
-                setMaxLineLength(600).
-                setNewLine("\n").
-                setBlockIndentSize(0).
-                setListIndentSize(0);
-    }*/
 
     /**
      * Get title from source document.
@@ -175,7 +237,7 @@ public class WarcMapper extends Mapper<LongWritable, ClueWebWarcRecord, Text, Ma
      * @param maxLength maximum length of content to return, content that is longer will be truncated
      * @return document title
      */
-    private String getDocTitle(final net.htmlparser.jericho.Source source, final int maxLength)
+    private String getDocTitle(final Source source, final int maxLength)
     {
         String title = "";
         try {
@@ -212,7 +274,7 @@ public class WarcMapper extends Mapper<LongWritable, ClueWebWarcRecord, Text, Ma
      * @param maxLength maximum length of content to return, content that is longer will be truncated (-1 for no limit)
      * @return meta tag contents, empty string of none found
      */
-    private String getMetaTagContents(final net.htmlparser.jericho.Source source, final String type, final String what, final int maxLength)
+    private String getMetaTagContents(final Source source, final String type, final String what, final int maxLength)
     {
         String metaTagContents = "";
 

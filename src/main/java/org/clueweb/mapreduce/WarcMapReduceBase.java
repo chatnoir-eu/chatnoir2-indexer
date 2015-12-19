@@ -3,37 +3,59 @@ package org.clueweb.mapreduce;
 import org.apache.hadoop.io.*;
 
 /**
- * Base interface for Warc mappers and reducers.
+ * Base interface for Warc JSON mappers and reducers.
  *
  * @author Janek Bevendorff
- * @version 1
  */
 public interface WarcMapReduceBase
 {
+    String INPUT_METADATA_KEY         = "metadata";
+    String INPUT_PAYLOAD_KEY          = "payload";
+    String INPUT_PAYLOAD_BODY_KEY     = "body";
+    String INPUT_PAYLOAD_HEADERS_KEY  = "headers";
+    String INPUT_PAYLOAD_ENCODING_KEY = "encoding";
+
     Text WARC_TREC_ID_KEY             = new Text("warc_trec_id");
-    Text WARC_INFO_ID_KEY             = new Text("warc_info_id");
+    Text WARC_RECORD_ID_KEY           = new Text("warc_record_id");
     Text WARC_TARGET_URI_KEY          = new Text("warc_target_uri");
     Text WARC_TARGET_HOSTNAME_KEY     = new Text("warc_target_hostname");
     Text WARC_TARGET_HOSTNAME_RAW_KEY = new Text("warc_target_hostname_raw");
     Text WARC_TARGET_PATH_KEY         = new Text("warc_target_path");
-    Text WARC_TARGET_QUERY_KEY        = new Text("warc_target_query");
-    Text LANG_KEY                     = new Text("lang");
-    Text TITLE_KEY                    = new Text("title");
-    Text META_DESC_KEY                = new Text("meta_desc");
+    Text WARC_TARGET_QUERY_STRING_KEY = new Text("warc_target_query_string");
+    Text CONTENT_TYPE_KEY             = new Text("content_type");
     Text META_KEYWORDS_KEY            = new Text("meta_keywords");
-    Text BODY_KEY                     = new Text("body");
-    Text BODY_LENGTH_KEY              = new Text("body_length");
+    Text LANG_KEY                     = new Text("lang");
+    Text DATE_KEY                     = new Text("date");
     Text SPAM_RANK_KEY                = new Text("spam_rank");
     Text PAGE_RANK_KEY                = new Text("page_rank");
     Text ANCHOR_TEXTS_KEY             = new Text("anchor_texts");
+    Text BODY_LENGTH_KEY              = new Text("body_length");
 
-    MapWritable OUTPUT_DOC = new MapWritable();
+    String TITLE_BASE_KEY     = "title_lang_";
+    String META_BASE_DESC_KEY = "meta_desc_lang_";
+    String BODY_BASE_KEY      = "body_lang_";
 
-    Text EMPTY_TEXT                      = new Text();
-    LongWritable EMPTY_LONG_WRITABLE     = new LongWritable(0);
-    LongWritable NEUTRAL_LONG_WRITABLE   = new LongWritable(1);
-    FloatWritable NEUTRAL_FLOAT_WRITABLE = new FloatWritable(1.0f);
-    ArrayWritable EMPTY_ARRAY_WRITABLE   = new ArrayWritable(new String[0]);
+    Text WARC_TREC_ID_VALUE             = new Text();
+    Text WARC_RECORD_ID_VALUE           = new Text();
+    Text WARC_TARGET_URI_VALUE          = new Text();
+    Text WARC_TARGET_HOSTNAME_VALUE     = new Text();
+    Text WARC_TARGET_HOSTNAME_RAW_VALUE = new Text();
+    Text WARC_TARGET_PATH_VALUE         = new Text();
+    Text WARC_TARGET_QUERY_STRING_VALUE = new Text();
+    Text CONTENT_TYPE_VALUE             = new Text();
+    Text META_KEYWORDS_VALUE            = new Text();
+    Text LANG_VALUE                     = new Text();
+    Text DATE_VALUE                     = new Text();
+    Text TITLE_VALUE                    = new Text();
+    Text META_DESC_VALUE                = new Text();
+    Text BODY_VALUE                     = new Text();
+    LongWritable BODY_LENGTH_VALUE      = new LongWritable();
+    IntWritable SPAM_RANK_VALUE         = new IntWritable();
+    DoubleWritable PAGE_RANK_VALUE      = new DoubleWritable();
+    ArrayWritable ANCHOR_TEXTS_VALUE    = new ArrayWritable(new String[]{});
+
+    MapWritable OUTPUT_MAP_DOC    = new MapWritable();
+    BytesWritable OUTPUT_JSON_DOC = new BytesWritable();
 
     /**
      * MapReduce counters.
@@ -43,6 +65,11 @@ public interface WarcMapReduceBase
          * Total records read.
          */
         RECORDS,
+
+        /**
+         * Number of skipped records due to JSON parse errors.
+         */
+        SKIPPED_RECORDS_PARSE_ERROR,
 
         /**
          * Number of skipped records that are too large.
@@ -58,6 +85,16 @@ public interface WarcMapReduceBase
          * Number of skipped records that are too deeply nested.
          */
         SKIPPED_RECORDS_TOO_DEEP,
+
+        /**
+         * Number of skipped binary records.
+         */
+        SKIPPED_RECORDS_BINARY,
+
+        /**
+         * Number documents for which language detection failed.
+         */
+        LANGDETECT_FAILED,
 
         /**
          * Number of actual JSON docs generated.

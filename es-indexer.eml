@@ -17,6 +17,9 @@
 	<lib name="Gradle: net.htmlparser.jericho:jericho-html:3.4" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.htmlparser.jericho/jericho-html/3.4/969370443c1ddfc5b13fc3f4cbe3d207ebf05e96/jericho-html-3.4-sources.jar!/"/>
 	</lib>
+	<lib name="Gradle: com.cybozu.labs:langdetect:1.1-20120112" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.cybozu.labs/langdetect/1.1-20120112/fe689e6307dbb4ec050fcea222867fdd36f42ecc/langdetect-1.1-20120112-sources.jar!/"/>
+	</lib>
 	<lib name="Gradle: org.jsoup:jsoup:1.8.3" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jsoup/jsoup/1.8.3/17b6b6cb133d73e13e2e1f3550f90d4e23451b10/jsoup-1.8.3-sources.jar!/"/>
 	</lib>
@@ -424,6 +427,9 @@
 	</lib>
 	<lib name="Gradle: org.apache.hive.shims:hive-shims-scheduler:1.2.1" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.hive.shims/hive-shims-scheduler/1.2.1/9b4e2067413becf7966dcfd1ffb942c480a84a36/hive-shims-scheduler-1.2.1-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: net.arnx:jsonic:1.2.7" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.arnx/jsonic/1.2.7/f18e22269ea3c174290814301b505509ca3b2993/jsonic-1.2.7-sources.jar!/"/>
 	</lib>
 	<levels>
 		<level name="Gradle: xmlenc:xmlenc:0.52" value="project"/>

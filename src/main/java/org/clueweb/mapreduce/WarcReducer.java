@@ -72,30 +72,6 @@ public class WarcReducer extends Reducer<Text, MapWritable, NullWritable, MapWri
         // only write record if there is content
         final String content = OUTPUT_DOC.get(BODY_KEY).toString().trim();
         if (!content.isEmpty()) {
-            // language detection
-            final URL url            = new URL("http://localhost:9200/_langdetect");
-            final URLConnection conn = url.openConnection();
-            conn.setDoOutput(true);
-            final PrintStream ps = new PrintStream(conn.getOutputStream());
-            ps.print(content);
-            ps.close();
-
-            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            String line;
-            final StringBuilder strBuilder = new StringBuilder();
-            while (null != (line = br.readLine())) {
-                strBuilder.append(line);
-            }
-            br.close();
-
-            final JSONObject json;
-            try {
-                json = new JSONObject(strBuilder.toString());
-                LANG_VALUE.set(json.getJSONArray("languages").getJSONObject(0).getString("language"));
-            } catch (JSONException e) {
-                LANG_VALUE.set("en");
-                LOG.warn(String.format("JSON error: %s%nOriginal JSON string was: %s", e.getMessage(), strBuilder.toString()));
-            }
             OUTPUT_DOC.put(LANG_KEY, LANG_VALUE);
 
             context.write(NullWritable.get(), OUTPUT_DOC);
