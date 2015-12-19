@@ -57,8 +57,8 @@ public class ESIndexer extends Configured implements Tool
     /**
      * Run this tool.
      */
-    @Override @SuppressWarnings("static-access")
-    public int run(String[] args) throws Exception
+    @Override
+    public int run(final String[] args) throws Exception
     {
         final Options options = new Options();
         options.addOption(Option.builder(INDEX_INPUT_OPTION[1]).
@@ -177,7 +177,7 @@ public class ESIndexer extends Configured implements Tool
     /**
      * Dispatches command-line arguments to the tool via the <code>ToolRunner</code>.
      */
-    public static void main(String[] args) throws Exception
+    public static void main(final String[] args) throws Exception
     {
         LOG.info("Running " + ESIndexer.class.getSimpleName() + " with args "
                 + Arrays.toString(args));
