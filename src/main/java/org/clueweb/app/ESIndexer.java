@@ -48,11 +48,11 @@ public class ESIndexer extends Configured implements Tool
 {
     private static final Logger LOG = Logger.getLogger(ESIndexer.class);
 
-    public static final String[] SEQFILE_INPUT_OPTION = { "sequence-files",  "f" };
-    public static final String[] SPAMRANK_INPUT_OPTION = { "spamranks",       "s" };
-    public static final String[] PAGERANK_INPUT_OPTION = { "pageranks",       "p" };
-    public static final String[] ANCHOR_INPUT_OPTION   = { "anchortexts",     "a" };
-    public static final String[] INDEX_INPUT_OPTION    = { "index",           "i" };
+    public static final String[] SEQFILE_INPUT_OPTION  = { "sequence-files", "f" };
+    public static final String[] SPAMRANK_INPUT_OPTION = { "spamranks",      "s" };
+    public static final String[] PAGERANK_INPUT_OPTION = { "pageranks",      "p" };
+    public static final String[] ANCHOR_INPUT_OPTION   = { "anchortexts",    "a" };
+    public static final String[] INDEX_INPUT_OPTION    = { "index",          "i" };
 
     /**
      * Run this tool.
@@ -109,7 +109,6 @@ public class ESIndexer extends Configured implements Tool
             return -1;
         }
 
-        // clueweb version and input paths
         final String indexName        = cmdline.getOptionValue(INDEX_INPUT_OPTION[0]);
         final String seqFileInputPath = cmdline.getOptionValue(SEQFILE_INPUT_OPTION[0]);
         final String inputSpamRanks   = cmdline.getOptionValue(SPAMRANK_INPUT_OPTION[0]);
@@ -121,7 +120,7 @@ public class ESIndexer extends Configured implements Tool
         LOG.info(" - seqfiles:  "  + seqFileInputPath);
         LOG.info(" - spamranks: "  + (null != inputSpamRanks ? inputSpamRanks : "[none]"));
         LOG.info(" - pageranks: "  + (null != inputPageRanks ? inputPageRanks : "[none]"));
-        LOG.info(" - anchors:   "  + (null != inputAnchors ? inputAnchors : "[none]"));
+        LOG.info(" - anchors:   "  + (null != inputAnchors   ? inputAnchors : "[none]"));
 
         // configure Hadoop for Elasticsearch
         final Configuration conf = getConf();
