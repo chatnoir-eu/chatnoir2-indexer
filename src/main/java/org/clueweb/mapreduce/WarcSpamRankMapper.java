@@ -8,12 +8,12 @@ import org.apache.hadoop.mapreduce.Mapper;
 import java.io.IOException;
 
 /**
- * MapReduce Mapper class for ClueWeb Spam rankings.
+ * MapReduce Mapper class for Spam rankings.
  *
  * @author Janek Bevendorff
  * @version 1
  */
-public class ClueWebSpamRankMapper extends Mapper<LongWritable, Text, Text, MapWritable> implements ClueWebMapReduceBase
+public class WarcSpamRankMapper extends Mapper<LongWritable, Text, Text, MapWritable> implements WarcMapReduceBase
 {
     protected static final Text WARC_TREC_ID = new Text();
     protected static final LongWritable SPAM_RANK_VALUE = new LongWritable();

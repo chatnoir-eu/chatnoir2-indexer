@@ -4,7 +4,6 @@ import org.apache.hadoop.io.*;
 import org.apache.hadoop.mapreduce.Counter;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.log4j.Logger;
-import org.clueweb.app.ESIndexer;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
@@ -15,17 +14,16 @@ import java.io.PrintStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.Set;
 
 /**
- * Reducer for aggregating ClueWeb MapWritables.
+ * Reducer for aggregating generating JSON docs which are sent to ElasticSearch.
  *
  * @author Janek Bevendorff
  * @version 1
  */
-public class CluewebMapReducer extends Reducer<Text, MapWritable, NullWritable, MapWritable> implements ClueWebMapReduceBase
+public class WarcReducer extends Reducer<Text, MapWritable, NullWritable, MapWritable> implements WarcMapReduceBase
 {
-    protected static final Logger LOG = Logger.getLogger(CluewebMapReducer.class);
+    protected static final Logger LOG = Logger.getLogger(WarcReducer.class);
 
     protected static Counter generatedCounter;
     protected static Counter emptyCounter;
@@ -75,7 +73,7 @@ public class CluewebMapReducer extends Reducer<Text, MapWritable, NullWritable, 
         final String content = OUTPUT_DOC.get(BODY_KEY).toString().trim();
         if (!content.isEmpty()) {
             // language detection
-            final URL url            = new URL(String.format("http://%s/_langdetect", ESIndexer.getTargetHost()));
+            final URL url            = new URL("http://localhost:9200/_langdetect");
             final URLConnection conn = url.openConnection();
             conn.setDoOutput(true);
             final PrintStream ps = new PrintStream(conn.getOutputStream());

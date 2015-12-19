@@ -10,12 +10,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * MapReduce Mapper class for ClueWeb Spam rankings.
+ * MapReduce Mapper class for Spam rankings.
  *
  * @author Janek Bevendorff
  * @version 1
  */
-public class ClueWebAnchorMapper extends Mapper<LongWritable, Text, Text, MapWritable> implements ClueWebMapReduceBase
+public class WarcAnchorMapper extends Mapper<LongWritable, Text, Text, MapWritable> implements WarcMapReduceBase
 {
     /**
      * Cut anchor texts after MAX_LENGTH characters.

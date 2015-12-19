@@ -9,12 +9,12 @@ import org.apache.hadoop.mapreduce.Mapper;
 import java.io.IOException;
 
 /**
- * MapReduce Mapper class for ClueWeb page ranks.
+ * MapReduce Mapper class for page ranks.
  *
  * @author Janek Bevendorff
  * @version 1
  */
-public class ClueWebPageRankMapper extends Mapper<LongWritable, Text, Text, MapWritable> implements ClueWebMapReduceBase
+public class WarcPageRankMapper extends Mapper<LongWritable, Text, Text, MapWritable> implements WarcMapReduceBase
 {
     protected static final Text WARC_TREC_ID = new Text();
     protected static final FloatWritable PAGE_RANK_VALUE = new FloatWritable();

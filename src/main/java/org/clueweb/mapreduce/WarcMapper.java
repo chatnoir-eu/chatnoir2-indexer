@@ -23,15 +23,14 @@ import java.util.Set;
  * @author Janek Bevendorff
  * @version 1
  */
-public class ClueWebWarcMapper extends Mapper<LongWritable, ClueWebWarcRecord, Text, MapWritable> implements ClueWebMapReduceBase
+public class WarcMapper extends Mapper<LongWritable, ClueWebWarcRecord, Text, MapWritable> implements WarcMapReduceBase
 {
-    protected static final Logger LOG = Logger.getLogger(ClueWebWarcMapper.class);
+    protected static final Logger LOG = Logger.getLogger(WarcMapper.class);
 
     protected static Counter recordsCounter;
     protected static Counter tooLargeCounter;
     protected static Counter tooSmallCounter;
     protected static Counter tooDeepCounter;
-    protected static Counter nullIdCounter;
 
     protected static final Text WARC_TREC_ID_VALUE = new Text();
     protected static final Text WARC_INFO_ID_VALUE = new Text();
@@ -56,7 +55,6 @@ public class ClueWebWarcMapper extends Mapper<LongWritable, ClueWebWarcRecord, T
         tooLargeCounter = context.getCounter(RecordCounters.SKIPPED_RECORDS_TOO_LARGE);
         tooSmallCounter = context.getCounter(RecordCounters.SKIPPED_RECORDS_TOO_SMALL);
         tooDeepCounter  = context.getCounter(RecordCounters.SKIPPED_RECORDS_TOO_DEEP);
-        nullIdCounter   = context.getCounter(RecordCounters.SKIPPED_RECORDS_NULL_ID);
 
         // disable Jericho log
         net.htmlparser.jericho.Config.LoggerProvider = net.htmlparser.jericho.LoggerProvider.DISABLED;
@@ -69,11 +67,6 @@ public class ClueWebWarcMapper extends Mapper<LongWritable, ClueWebWarcRecord, T
 
         final String docId = value.getDocid();
 
-        if (null == docId) {
-            LOG.warn(String.format("Skipped document #%d with null ID", key.get()));
-            nullIdCounter.increment(1);
-            return;
-        }
         WARC_TREC_ID_VALUE.set(docId);
 
         LOG.debug(String.format("Mapping document %s", docId));

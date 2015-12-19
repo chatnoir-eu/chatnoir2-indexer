@@ -26,19 +26,17 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Counters;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.MultipleInputs;
+import org.apache.hadoop.mapreduce.lib.input.SequenceFileInputFormat;
 import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 import org.apache.log4j.Logger;
 
 import org.clueweb.mapreduce.*;
-import org.clueweb.clueweb09.mapreduce.ClueWeb09InputFormat;
-import org.clueweb.clueweb12.mapreduce.ClueWeb12InputFormat;
 
 import org.elasticsearch.hadoop.mr.EsOutputFormat;
 
 import java.util.Arrays;
-import java.util.UUID;
 
 /**
  * Elasticsearch Indexer for ClueWeb09/12 using Hadoop MapReduce.
@@ -50,18 +48,11 @@ public class ESIndexer extends Configured implements Tool
 {
     private static final Logger LOG = Logger.getLogger(ESIndexer.class);
 
-    public static final String[] CLUEWEB_VERSION_INPUT_OPTION  = { "version",     "v" };
-    public static final String[] WARC_INPUT_OPTION             = { "warcs",       "w" };
-    public static final String[] SPAMRANK_INPUT_OPTION         = { "spamranks",   "s" };
-    public static final String[] PAGERANK_INPUT_OPTION         = { "pageranks",   "p" };
-    public static final String[] ANCHOR_INPUT_OPTION           = { "anchortexts", "a" };
-    public static final String[] INDEX_INPUT_OPTION            = { "index",       "i" };
-
-    private static String mTargetHost = "betaweb020.medien.uni-weimar.de:9200";
-
-    public static String getTargetHost() {
-        return mTargetHost;
-    }
+    public static final String[] SEQFILE_INPUT_OPTION = { "sequence-files",  "f" };
+    public static final String[] SPAMRANK_INPUT_OPTION = { "spamranks",       "s" };
+    public static final String[] PAGERANK_INPUT_OPTION = { "pageranks",       "p" };
+    public static final String[] ANCHOR_INPUT_OPTION   = { "anchortexts",     "a" };
+    public static final String[] INDEX_INPUT_OPTION    = { "index",           "i" };
 
     /**
      * Run this tool.
@@ -70,18 +61,18 @@ public class ESIndexer extends Configured implements Tool
     public int run(String[] args) throws Exception
     {
         final Options options = new Options();
-        options.addOption(Option.builder(CLUEWEB_VERSION_INPUT_OPTION[1]).
-                argName("09 | 12").
+        options.addOption(Option.builder(INDEX_INPUT_OPTION[1]).
+                argName("NAME").
                 hasArg().
-                longOpt(CLUEWEB_VERSION_INPUT_OPTION[0]).
-                desc("ClueWeb version").
+                longOpt(INDEX_INPUT_OPTION[0]).
+                desc("index name").
                 required().
                 build());
-        options.addOption(Option.builder(WARC_INPUT_OPTION[1]).
-                argName("PATH").
+        options.addOption(Option.builder(SEQFILE_INPUT_OPTION[1]).
+                argName("GLOB").
                 hasArg().
-                longOpt(WARC_INPUT_OPTION[0]).
-                desc("input path for WARC records").
+                longOpt(SEQFILE_INPUT_OPTION[0]).
+                desc("input Mapfiles").
                 required().
                 build());
         options.addOption(Option.builder(SPAMRANK_INPUT_OPTION[1]).
@@ -89,27 +80,20 @@ public class ESIndexer extends Configured implements Tool
                 hasArg().
                 longOpt(SPAMRANK_INPUT_OPTION[0]).
                 desc("input path for spam ranks").
-                required().
+                required(false).
                 build());
         options.addOption(Option.builder(PAGERANK_INPUT_OPTION[1]).
                 argName("PATH").
                 hasArg().
                 longOpt(PAGERANK_INPUT_OPTION[0]).
                 desc("input path for page ranks").
-                required().
+                required(false).
                 build());
         options.addOption(Option.builder(ANCHOR_INPUT_OPTION[1]).
                 argName("PATH").
                 hasArg().
                 longOpt(ANCHOR_INPUT_OPTION[0]).
                 desc("input path for anchor texts").
-                required().
-                build());
-        options.addOption(Option.builder(INDEX_INPUT_OPTION[1]).
-                argName("NAME").
-                hasArg().
-                longOpt(INDEX_INPUT_OPTION[0]).
-                desc("index name (default: clueweb[VERSION])").
                 required(false).
                 build());
 
@@ -126,24 +110,18 @@ public class ESIndexer extends Configured implements Tool
         }
 
         // clueweb version and input paths
-        final String clueWebVersion = cmdline.getOptionValue(CLUEWEB_VERSION_INPUT_OPTION[0]);
-        final String inputWarc      = cmdline.getOptionValue(WARC_INPUT_OPTION[0]);
-        final String inputSpamRanks = cmdline.getOptionValue(SPAMRANK_INPUT_OPTION[0]);
-        final String inputPageRanks = cmdline.getOptionValue(PAGERANK_INPUT_OPTION[0]);
-        final String inputAnchors   = cmdline.getOptionValue(ANCHOR_INPUT_OPTION[0]);
-        final String indexName      = null != cmdline.getOptionValue(INDEX_INPUT_OPTION[0]) ?
-                cmdline.getOptionValue(INDEX_INPUT_OPTION[0]) : String.format("webis_clueweb%s", clueWebVersion);
+        final String indexName        = cmdline.getOptionValue(INDEX_INPUT_OPTION[0]);
+        final String seqFileInputPath = cmdline.getOptionValue(SEQFILE_INPUT_OPTION[0]);
+        final String inputSpamRanks   = cmdline.getOptionValue(SPAMRANK_INPUT_OPTION[0]);
+        final String inputPageRanks   = cmdline.getOptionValue(PAGERANK_INPUT_OPTION[0]);
+        final String inputAnchors     = cmdline.getOptionValue(ANCHOR_INPUT_OPTION[0]);
 
-        if (!clueWebVersion.equals("09") && !clueWebVersion.equals("12")) {
-            HelpFormatter formatter = new HelpFormatter();
-            formatter.printHelp(this.getClass().getSimpleName(), options);
-            ToolRunner.printGenericCommandUsage(System.out);
-            System.err.println("Argument error: ClueWeb version must be either 09 or 12.");
-            return -1;
-        }
-
-        LOG.info("Tool name: " + ESIndexer.class.getSimpleName());
-        LOG.info(" - input: "  + inputWarc);
+        LOG.info("Tool name:    " + ESIndexer.class.getSimpleName());
+        LOG.info(" - index:     "  + indexName);
+        LOG.info(" - seqfiles:  "  + seqFileInputPath);
+        LOG.info(" - spamranks: "  + (null != inputSpamRanks ? inputSpamRanks : "[none]"));
+        LOG.info(" - pageranks: "  + (null != inputPageRanks ? inputPageRanks : "[none]"));
+        LOG.info(" - anchors:   "  + (null != inputAnchors ? inputAnchors : "[none]"));
 
         // configure Hadoop for Elasticsearch
         final Configuration conf = getConf();
@@ -153,9 +131,8 @@ public class ESIndexer extends Configured implements Tool
         conf.setBoolean("mapred.map.tasks.speculative.execution", false);
         conf.setBoolean("mapred.reduce.tasks.speculative.execution", false);
 
-        conf.set("es.nodes",                   mTargetHost = conf.get("es.nodes", mTargetHost));
         conf.set("es.resource",                conf.get("es.resource", String.format("%s/warcrecord", indexName)));
-        conf.set("es.input.json",              "false");
+        conf.set("es.input.json",              "true");
         conf.set("es.index.auto.create",       "yes");
         conf.set("es.http.timeout",            "5m");
         conf.set("es.http.retries",            "50");
@@ -165,36 +142,33 @@ public class ESIndexer extends Configured implements Tool
         conf.set("es.batch.write.refresh",     "false");
 
         final Job job = Job.getInstance(conf);
-        job.setJobName(String.format("clueweb%s-esindex-%s", clueWebVersion, UUID.randomUUID()));
+        job.setJobName("es-index-" + indexName);
         job.setJarByClass(ESIndexer.class);
         job.setOutputFormatClass(EsOutputFormat.class);
         job.setMapOutputKeyClass(Text.class);
         job.setMapOutputValueClass(MapWritable.class);
-        job.setReducerClass(CluewebMapReducer.class);
+        job.setReducerClass(WarcReducer.class);
 
         // add input formats for input paths
-        if (clueWebVersion.equals("09")) {
-            MultipleInputs.addInputPath(job, new Path(inputWarc), ClueWeb09InputFormat.class, ClueWebWarcMapper.class);
-        } else {
-            MultipleInputs.addInputPath(job, new Path(inputWarc), ClueWeb12InputFormat.class, ClueWebWarcMapper.class);
-        }
-        MultipleInputs.addInputPath(job, new Path(inputSpamRanks), TextInputFormat.class, ClueWebSpamRankMapper.class);
-        MultipleInputs.addInputPath(job, new Path(inputPageRanks), TextInputFormat.class, ClueWebPageRankMapper.class);
-        MultipleInputs.addInputPath(job, new Path(inputAnchors),   TextInputFormat.class, ClueWebAnchorMapper.class);
+        MultipleInputs.addInputPath(job, new Path(seqFileInputPath), SequenceFileInputFormat.class, WarcMapper.class);
+        if (null != inputSpamRanks)
+            MultipleInputs.addInputPath(job, new Path(inputSpamRanks), TextInputFormat.class, WarcSpamRankMapper.class);
+        if (null != inputPageRanks)
+            MultipleInputs.addInputPath(job, new Path(inputPageRanks), TextInputFormat.class, WarcPageRankMapper.class);
+        if (null != inputAnchors)
+            MultipleInputs.addInputPath(job, new Path(inputAnchors),   TextInputFormat.class, WarcAnchorMapper.class);
 
         job.waitForCompletion(true);
 
         final Counters counters       = job.getCounters();
-        final long numDocs            = counters.findCounter(ClueWebMapReduceBase.RecordCounters.RECORDS).getValue();
-        final long numSkippedTooLarge = counters.findCounter(ClueWebMapReduceBase.RecordCounters.SKIPPED_RECORDS_TOO_LARGE).getValue();
-        final long numSkippedTooDeep  = counters.findCounter(ClueWebMapReduceBase.RecordCounters.SKIPPED_RECORDS_TOO_DEEP).getValue();
-        final long numSkippedNullId   = counters.findCounter(ClueWebMapReduceBase.RecordCounters.SKIPPED_RECORDS_NULL_ID).getValue();
-        final long numGenerated       = counters.findCounter(ClueWebMapReduceBase.RecordCounters.GENERATED_DOCS).getValue();
-        final long numEmptyContent    = counters.findCounter(ClueWebMapReduceBase.RecordCounters.NO_CONTENT).getValue();
+        final long numDocs            = counters.findCounter(WarcMapReduceBase.RecordCounters.RECORDS).getValue();
+        final long numSkippedTooLarge = counters.findCounter(WarcMapReduceBase.RecordCounters.SKIPPED_RECORDS_TOO_LARGE).getValue();
+        final long numSkippedTooDeep  = counters.findCounter(WarcMapReduceBase.RecordCounters.SKIPPED_RECORDS_TOO_DEEP).getValue();
+        final long numGenerated       = counters.findCounter(WarcMapReduceBase.RecordCounters.GENERATED_DOCS).getValue();
+        final long numEmptyContent    = counters.findCounter(WarcMapReduceBase.RecordCounters.NO_CONTENT).getValue();
         LOG.info(String.format("Read %d records total.", numDocs));
         LOG.info(String.format("Skipped %d oversized records.", numSkippedTooLarge));
         LOG.info(String.format("Skipped %d too deeply nested records.", numSkippedTooDeep));
-        LOG.info(String.format("Skipped %d records with null ID.", numSkippedNullId));
         LOG.info(String.format("Generated %d JSON documents.", numGenerated));
         LOG.info(String.format("Skipped %d documents due to no or empty plain-text content.", numEmptyContent));
 

@@ -3,12 +3,12 @@ package org.clueweb.mapreduce;
 import org.apache.hadoop.io.*;
 
 /**
- * Base interface for ClueWeb mappers and reducers.
+ * Base interface for Warc mappers and reducers.
  *
  * @author Janek Bevendorff
  * @version 1
  */
-public interface ClueWebMapReduceBase
+public interface WarcMapReduceBase
 {
     Text WARC_TREC_ID_KEY             = new Text("warc_trec_id");
     Text WARC_INFO_ID_KEY             = new Text("warc_info_id");
@@ -43,11 +43,6 @@ public interface ClueWebMapReduceBase
          * Total records read.
          */
         RECORDS,
-
-        /**
-         * Number of skipped records due to null ID.
-         */
-        SKIPPED_RECORDS_NULL_ID,
 
         /**
          * Number of skipped records that are too large.
