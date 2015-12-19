@@ -120,7 +120,7 @@ public class ESIndexer extends Configured implements Tool
         LOG.info(" - seqfiles:  "  + seqFileInputPath);
         LOG.info(" - spamranks: "  + (null != inputSpamRanks ? inputSpamRanks : "[none]"));
         LOG.info(" - pageranks: "  + (null != inputPageRanks ? inputPageRanks : "[none]"));
-        LOG.info(" - anchors:   "  + (null != inputAnchors   ? inputAnchors : "[none]"));
+        LOG.info(" - anchors:   "  + (null != inputAnchors   ? inputAnchors   : "[none]"));
 
         // configure Hadoop for Elasticsearch
         final Configuration conf = getConf();
