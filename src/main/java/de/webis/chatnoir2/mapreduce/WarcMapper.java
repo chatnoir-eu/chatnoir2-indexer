@@ -20,6 +20,7 @@ package de.webis.chatnoir2.mapreduce;
 import de.webis.chatnoir2.util.HtmlToPlainText;
 import de.webis.chatnoir2.util.LangDetector;
 import net.htmlparser.jericho.Source;
+import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.MapWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Counter;
@@ -29,14 +30,9 @@ import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.*;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -146,9 +142,9 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
                 } else if (k.equalsIgnoreCase("WARC-Target-URI")) {
                     try {
                         final URI targetURI = new URI(metadata.getString(k));
-                        WARC_TARGET_HOSTNAME_VALUE.set(targetURI.getHost());
-                        WARC_TARGET_PATH_VALUE.set(targetURI.getPath());
-                        WARC_TARGET_QUERY_STRING_VALUE.set(targetURI.getQuery());
+                        WARC_TARGET_HOSTNAME_VALUE.set(null != targetURI.getHost() ? targetURI.getHost() : "");
+                        WARC_TARGET_PATH_VALUE.set(null != targetURI.getPath() ? targetURI.getPath() : "");
+                        WARC_TARGET_QUERY_STRING_VALUE.set(null != targetURI.getQuery() ? targetURI.getQuery() : "");
 
                         OUTPUT_MAP_DOC.put(WARC_TARGET_HOSTNAME_KEY, WARC_TARGET_HOSTNAME_VALUE);
                         OUTPUT_MAP_DOC.put(WARC_TARGET_HOSTNAME_RAW_KEY, WARC_TARGET_HOSTNAME_RAW_VALUE);

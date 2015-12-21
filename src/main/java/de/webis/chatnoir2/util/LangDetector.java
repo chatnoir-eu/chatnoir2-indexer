@@ -53,9 +53,8 @@ public class LangDetector
      *
      * @param str the string whose language to detect
      * @return detected ISO language code
-     * @throws IOException if language detection fails
      */
-    public String detect(final String str) throws IOException
+    public String detect(final String str)
     {
         return detect(str, "en");
     }
@@ -67,9 +66,8 @@ public class LangDetector
      * @param str the string whose language to detect
      * @param defaultLang default fallback language ISO code
      * @return detected ISO language code
-     * @throws IOException if language detection fails
      */
-    public String detect(final String str, final String defaultLang) throws IOException
+    public String detect(final String str, final String defaultLang)
     {
         /*final TextObject textObject;
         if (300 > renderedBody.length()) {
@@ -85,27 +83,26 @@ public class LangDetector
         }*/
 
         String lang = defaultLang;
-
-        final URL url            = new URL("http://localhost:9200/_langdetect");
-        final URLConnection conn = url.openConnection();
-        conn.setDoOutput(true);
-        final PrintStream ps = new PrintStream(conn.getOutputStream());
-        ps.print(str);
-        ps.close();
-
-        BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-        String line;
-        final StringBuilder strBuilder = new StringBuilder();
-        while (null != (line = br.readLine())) {
-            strBuilder.append(line);
-        }
-        br.close();
-
         try {
+            final URL url            = new URL("http://localhost:9200/_langdetect");
+            final URLConnection conn = url.openConnection();
+            conn.setDoOutput(true);
+            final PrintStream ps = new PrintStream(conn.getOutputStream());
+            ps.print(str);
+            ps.close();
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            String line;
+            final StringBuilder strBuilder = new StringBuilder();
+            while (null != (line = br.readLine())) {
+                strBuilder.append(line);
+            }
+            br.close();
+
             final JSONObject json = new JSONObject(strBuilder.toString());
             lang = json.getJSONArray("languages").getJSONObject(0).
                     getString("language").substring(0, 2).toLowerCase();
-        } catch (JSONException ignored) { }
+        } catch (JSONException | IOException ignored) { }
 
         return lang;
     }

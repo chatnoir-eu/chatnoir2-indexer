@@ -190,7 +190,7 @@ public class ESIndexer extends Configured implements Tool
         if (null != inputPageRanks)
             MultipleInputs.addInputPath(job, new Path(inputPageRanks), TextInputFormat.class, WarcPageRankMapper.class);
         if (null != inputAnchors)
-            MultipleInputs.addInputPath(job, new Path(inputAnchors),   TextInputFormat.class, WarcAnchorMapper.class);
+            MultipleInputs.addInputPath(job, new Path(inputAnchors), TextInputFormat.class, WarcAnchorMapper.class);
 
         job.waitForCompletion(true);
 
