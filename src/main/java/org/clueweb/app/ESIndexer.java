@@ -56,10 +56,11 @@ public class ESIndexer extends Configured implements Tool
     /**
      * Run this tool.
      */
+    @SuppressWarnings("static-access")
     @Override
     public int run(final String[] args) throws Exception
     {
-        final Options options = new Options();
+        /*final Options options = new Options();
         options.addOption(Option.builder(INDEX_INPUT_OPTION[1]).
                 argName("NAME").
                 hasArg().
@@ -94,10 +95,47 @@ public class ESIndexer extends Configured implements Tool
                 longOpt(ANCHOR_INPUT_OPTION[0]).
                 desc("input path for anchor texts").
                 required(false).
-                build());
+                build());*/
+
+        final Options options = new Options();
+        options.addOption(OptionBuilder.
+                withArgName("NAME").
+                hasArg().
+                withLongOpt(INDEX_INPUT_OPTION[0]).
+                withDescription("index name").
+                isRequired().
+                create(INDEX_INPUT_OPTION[1]));
+        options.addOption(OptionBuilder.
+                withArgName("GLOB").
+                hasArg().
+                withLongOpt(SEQFILE_INPUT_OPTION[0]).
+                withDescription("input Mapfiles").
+                isRequired().
+                create(SEQFILE_INPUT_OPTION[1]));
+        options.addOption(OptionBuilder.
+                withArgName("PATH").
+                hasArg().
+                withLongOpt(SPAMRANK_INPUT_OPTION[0]).
+                withDescription("input path for spam ranks").
+                isRequired(false).
+                create(SPAMRANK_INPUT_OPTION[1]));
+        options.addOption(OptionBuilder.
+                withArgName("PATH").
+                hasArg().
+                withLongOpt(PAGERANK_INPUT_OPTION[0]).
+                withDescription("input path for page ranks").
+                isRequired(false).
+                create(PAGERANK_INPUT_OPTION[1]));
+        options.addOption(OptionBuilder.
+                withArgName("PATH").
+                hasArg().
+                withLongOpt(ANCHOR_INPUT_OPTION[0]).
+                withDescription("input path for anchor texts").
+                isRequired(false).
+                create(ANCHOR_INPUT_OPTION[1]));
 
         CommandLine cmdline;
-        final CommandLineParser parser = new DefaultParser();
+        final CommandLineParser parser = new GnuParser();
         try {
             cmdline = parser.parse(options, args);
         } catch (ParseException exp) {
