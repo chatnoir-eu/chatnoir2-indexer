@@ -193,7 +193,7 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
                 lang = LANGUAGE_DETECTOR.detect(renderedBody);
             } catch (IOException e) {
                 lang = "en";
-                LOG.warn("Language detection for document " + key + "failed, falling back to en");
+                LOG.warn("Language detection for document " + key + " failed, falling back to en");
                 LANGDETECT_FAILED_COUNTER.increment(1);
             }
             LANG_VALUE.set(lang);

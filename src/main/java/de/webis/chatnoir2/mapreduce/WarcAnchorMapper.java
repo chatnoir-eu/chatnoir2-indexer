@@ -72,7 +72,7 @@ public class WarcAnchorMapper extends Mapper<LongWritable, Text, Text, MapWritab
                 lang = LANGUAGE_DETECTOR.detect(anchorValue);
             } catch (IOException e) {
                 lang = "en";
-                LOG.warn("Language detection for document " + key + "failed, falling back to en");
+                LOG.warn("Language detection for anchor text for document " + key + "failed, falling back to en");
             }
 
             MAPREDUCE_KEY.set(recordId);
