@@ -17,23 +17,13 @@
 
 package de.webis.chatnoir2.mapreduce;
 
-import com.google.common.base.Optional;
-import com.optimaize.langdetect.LanguageDetector;
-import com.optimaize.langdetect.LanguageDetectorBuilder;
-import com.optimaize.langdetect.i18n.LdLocale;
-import com.optimaize.langdetect.ngram.NgramExtractors;
-import com.optimaize.langdetect.profiles.LanguageProfile;
-import com.optimaize.langdetect.profiles.LanguageProfileReader;
-import com.optimaize.langdetect.text.CommonTextObjectFactories;
-import com.optimaize.langdetect.text.TextObject;
-import com.optimaize.langdetect.text.TextObjectFactory;
+import de.webis.chatnoir2.util.LangDetector;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.MapWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -51,8 +41,7 @@ public class WarcAnchorMapper extends Mapper<LongWritable, Text, Text, MapWritab
 
     protected static Pattern REGEX;
 
-    protected static LanguageDetector LANGUAGE_DETECTOR   = null;
-    protected static TextObjectFactory SHORT_TEXT_FACTORY = null;
+    protected static LangDetector LANGUAGE_DETECTOR = null;
 
     @Override
     protected void setup(final Context context) throws IOException
@@ -60,10 +49,7 @@ public class WarcAnchorMapper extends Mapper<LongWritable, Text, Text, MapWritab
         REGEX = Pattern.compile("(clueweb\\d{2}-\\w{2}\\d{4}-\\d{2}-\\d{5})\\s+(.*)");
 
         if (null == LANGUAGE_DETECTOR) {
-            final List<LanguageProfile> languageProfiles = new LanguageProfileReader().readAllBuiltIn();
-            LANGUAGE_DETECTOR = LanguageDetectorBuilder.create(NgramExtractors.standard()).
-                    withProfiles(languageProfiles).build();
-            SHORT_TEXT_FACTORY = CommonTextObjectFactories.forDetectingShortCleanText();
+            LANGUAGE_DETECTOR = new LangDetector();
         }
     }
 
@@ -81,14 +67,7 @@ public class WarcAnchorMapper extends Mapper<LongWritable, Text, Text, MapWritab
             }
 
             // language detection
-            String lang = "en";
-            final TextObject textObject = SHORT_TEXT_FACTORY.forText(anchorValue);
-            final Optional<LdLocale> langOpt = LANGUAGE_DETECTOR.detect(textObject);
-            if (langOpt.isPresent()) {
-                lang = langOpt.get().getLanguage().substring(0, 2).toLowerCase();
-            } else {
-                LOG.warn("Language detection failed for anchor text for document " + key + ", falling back to " + lang);
-            }
+            final String lang = LANGUAGE_DETECTOR.detect(anchorValue);
 
             MAPREDUCE_KEY.set(recordId);
             ANCHOR_TEXT_VALUE.set(anchorValue);

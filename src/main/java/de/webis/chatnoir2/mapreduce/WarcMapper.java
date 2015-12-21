@@ -17,17 +17,8 @@
 
 package de.webis.chatnoir2.mapreduce;
 
-import com.google.common.base.Optional;
-import com.optimaize.langdetect.LanguageDetector;
-import com.optimaize.langdetect.LanguageDetectorBuilder;
-import com.optimaize.langdetect.i18n.LdLocale;
-import com.optimaize.langdetect.ngram.NgramExtractors;
-import com.optimaize.langdetect.profiles.LanguageProfile;
-import com.optimaize.langdetect.profiles.LanguageProfileReader;
-import com.optimaize.langdetect.text.CommonTextObjectFactories;
-import com.optimaize.langdetect.text.TextObject;
-import com.optimaize.langdetect.text.TextObjectFactory;
 import de.webis.chatnoir2.util.HtmlToPlainText;
+import de.webis.chatnoir2.util.LangDetector;
 import net.htmlparser.jericho.Source;
 import org.apache.hadoop.io.MapWritable;
 import org.apache.hadoop.io.Text;
@@ -38,9 +29,14 @@ import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.*;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -62,9 +58,7 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
 
     protected static final HtmlToPlainText HTML_TO_PLAIN_TEXT = new HtmlToPlainText();
 
-    protected static LanguageDetector LANGUAGE_DETECTOR   = null;
-    protected static TextObjectFactory SHORT_TEXT_FACTORY = null;
-    protected static TextObjectFactory LONG_TEXT_FACTORY  = null;
+    protected static LangDetector LANGUAGE_DETECTOR = null;
 
     @Override
     protected void setup(final Context context) throws IOException, InterruptedException
@@ -83,11 +77,7 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
         net.htmlparser.jericho.Config.LoggerProvider = net.htmlparser.jericho.LoggerProvider.DISABLED;
 
         if (null == LANGUAGE_DETECTOR) {
-            final List<LanguageProfile> languageProfiles = new LanguageProfileReader().readAllBuiltIn();
-            LANGUAGE_DETECTOR = LanguageDetectorBuilder.create(NgramExtractors.standard()).
-                    withProfiles(languageProfiles).build();
-            SHORT_TEXT_FACTORY = CommonTextObjectFactories.forDetectingShortCleanText();
-            LONG_TEXT_FACTORY  = CommonTextObjectFactories.forDetectingOnLargeText();
+            LANGUAGE_DETECTOR = new LangDetector();
         }
     }
 
@@ -202,44 +192,9 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
             }
 
             // language detection
-            String lang = "en";
-            final TextObject textObject;
-            if (300 > renderedBody.length()) {
-                textObject = SHORT_TEXT_FACTORY.forText(renderedBody);
-            } else {
-                textObject = LONG_TEXT_FACTORY.forText(renderedBody);
-            }
-            final Optional<LdLocale> langOpt = LANGUAGE_DETECTOR.detect(textObject);
-            if (langOpt.isPresent()) {
-                lang = langOpt.get().getLanguage().substring(0, 2).toLowerCase();
-            } else {
-                LOG.warn("Language detection failed for document " + key + ", falling back to " + lang);
-            }
+            final String lang = LANGUAGE_DETECTOR.detect(renderedBody);
             LANG_VALUE.set(lang);
             OUTPUT_MAP_DOC.put(LANG_KEY, LANG_VALUE);
-            /*final URL url            = new URL("http://localhost:9200/_langdetect");
-            final URLConnection conn = url.openConnection();
-            conn.setDoOutput(true);
-            final PrintStream ps = new PrintStream(conn.getOutputStream());
-            ps.print(renderedBody);
-            ps.close();
-
-            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            String line;
-            final StringBuilder strBuilder = new StringBuilder();
-            while (null != (line = br.readLine())) {
-                strBuilder.append(line);
-            }
-            br.close();
-
-
-            try {
-                final JSONObject json = new JSONObject(strBuilder.toString());
-                lang = json.getJSONArray("languages").getJSONObject(0).
-                        getString("language").substring(0, 2).toLowerCase();
-            } catch (JSONException e) {
-                LOG.warn("Language detection failed for document " + key + ", falling back to " + lang);
-            }*/
 
             // add rendered body to output document
             BODY_LENGTH_VALUE.set(renderedBody.length());

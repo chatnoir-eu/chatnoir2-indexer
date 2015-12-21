@@ -26,6 +26,7 @@ import org.apache.hadoop.io.MapWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Counters;
 import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.MRJobConfig;
 import org.apache.hadoop.mapreduce.lib.input.MultipleInputs;
 import org.apache.hadoop.mapreduce.lib.input.SequenceFileInputFormat;
 import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
@@ -161,10 +162,8 @@ public class ESIndexer extends Configured implements Tool
         // configure Hadoop for Elasticsearch
         final Configuration conf = getConf();
 
-        conf.setBoolean("mapreduce.map.speculative", false);
-        conf.setBoolean("mapreduce.reduce.speculative", false);
-        conf.setBoolean("mapred.map.tasks.speculative.execution", false);
-        conf.setBoolean("mapred.reduce.tasks.speculative.execution", false);
+        conf.setBoolean(MRJobConfig.MAP_SPECULATIVE,    false);
+        conf.setBoolean(MRJobConfig.REDUCE_SPECULATIVE, false);
 
         conf.set("es.resource",                conf.get("es.resource", String.format("%s/warcrecord", indexName)));
         conf.set("es.input.json",              "true");

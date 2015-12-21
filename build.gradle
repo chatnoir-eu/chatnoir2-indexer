@@ -11,11 +11,15 @@ repositories {
     mavenCentral()
 }
 
+configurations {
+    all*.exclude group: "org.slf4j", module: "slf4j-log4j12"
+    all*.exclude group: "log4j", module: "log4j"
+}
+
 dependencies {
     //compile 'org.apache.hadoop:hadoop-client:2.7.1'
     //compile 'org.elasticsearch:elasticsearch:2.1.0'
     compile 'org.elasticsearch:elasticsearch-hadoop:2.1.2'
     compile 'net.htmlparser.jericho:jericho-html:3.4'
     compile 'org.jsoup:jsoup:1.8.3'
-    compile 'com.optimaize.languagedetector:language-detector:0.5'
 }
