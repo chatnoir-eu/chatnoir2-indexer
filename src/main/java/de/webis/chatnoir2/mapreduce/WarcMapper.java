@@ -188,7 +188,14 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
             }
 
             // language detection
-            final String lang = LANGUAGE_DETECTOR.detect(renderedBody);
+            String lang;
+            try {
+                lang = LANGUAGE_DETECTOR.detect(renderedBody);
+            } catch (IOException e) {
+                lang = "en";
+                LOG.warn("Language detection for document " + key + "failed, falling back to en");
+                LANGDETECT_FAILED_COUNTER.increment(1);
+            }
             LANG_VALUE.set(lang);
             OUTPUT_MAP_DOC.put(LANG_KEY, LANG_VALUE);
 
