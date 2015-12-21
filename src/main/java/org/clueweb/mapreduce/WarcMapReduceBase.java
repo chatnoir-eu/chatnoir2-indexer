@@ -1,6 +1,7 @@
 package org.clueweb.mapreduce;
 
 import org.apache.hadoop.io.*;
+import org.apache.log4j.Logger;
 
 /**
  * Base interface for Warc JSON mappers and reducers.
@@ -9,6 +10,8 @@ import org.apache.hadoop.io.*;
  */
 public interface WarcMapReduceBase
 {
+    Logger LOG = Logger.getLogger(WarcMapper.class);
+
     String INPUT_METADATA_KEY         = "metadata";
     String INPUT_PAYLOAD_KEY          = "payload";
     String INPUT_PAYLOAD_BODY_KEY     = "body";
@@ -28,12 +31,14 @@ public interface WarcMapReduceBase
     Text DATE_KEY                     = new Text("date");
     Text SPAM_RANK_KEY                = new Text("spam_rank");
     Text PAGE_RANK_KEY                = new Text("page_rank");
-    Text ANCHOR_TEXTS_KEY             = new Text("anchor_texts");
     Text BODY_LENGTH_KEY              = new Text("body_length");
 
-    String TITLE_BASE_KEY     = "title_lang_";
-    String META_BASE_DESC_KEY = "meta_desc_lang_";
-    String BODY_BASE_KEY      = "body_lang_";
+    String TITLE_BASE_KEY        = "title_lang_";
+    String META_BASE_DESC_KEY    = "meta_desc_lang_";
+    String BODY_BASE_KEY         = "body_lang_";
+    String ANCHOR_TEXTS_BASE_KEY = "anchor_texts_lang_";
+
+    Text MAPREDUCE_KEY = new Text();
 
     Text WARC_TREC_ID_VALUE             = new Text();
     Text WARC_RECORD_ID_VALUE           = new Text();
@@ -49,10 +54,10 @@ public interface WarcMapReduceBase
     Text TITLE_VALUE                    = new Text();
     Text META_DESC_VALUE                = new Text();
     Text BODY_VALUE                     = new Text();
+    Text ANCHOR_TEXT_VALUE              = new Text();
     LongWritable BODY_LENGTH_VALUE      = new LongWritable();
-    IntWritable SPAM_RANK_VALUE         = new IntWritable();
+    LongWritable SPAM_RANK_VALUE        = new LongWritable();
     DoubleWritable PAGE_RANK_VALUE      = new DoubleWritable();
-    ArrayWritable ANCHOR_TEXTS_VALUE    = new ArrayWritable(new String[]{});
 
     MapWritable OUTPUT_MAP_DOC    = new MapWritable();
     BytesWritable OUTPUT_JSON_DOC = new BytesWritable();

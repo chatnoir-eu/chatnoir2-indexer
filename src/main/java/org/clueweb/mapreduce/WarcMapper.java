@@ -1,8 +1,15 @@
 package org.clueweb.mapreduce;
 
-import com.cybozu.labs.langdetect.Detector;
-import com.cybozu.labs.langdetect.DetectorFactory;
-import com.cybozu.labs.langdetect.LangDetectException;
+import com.google.common.base.Optional;
+import com.optimaize.langdetect.LanguageDetector;
+import com.optimaize.langdetect.LanguageDetectorBuilder;
+import com.optimaize.langdetect.i18n.LdLocale;
+import com.optimaize.langdetect.ngram.NgramExtractors;
+import com.optimaize.langdetect.profiles.LanguageProfile;
+import com.optimaize.langdetect.profiles.LanguageProfileReader;
+import com.optimaize.langdetect.text.CommonTextObjectFactories;
+import com.optimaize.langdetect.text.TextObject;
+import com.optimaize.langdetect.text.TextObjectFactory;
 import net.htmlparser.jericho.Source;
 import org.apache.hadoop.io.MapWritable;
 import org.apache.hadoop.io.Text;
@@ -29,8 +36,6 @@ import java.util.*;
  */
 public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements WarcMapReduceBase
 {
-    protected static final Logger LOG = Logger.getLogger(WarcMapper.class);
-
     protected static Counter RECORDS_COUNTER;
     protected static Counter PARSE_ERROR_COUNTER;
     protected static Counter TOO_LARGE_COUNTER;
@@ -40,6 +45,10 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
     protected static Counter LANGDETECT_FAILED_COUNTER;
 
     protected static final HtmlToPlainText HTML_TO_PLAIN_TEXT = new HtmlToPlainText();
+
+    protected static LanguageDetector LANGUAGE_DETECTOR   = null;
+    protected static TextObjectFactory SHORT_TEXT_FACTORY = null;
+    protected static TextObjectFactory LONG_TEXT_FACTORY  = null;
 
     @Override
     protected void setup(final Context context) throws IOException, InterruptedException
@@ -57,11 +66,12 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
         // disable Jericho log
         net.htmlparser.jericho.Config.LoggerProvider = net.htmlparser.jericho.LoggerProvider.DISABLED;
 
-        try {
-            // TODO: use correct path
-            DetectorFactory.loadProfile("trunk/profile");
-        } catch (LangDetectException e) {
-            LOG.error("Couldn't load language detection profiles.");
+        if (null == LANGUAGE_DETECTOR) {
+            final List<LanguageProfile> languageProfiles = new LanguageProfileReader().readAllBuiltIn();
+            LANGUAGE_DETECTOR = LanguageDetectorBuilder.create(NgramExtractors.standard()).
+                    withProfiles(languageProfiles).build();
+            SHORT_TEXT_FACTORY = CommonTextObjectFactories.forDetectingShortCleanText();
+            LONG_TEXT_FACTORY  = CommonTextObjectFactories.forDetectingOnLargeText();
         }
     }
 
@@ -81,6 +91,7 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
         }
 
         try {
+            MAPREDUCE_KEY.clear();
             OUTPUT_MAP_DOC.clear();
             final JSONObject inputJson  = new JSONObject(valueStr);
 
@@ -113,11 +124,19 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
             while (it.hasNext()) {
                 final String k = (String) it.next();
                 if (k.equalsIgnoreCase("WARC-Record-ID")) {
-                    WARC_RECORD_ID_VALUE.set(metadata.getString(k));
+                    final String recordId = metadata.getString(k);
+                    WARC_RECORD_ID_VALUE.set(recordId);
                     OUTPUT_MAP_DOC.put(WARC_RECORD_ID_KEY, WARC_RECORD_ID_VALUE);
+                    if (0 == MAPREDUCE_KEY.getLength()) {
+                        MAPREDUCE_KEY.set(recordId);
+                    }
                 } else if (k.equalsIgnoreCase("WARC-TREC-ID")) {
-                    WARC_TREC_ID_VALUE.set(metadata.getString(k));
+                    final String trecId = metadata.getString(k);
+                    WARC_TREC_ID_VALUE.set(trecId);
                     OUTPUT_MAP_DOC.put(WARC_TREC_ID_KEY, WARC_TREC_ID_VALUE);
+                    if (trecId.startsWith("clueweb")) {
+                        MAPREDUCE_KEY.set(trecId);
+                    }
                 } else if (k.equalsIgnoreCase("WARC-Target-URI")) {
                     try {
                         final URI targetURI = new URI(metadata.getString(k));
@@ -147,7 +166,7 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
                 } else if (k.equalsIgnoreCase("Date")) {
                     final Calendar c = Calendar.getInstance();
                     final SimpleDateFormat dfInput  = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
-                    final SimpleDateFormat dfOutput = new SimpleDateFormat("yyyy-MM-ddTHH:mm:ssX");
+                    final SimpleDateFormat dfOutput = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
                     try {
                         c.setTime(dfInput.parse(contentHeaders.getString(k)));
                         DATE_VALUE.set(dfOutput.format(c.getTime()));
@@ -168,13 +187,17 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
 
             // language detection
             String lang = "en";
-            try {
-                final Detector langDetector = DetectorFactory.create();
-                langDetector.append(renderedBody);
-                lang = langDetector.detect().substring(0, 2).toLowerCase();
-            } catch (LangDetectException e) {
+            final TextObject textObject;
+            if (300 > renderedBody.length()) {
+                textObject = SHORT_TEXT_FACTORY.forText(renderedBody);
+            } else {
+                textObject = LONG_TEXT_FACTORY.forText(renderedBody);
+            }
+            final Optional<LdLocale> langOpt = LANGUAGE_DETECTOR.detect(textObject);
+            if (langOpt.isPresent()) {
+                lang = langOpt.get().getLanguage().substring(0, 2).toLowerCase();
+            } else {
                 LOG.warn("Language detection failed for document " + key + ", falling back to " + lang);
-                LANGDETECT_FAILED_COUNTER.increment(1);
             }
             LANG_VALUE.set(lang);
             OUTPUT_MAP_DOC.put(LANG_KEY, LANG_VALUE);
@@ -219,7 +242,7 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
             OUTPUT_MAP_DOC.put(META_KEYWORDS_KEY,                         META_KEYWORDS_VALUE);
 
             // write final document to context
-            context.write(WARC_TREC_ID_VALUE, OUTPUT_MAP_DOC);
+            context.write(MAPREDUCE_KEY, OUTPUT_MAP_DOC);
         } catch (StackOverflowError e) {
             // HTML too deeply nested
             LOG.warn("Document " + key + " with deep HTML tag nesting level skipped");
