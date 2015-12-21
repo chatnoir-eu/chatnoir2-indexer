@@ -15,7 +15,7 @@
  * permissions and limitations under the License.
  */
 
-package org.clueweb.mapreduce;
+package de.webis.chatnoir2.mapreduce;
 
 import com.google.common.base.Optional;
 import com.optimaize.langdetect.LanguageDetector;
@@ -27,12 +27,12 @@ import com.optimaize.langdetect.profiles.LanguageProfileReader;
 import com.optimaize.langdetect.text.CommonTextObjectFactories;
 import com.optimaize.langdetect.text.TextObject;
 import com.optimaize.langdetect.text.TextObjectFactory;
+import de.webis.chatnoir2.util.HtmlToPlainText;
 import net.htmlparser.jericho.Source;
 import org.apache.hadoop.io.MapWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Counter;
 import org.apache.hadoop.mapreduce.Mapper;
-import org.clueweb.util.HtmlToPlainText;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;

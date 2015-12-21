@@ -15,7 +15,7 @@
  * permissions and limitations under the License.
  */
 
-package org.clueweb.mapreduce;
+package de.webis.chatnoir2.mapreduce;
 
 import org.apache.hadoop.io.*;
 import org.apache.hadoop.mapreduce.Counter;

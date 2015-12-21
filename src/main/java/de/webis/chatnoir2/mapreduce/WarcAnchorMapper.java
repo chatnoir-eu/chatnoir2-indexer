@@ -15,7 +15,7 @@
  * permissions and limitations under the License.
  */
 
-package org.clueweb.mapreduce;
+package de.webis.chatnoir2.mapreduce;
 
 import com.google.common.base.Optional;
 import com.optimaize.langdetect.LanguageDetector;

@@ -15,7 +15,7 @@
  * permissions and limitations under the License.
  */
 
-package org.clueweb.mapreduce;
+package de.webis.chatnoir2.mapreduce;
 
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.MapWritable;
@@ -25,22 +25,22 @@ import org.apache.hadoop.mapreduce.Mapper;
 import java.io.IOException;
 
 /**
- * MapReduce Mapper class for Spam rankings.
+ * MapReduce Mapper class for page ranks.
  *
  * @author Janek Bevendorff
  */
-public class WarcSpamRankMapper extends Mapper<LongWritable, Text, Text, MapWritable> implements WarcMapReduceBase
+public class WarcPageRankMapper extends Mapper<LongWritable, Text, Text, MapWritable> implements WarcMapReduceBase
 {
     @Override
     public void map(final LongWritable key, final Text value, final Context context) throws IOException, InterruptedException
     {
         final String[] parts = value.toString().split("\\s+");
 
-        MAPREDUCE_KEY.set(parts[1]);
-        SPAM_RANK_VALUE.set(Long.valueOf(parts[0]));
+        MAPREDUCE_KEY.set(parts[0]);
+        PAGE_RANK_VALUE.set(Double.valueOf(parts[1]));
 
         OUTPUT_MAP_DOC.clear();
-        OUTPUT_MAP_DOC.put(SPAM_RANK_KEY, SPAM_RANK_VALUE);
+        OUTPUT_MAP_DOC.put(PAGE_RANK_KEY, PAGE_RANK_VALUE);
         context.write(MAPREDUCE_KEY, OUTPUT_MAP_DOC);
     }
 }

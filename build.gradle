@@ -16,6 +16,6 @@ dependencies {
     //compile 'org.elasticsearch:elasticsearch:2.1.0'
     compile 'org.elasticsearch:elasticsearch-hadoop:2.1.2'
     compile 'net.htmlparser.jericho:jericho-html:3.4'
-    compile 'com.optimaize.languagedetector:language-detector:0.5'
     compile 'org.jsoup:jsoup:1.8.3'
+    compile 'com.optimaize.languagedetector:language-detector:0.5'
 }

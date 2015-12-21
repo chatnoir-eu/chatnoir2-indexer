@@ -15,7 +15,7 @@
  * permissions and limitations under the License.
  */
 
-package org.clueweb.util;
+package de.webis.chatnoir2.util;
 
 import org.jsoup.helper.StringUtil;
 import org.jsoup.nodes.Element;

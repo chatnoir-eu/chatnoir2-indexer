@@ -14,11 +14,11 @@
 	<lib name="Gradle: net.htmlparser.jericho:jericho-html:3.4" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.htmlparser.jericho/jericho-html/3.4/969370443c1ddfc5b13fc3f4cbe3d207ebf05e96/jericho-html-3.4-sources.jar!/"/>
 	</lib>
-	<lib name="Gradle: com.optimaize.languagedetector:language-detector:0.5" scope="COMPILE">
-		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.optimaize.languagedetector/language-detector/0.5/e3ea842fb1f4ce00c32d329681c666e8f49aaa61/language-detector-0.5-sources.jar!/"/>
-	</lib>
 	<lib name="Gradle: org.jsoup:jsoup:1.8.3" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jsoup/jsoup/1.8.3/17b6b6cb133d73e13e2e1f3550f90d4e23451b10/jsoup-1.8.3-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: com.optimaize.languagedetector:language-detector:0.5" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.optimaize.languagedetector/language-detector/0.5/e3ea842fb1f4ce00c32d329681c666e8f49aaa61/language-detector-0.5-sources.jar!/"/>
 	</lib>
 	<lib name="Gradle: com.google.guava:guava:16.0.1" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/16.0.1/2477d012cd5379f9696e0d9d3ccc62ad13a09ca4/guava-16.0.1-sources.jar!/"/>
@@ -26,8 +26,56 @@
 	<lib name="Gradle: commons-cli:commons-cli:1.2" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/commons-cli/commons-cli/1.2/6c5459816530a1962ac18cd315cc775b1b384329/commons-cli-1.2-sources.jar!/"/>
 	</lib>
+	<lib name="Gradle: commons-logging:commons-logging:1.1.3" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/commons-logging/commons-logging/1.1.3/28bb0405fddaf04f15058fbfbe01fe2780d7d3b6/commons-logging-1.1.3-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: commons-codec:commons-codec:1.6" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/commons-codec/commons-codec/1.6/61e9f9d11fe3e12ec62f633006e99d75fd7f19c8/commons-codec-1.6-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: commons-httpclient:commons-httpclient:3.1" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/commons-httpclient/commons-httpclient/3.1/c6d6ea83d0cf16d3ed9c1b7e600fa0f60b9d3159/commons-httpclient-3.1-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: org.mortbay.jetty:jetty-util:6.1.26" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mortbay.jetty/jetty-util/6.1.26/ca704dfc9e26567bd69ee3f065a1337fa6d296f/jetty-util-6.1.26-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: org.mortbay.jetty:servlet-api:2.5-20081211" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mortbay.jetty/servlet-api/2.5-20081211/b0b7c1931bcdbeb25c2aa4aec14d7b979b53dc51/servlet-api-2.5-20081211-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: org.mortbay.jetty:jetty:6.1.26" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mortbay.jetty/jetty/6.1.26/9e275882f6d3400b05674c79e97014a255dfaf43/jetty-6.1.26-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: org.mortbay.jetty:servlet-api-2.5:6.1.14" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mortbay.jetty/servlet-api-2.5/6.1.14/19bf7c8cf3b67563414aeeb462c143a9748795d4/servlet-api-2.5-6.1.14-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: org.mortbay.jetty:jsp-api-2.1:6.1.14" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mortbay.jetty/jsp-api-2.1/6.1.14/66b48b3eae1a16ae47f3d3abf27f64a0818f7462/jsp-api-2.1-6.1.14-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: ant:ant:1.6.5" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/ant/ant/1.6.5/9e0a847494563f35f9b02846a1c1eb4aa2ee5a9a/ant-1.6.5-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: org.mortbay.jetty:jsp-2.1:6.1.14" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mortbay.jetty/jsp-2.1/6.1.14/191e377d51c184744db940a578cfadadda02de7a/jsp-2.1-6.1.14-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: commons-el:commons-el:1.0" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/commons-el/commons-el/1.0/fd3913ea5d63d0aed104f3665ab99ae5352d6b8e/commons-el-1.0-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: net.java.dev.jets3t:jets3t:0.7.1" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.java.dev.jets3t/jets3t/0.7.1/1f14497d3b31b46e33252071a87e32b2e6d6be1/jets3t-0.7.1-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: junit:junit:4.8.1" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/junit/junit/4.8.1/2a699fa5026aef66411ed1f57be2af0b541f8990/junit-4.8.1-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: oro:oro:2.0.8" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/oro/oro/2.0.8/3598e790ecd76ff7eb249853d4d00822ae1a5e71/oro-2.0.8-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: org.antlr:stringtemplate:3.2.1" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.antlr/stringtemplate/3.2.1/105785687b0c85a7f70cddfdc3a391bcab121872/stringtemplate-3.2.1-sources.jar!/"/>
+	</lib>
 	<lib name="Gradle: org.antlr:antlr-runtime:3.4" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.antlr/antlr-runtime/3.4/57a73190ad97f56c0cb83a6a5b6c08d5d428319b/antlr-runtime-3.4-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: org.antlr:ST4:4.0.4" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.antlr/ST4/4.0.4/e13c7f5f536ad6cabfa5de628fcb93910531a293/ST4-4.0.4-sources.jar!/"/>
 	</lib>
 	<lib name="Gradle: dk.brics.automaton:automaton:1.11-8" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/dk.brics.automaton/automaton/1.11-8/6bc89a2a9c9c5524aa275b572c0fd3699ff7a5be/automaton-1.11-8-sources.jar!/"/>
@@ -38,17 +86,38 @@
 	<lib name="Gradle: jline:jline:2.12" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/jline/jline/2.12/acb005a73638f26f85504bbeba42e9861e8f9d9f/jline-2.12-sources.jar!/"/>
 	</lib>
+	<lib name="Gradle: commons-net:commons-net:3.1" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/commons-net/commons-net/3.1/8cc516e03d35ecf8f4ca71511f7961f1a9339820/commons-net-3.1-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: org.codehaus.jackson:jackson-core-asl:1.9.13" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.codehaus.jackson/jackson-core-asl/1.9.13/6ed53c5ce78344e14296aa47769d67b10e1c7b2c/jackson-core-asl-1.9.13-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: org.codehaus.jackson:jackson-mapper-asl:1.9.13" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.codehaus.jackson/jackson-mapper-asl/1.9.13/83113901bc2a377d698ccea35ad842786f37c6ad/jackson-mapper-asl-1.9.13-sources.jar!/"/>
+	</lib>
 	<lib name="Gradle: org.xerial.snappy:snappy-java:1.1.1.7" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.xerial.snappy/snappy-java/1.1.1.7/99ad611939e0d2c5d539fe09fb97f761824f5137/snappy-java-1.1.1.7-sources.jar!/"/>
 	</lib>
+	<lib name="Gradle: org.tukaani:xz:1.0" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.tukaani/xz/1.0/f95e32a5d2dd8da643c4419814415b9704312993/xz-1.0-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: org.apache.commons:commons-compress:1.4.1" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-compress/1.4.1/277d39267403965a7a192474794a29bac6760a25/commons-compress-1.4.1-sources.jar!/"/>
+	</lib>
 	<lib name="Gradle: org.slf4j:slf4j-api:1.7.10" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/1.7.10/4d2725efe68b9943ba0deaf334bb27116ca6b687/slf4j-api-1.7.10-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: com.thoughtworks.paranamer:paranamer:2.6" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.thoughtworks.paranamer/paranamer/2.6/caaf8777e6bb374d653a81d38c9d38a02c6864c6/paranamer-2.6-sources.jar!/"/>
 	</lib>
 	<lib name="Gradle: org.apache.avro:avro:1.7.7" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.avro/avro/1.7.7/7d8cd1047bfd01f73c71c10c1467e2242282d574/avro-1.7.7-sources.jar!/"/>
 	</lib>
 	<lib name="Gradle: org.apache.pig:pig:0.15.0" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.pig/pig/0.15.0/8d3158f5a6b357261956dd739a1c3114ecc67b1f/pig-0.15.0-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: org.scala-lang:scala-library:2.10.4" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.scala-lang/scala-library/2.10.4/59908ab93978c1f546d3db5e05b42994b63ad515/scala-library-2.10.4-sources.jar!/"/>
 	</lib>
 	<lib name="Gradle: com.fasterxml.jackson.core:jackson-core:2.4.4" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.4.4/652bd9217e1d258cb72c1c4c50b3e6a757826d95/jackson-core-2.4.4-sources.jar!/"/>
@@ -74,11 +143,32 @@
 	<lib name="Gradle: org.ow2.asm:asm:4.0" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm/4.0/4a33d6206d6d442446a8edbd2b0798ecfaebc229/asm-4.0-sources.jar!/"/>
 	</lib>
+	<lib name="Gradle: com.esotericsoftware.reflectasm:reflectasm:1.07:shaded" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.esotericsoftware.reflectasm/reflectasm/1.07/ca505e39e6ea1762cdc42f1311448333a9b1c6c2/reflectasm-1.07-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: com.esotericsoftware.minlog:minlog:1.2" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.esotericsoftware.minlog/minlog/1.2/c0bf75c30b19393673253e25708aa797a545fa10/minlog-1.2-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: org.objenesis:objenesis:1.2" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.objenesis/objenesis/1.2/71909ee0264af468fe26f0a2467d01bcb85f6fa9/objenesis-1.2-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: com.esotericsoftware.kryo:kryo:2.21" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.esotericsoftware.kryo/kryo/2.21/c77d5c8cbe410c2f1bbb499ab1f743b5737675c4/kryo-2.21-sources.jar!/"/>
+	</lib>
 	<lib name="Gradle: com.twitter:chill-java:0.5.0" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.twitter/chill-java/0.5.0/5a23bae4621915e276ddaa8b427fe5c4e7ffde9e/chill-java-0.5.0-sources.jar!/"/>
 	</lib>
 	<lib name="Gradle: com.twitter:chill_2.10:0.5.0" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.twitter/chill_2.10/0.5.0/237f650f448657d295841c28c66b44328a39e48a/chill_2.10-0.5.0-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: commons-io:commons-io:2.4" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/commons-io/commons-io/2.4/f2d8698c46d1167ff24b06a840a87d91a02db891/commons-io-2.4-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: log4j:log4j:1.2.17" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/log4j/log4j/1.2.17/677abe279b68c5e7490d6d50c6951376238d7d3e/log4j-1.2.17-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: com.google.protobuf:protobuf-java:2.5.0" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.protobuf/protobuf-java/2.5.0/7a27a7fc815e481b367ead5df19b4a71ace4a419/protobuf-java-2.5.0-sources.jar!/"/>
 	</lib>
 	<lib name="Gradle: org.slf4j:slf4j-log4j12:1.7.10" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-log4j12/1.7.10/49c7ee5f2f363e6fa8ce5faa7e3be49d0124884e/slf4j-log4j12-1.7.10-sources.jar!/"/>
@@ -86,8 +176,26 @@
 	<lib name="Gradle: io.netty:netty:3.8.0.Final" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.netty/netty/3.8.0.Final/5317e212bf50479fb06abf675caedbe39d396ab0/netty-3.8.0.Final-sources.jar!/"/>
 	</lib>
+	<lib name="Gradle: org.apache.zookeeper:zookeeper:3.4.6" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.zookeeper/zookeeper/3.4.6/10cb14f3893f8bdcaf4e2619a9a1f6b9cedec6b7/zookeeper-3.4.6-sources.jar!/"/>
+	</lib>
 	<lib name="Gradle: org.apache.commons:commons-math:2.1" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-math/2.1/78987455b7dee797ea73f7376ef5093fc8121bf6/commons-math-2.1-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: commons-collections:commons-collections:3.2.1" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/commons-collections/commons-collections/3.2.1/fa095ef874374e5b2a11f8b06c26a5d68c7cb3a4/commons-collections-3.2.1-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: commons-beanutils:commons-beanutils:1.7.0" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/commons-beanutils/commons-beanutils/1.7.0/b68c4fc66026e8c08df7fb57c7dc1e94a6ed8cbb/commons-beanutils-1.7.0-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: commons-digester:commons-digester:1.8" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/commons-digester/commons-digester/1.8/6c296de7dc352e0af9a40f92f5af995314d41fc9/commons-digester-1.8-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: commons-lang:commons-lang:2.6" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/commons-lang/commons-lang/2.6/67313d715fbf0ea4fd0bdb69217fb77f807a8ce5/commons-lang-2.6-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: commons-configuration:commons-configuration:1.6" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/commons-configuration/commons-configuration/1.6/2d24067548bf9022d03cfd6ca302e1f6c5d4936/commons-configuration-1.6-sources.jar!/"/>
 	</lib>
 	<lib name="Gradle: org.apache.hadoop:hadoop-auth:2.2.0" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.hadoop/hadoop-auth/2.2.0/b472a065fb1ef045ecb452dbc7788b555ca38ec0/hadoop-auth-2.2.0-sources.jar!/"/>
@@ -101,8 +209,59 @@
 	<lib name="Gradle: org.apache.hadoop:hadoop-hdfs:2.2.0" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.hadoop/hadoop-hdfs/2.2.0/4e622cdd54fdf17adde473e341ab425cbbd3738d/hadoop-hdfs-2.2.0-sources.jar!/"/>
 	</lib>
+	<lib name="Gradle: com.sun.jersey:jersey-core:1.9" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.sun.jersey/jersey-core/1.9/56cafb409f0468aef023b327f25daa54b284fe8d/jersey-core-1.9-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: asm:asm:3.1" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/asm/asm/3.1/2eaa4de56203f433f287a6df5885ef9ad3c5bcae/asm-3.1-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: com.sun.jersey:jersey-server:1.9" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.sun.jersey/jersey-server/1.9/d710a3f1d00388a093da6511ca26a743366edf60/jersey-server-1.9-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: javax.inject:javax.inject:1" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/javax.inject/javax.inject/1/a00123f261762a7c5e0ec916a2c7c8298d29c400/javax.inject-1-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: aopalliance:aopalliance:1.0" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/aopalliance/aopalliance/1.0/4a4b6d692e17846a9f3da036438a7ac491d3c814/aopalliance-1.0-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: org.sonatype.sisu.inject:cglib:2.2.1-v20090111" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.sonatype.sisu.inject/cglib/2.2.1-v20090111/65030c30094de36e3fddbc22442d47cbf547741f/cglib-2.2.1-v20090111-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: com.google.inject:guice:3.0" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.inject/guice/3.0/d117c4481f64955cb1862ed38cb568add2f5fe05/guice-3.0-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: org.codehaus.jettison:jettison:1.1" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.codehaus.jettison/jettison/1.1/6e5ebf802c909bcef2d7e3275c64b474467353b5/jettison-1.1-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: javax.activation:activation:1.1" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/javax.activation/activation/1.1/3697e9f67a2ed7ac5f589cff30f21173299440/activation-1.1-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: javax.xml.stream:stax-api:1.0-2" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/javax.xml.stream/stax-api/1.0-2/dd58a0151c110e27c6c18abd45b01792f46d3fcd/stax-api-1.0-2-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: javax.xml.bind:jaxb-api:2.2.2" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/javax.xml.bind/jaxb-api/2.2.2/3016adffd4777795f8aebce4b97e159539e3ad36/jaxb-api-2.2.2-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: com.sun.xml.bind:jaxb-impl:2.2.3-1" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.sun.xml.bind/jaxb-impl/2.2.3-1/c7853ba682b292a2f9d831af145cadc5313a7af1/jaxb-impl-2.2.3-1-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: org.codehaus.jackson:jackson-jaxrs:1.9.13" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.codehaus.jackson/jackson-jaxrs/1.9.13/6bf32987d565b50ecc3897362ed19882af4e5591/jackson-jaxrs-1.9.13-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: org.codehaus.jackson:jackson-xc:1.9.13" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.codehaus.jackson/jackson-xc/1.9.13/5b45f8e8027858e8a455f031a32638b615a307df/jackson-xc-1.9.13-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: com.sun.jersey:jersey-json:1.9" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.sun.jersey/jersey-json/1.9/9831f56e36a870f372cc2844675d76193144151a/jersey-json-1.9-sources.jar!/"/>
+	</lib>
 	<lib name="Gradle: com.google.inject.extensions:guice-servlet:3.0" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.inject.extensions/guice-servlet/3.0/2b325f1e78a4c16ffd4b3d81c687a09dd6790a60/guice-servlet-3.0-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: com.sun.jersey.contribs:jersey-guice:1.9" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.sun.jersey.contribs/jersey-guice/1.9/93589b9543ec99347db4c8526dfb82ceea140512/jersey-guice-1.9-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: com.sun.jersey:jersey-client:1.9" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.sun.jersey/jersey-client/1.9/fcd4ed548c23e5036fe9628cbb36e7b440a6a090/jersey-client-1.9-sources.jar!/"/>
 	</lib>
 	<lib name="Gradle: org.apache.hadoop:hadoop-yarn-api:2.6.0" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.hadoop/hadoop-yarn-api/2.6.0/f17e6ba81aac029257bc7530db3b07181963079e/hadoop-yarn-api-2.6.0-sources.jar!/"/>
@@ -146,6 +305,9 @@
 	<lib name="Gradle: org.apache.hadoop:hadoop-yarn-client:2.2.0" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.hadoop/hadoop-yarn-client/2.2.0/f59c7269fe790286076aa23ac27c91f889f84ced/hadoop-yarn-client-2.2.0-sources.jar!/"/>
 	</lib>
+	<lib name="Gradle: org.fusesource.leveldbjni:leveldbjni-all:1.8" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.fusesource.leveldbjni/leveldbjni-all/1.8/70e814750abf3ca737d0d6cc0d478c1c8e5e0a02/leveldbjni-all-1.8-sources.jar!/"/>
+	</lib>
 	<lib name="Gradle: org.apache.hadoop:hadoop-yarn-server-common:2.6.0" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.hadoop/hadoop-yarn-server-common/2.6.0/30e11aa2ce44ea4006f6cb9be1f0096be774e73b/hadoop-yarn-server-common-2.6.0-sources.jar!/"/>
 	</lib>
@@ -182,6 +344,12 @@
 	<lib name="Gradle: org.apache.spark:spark-unsafe_2.10:1.5.1" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.spark/spark-unsafe_2.10/1.5.1/d6eba0431b330841369b4044f57715a934eb848b/spark-unsafe_2.10-1.5.1-sources.jar!/"/>
 	</lib>
+	<lib name="Gradle: org.eclipse.jetty.orbit:javax.servlet:3.0.0.v201112011016" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty.orbit/javax.servlet/3.0.0.v201112011016/15c914135cf30177b83c321250c458396289cd37/javax.servlet-3.0.0.v201112011016-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: org.apache.commons:commons-lang3:3.3.2" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-lang3/3.3.2/d2a489573c0ed2c4942b3660decad5d65087b406/commons-lang3-3.3.2-sources.jar!/"/>
+	</lib>
 	<lib name="Gradle: org.apache.commons:commons-math3:3.4.1" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-math3/3.4.1/975c1f46d8df327af57892ea4787007f31d2066b/commons-math3-3.4.1-sources.jar!/"/>
 	</lib>
@@ -206,17 +374,38 @@
 	<lib name="Gradle: com.typesafe.akka:akka-actor_2.10:2.3.11" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.typesafe.akka/akka-actor_2.10/2.3.11/d888ae8cee65ebc7ba8e7c303076c9a1b0aad15/akka-actor_2.10-2.3.11-sources.jar!/"/>
 	</lib>
+	<lib name="Gradle: org.uncommons.maths:uncommons-maths:1.2.2a" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.uncommons.maths/uncommons-maths/1.2.2a/bb01359792453974c40d34f49c84d703deff266b/uncommons-maths-1.2.2a-sources.jar!/"/>
+	</lib>
 	<lib name="Gradle: com.typesafe.akka:akka-remote_2.10:2.3.11" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.typesafe.akka/akka-remote_2.10/2.3.11/bc305cbbff95c34b9f80db503d849bf441492df4/akka-remote_2.10-2.3.11-sources.jar!/"/>
 	</lib>
 	<lib name="Gradle: com.typesafe.akka:akka-slf4j_2.10:2.3.11" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.typesafe.akka/akka-slf4j_2.10/2.3.11/52d2bb8c3e3a7e519ffd5a64dc9a935054dc618d/akka-slf4j_2.10-2.3.11-sources.jar!/"/>
 	</lib>
+	<lib name="Gradle: org.json4s:json4s-ast_2.10:3.2.10" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.json4s/json4s-ast_2.10/3.2.10/f9652e447429389aa95384987d0647ac89bd5686/json4s-ast_2.10-3.2.10-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: org.scala-lang:scala-reflect:2.10.4" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.scala-lang/scala-reflect/2.10.4/a21eab32f9a0ac75ba5eb528545bd7f9232405a3/scala-reflect-2.10.4-sources.jar!/"/>
+	</lib>
 	<lib name="Gradle: org.scala-lang:scala-compiler:2.10.0" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.scala-lang/scala-compiler/2.10.0/ef1063921ffd503e74a065bed67ba7e6107fed/scala-compiler-2.10.0-sources.jar!/"/>
 	</lib>
+	<lib name="Gradle: org.scala-lang:scalap:2.10.0" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.scala-lang/scalap/2.10.0/d9adba6696fdafb487e2e3f6d9b5c04103e7ebc3/scalap-2.10.0-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: org.json4s:json4s-core_2.10:3.2.10" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.json4s/json4s-core_2.10/3.2.10/cf31b3bde33a6a659c00ec1f1affd83768efd6a9/json4s-core_2.10-3.2.10-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: org.json4s:json4s-jackson_2.10:3.2.10" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.json4s/json4s-jackson_2.10/3.2.10/6300c5cc5a96dfa85fac260c904429ff74cd9b4/json4s-jackson_2.10-3.2.10-sources.jar!/"/>
+	</lib>
 	<lib name="Gradle: org.apache.mesos:mesos:0.21.1:shaded-protobuf" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.mesos/mesos/0.21.1/ac3dc517b1b649dd0ca31873432621ba61279684/mesos-0.21.1-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: com.clearspring.analytics:stream:2.7.0" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.clearspring.analytics/stream/2.7.0/7abd440902be1e990f6c6794d7797cc83b3ee816/stream-2.7.0-sources.jar!/"/>
 	</lib>
 	<lib name="Gradle: io.dropwizard.metrics:metrics-core:3.1.2" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.dropwizard.metrics/metrics-core/3.1.2/25177c6da71f42d7934040a2f5608e3a5f81464c/metrics-core-3.1.2-sources.jar!/"/>
@@ -253,6 +442,9 @@
 	</lib>
 	<lib name="Gradle: net.razorvine:pyrolite:4.4" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.razorvine/pyrolite/4.4/3e3c82ce96a4a6516401c7e0fc3419229ca704fa/pyrolite-4.4-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: net.sf.py4j:py4j:0.8.2.1" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.sf.py4j/py4j/0.8.2.1/1a03bfa1f0f28ffa1cbcf0b60f7cc6773e9af4b9/py4j-0.8.2.1-sources.jar!/"/>
 	</lib>
 	<lib name="Gradle: org.apache.curator:curator-recipes:2.6.0" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.curator/curator-recipes/2.6.0/2c3c77de2f0929a9661140e6db68a1e679b0d4cd/curator-recipes-2.6.0-sources.jar!/"/>
@@ -293,6 +485,9 @@
 	<lib name="Gradle: org.apache.spark:spark-sql_2.10:1.5.1" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.spark/spark-sql_2.10/1.5.1/23793585d1cbafe3d1bf465d112a1f39567ef511/spark-sql_2.10-1.5.1-sources.jar!/"/>
 	</lib>
+	<lib name="Gradle: org.clojure:clojure:1.5.1" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.clojure/clojure/1.5.1/5c8e650b03ed0f000d7399cfcb03771a00b9dcd5/clojure-1.5.1-sources.jar!/"/>
+	</lib>
 	<lib name="Gradle: org.clojure:core.incubator:0.1.0" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.clojure/core.incubator/0.1.0/67f8e5b1e873fa5fdf3136a96df276aac29ccbc/core.incubator-0.1.0-sources.jar!/"/>
 	</lib>
@@ -302,14 +497,41 @@
 	<lib name="Gradle: commons-fileupload:commons-fileupload:1.2.1" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/commons-fileupload/commons-fileupload/1.2.1/eded3ff1ed6dff680af4a8c31a5a187536aed126/commons-fileupload-1.2.1-sources.jar!/"/>
 	</lib>
+	<lib name="Gradle: javax.servlet:servlet-api:2.5" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/javax.servlet/servlet-api/2.5/21599814ad9a605b86f3e6381571beccd861a32/servlet-api-2.5-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: org.clojure:tools.logging:0.2.3" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.clojure/tools.logging/0.2.3/5f8fa964d1b2862846e9ece4613d25b796520434/tools.logging-0.2.3-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: org.clojure:math.numeric-tower:0.0.1" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.clojure/math.numeric-tower/0.0.1/7506fa6421fea552dc88a715dd8906910772c00a/math.numeric-tower-0.0.1-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: org.clojure:tools.cli:0.2.4" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.clojure/tools.cli/0.2.4/5633d849fc2a584d9076fc5bccd159a3a7289d78/tools.cli-0.2.4-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: org.apache.commons:commons-exec:1.1" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-exec/1.1/f60bea898e18b308099862e8634d589b06a8b0be/commons-exec-1.1-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: com.googlecode.json-simple:json-simple:1.1" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.googlecode.json-simple/json-simple/1.1/19c6d8dee6803c520d855ff7e8a8c3d97f1271ec/json-simple-1.1-sources.jar!/"/>
+	</lib>
 	<lib name="Gradle: org.yaml:snakeyaml:1.11" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.yaml/snakeyaml/1.11/79e8349d9fb6b7810ddfae36a691b4d1f21d1ec/snakeyaml-1.11-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: com.googlecode.disruptor:disruptor:2.10.1" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.googlecode.disruptor/disruptor/2.10.1/b6702e5ec9890fc7c9f71f20ab94e2b5187fb95f/disruptor-2.10.1-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: org.jgrapht:jgrapht-core:0.9.0" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jgrapht/jgrapht-core/0.9.0/aea453fd9bca818dc7add23f71daa3b6151891c3/jgrapht-core-0.9.0-sources.jar!/"/>
 	</lib>
 	<lib name="Gradle: ch.qos.logback:logback-core:1.0.13" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/ch.qos.logback/logback-core/1.0.13/c353276a7cee7e2271c4a4115f1d2948ff5adb0a/logback-core-1.0.13-sources.jar!/"/>
 	</lib>
 	<lib name="Gradle: ch.qos.logback:logback-classic:1.0.13" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/ch.qos.logback/logback-classic/1.0.13/63fcf702193934c1aa1ea606093f75ac08b283ee/logback-classic-1.0.13-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: org.slf4j:log4j-over-slf4j:1.6.6" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.slf4j/log4j-over-slf4j/1.6.6/25816aea25ac789a7b02cb05adb82f26efa422c6/log4j-over-slf4j-1.6.6-sources.jar!/"/>
 	</lib>
 	<lib name="Gradle: org.apache.storm:storm-core:0.9.5" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.storm/storm-core/0.9.5/b23d0c8c31cdd0682a4e1b68d1a82caeed25dd6c/storm-core-0.9.5-sources.jar!/"/>
@@ -326,6 +548,15 @@
 	<lib name="Gradle: org.apache.hive:hive-shims:1.2.1" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.hive/hive-shims/1.2.1/ae890b71e59485e5924c29ba98cf39f7be945dfb/hive-shims-1.2.1-sources.jar!/"/>
 	</lib>
+	<lib name="Gradle: org.datanucleus:datanucleus-core:3.2.10" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.datanucleus/datanucleus-core/3.2.10/7382f76f2006d9d07bb192cdcabdd3b6b7a5818a/datanucleus-core-3.2.10-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: org.apache.ant:ant-launcher:1.9.1" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.ant/ant-launcher/1.9.1/ddcb916f74c62863936f33d488537f8ee6bfaf98/ant-launcher-1.9.1-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: org.apache.ant:ant:1.9.1" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.ant/ant/1.9.1/51850d9e1014a8d7235979c9ce4a72216dbe518c/ant-1.9.1-sources.jar!/"/>
+	</lib>
 	<lib name="Gradle: org.apache.hive:hive-common:1.2.1" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.hive/hive-common/1.2.1/6e4a2ba7e669ef4d36f1ed58ee03bf5dda59bb47/hive-common-1.2.1-sources.jar!/"/>
 	</lib>
@@ -338,17 +569,35 @@
 	<lib name="Gradle: org.apache.hive:hive-serde:1.2.1" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.hive/hive-serde/1.2.1/6cc8cdc09a88623255b7e280214fe213915f3884/hive-serde-1.2.1-sources.jar!/"/>
 	</lib>
+	<lib name="Gradle: com.jolbox:bonecp:0.8.0.RELEASE" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jolbox/bonecp/0.8.0.RELEASE/f8b6d5414837c881740594109e0400dfb65d4c0b/bonecp-0.8.0.RELEASE-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: org.datanucleus:datanucleus-api-jdo:3.2.6" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.datanucleus/datanucleus-api-jdo/3.2.6/802cdd42537d1fdc1f16721be75fdef624252656/datanucleus-api-jdo-3.2.6-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: org.datanucleus:datanucleus-rdbms:3.2.9" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.datanucleus/datanucleus-rdbms/3.2.9/b2dc4914a1af90ca1a43b32d32e6d9039166b645/datanucleus-rdbms-3.2.9-sources.jar!/"/>
+	</lib>
 	<lib name="Gradle: commons-pool:commons-pool:1.5.4" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/commons-pool/commons-pool/1.5.4/3e226507788e09f02eef641e868624fb823af6e6/commons-pool-1.5.4-sources.jar!/"/>
 	</lib>
 	<lib name="Gradle: commons-dbcp:commons-dbcp:1.4" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/commons-dbcp/commons-dbcp/1.4/9b076ff231434d5403be6599a1347019b12c0def/commons-dbcp-1.4-sources.jar!/"/>
 	</lib>
+	<lib name="Gradle: javax.transaction:jta:1.1" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/javax.transaction/jta/1.1/d5dad66d06246bd2e1e369cebff27faa9beb065a/jta-1.1-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: javax.jdo:jdo-api:3.0.1" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/javax.jdo/jdo-api/3.0.1/1bb91e3f83af904aa1c82fa83095b44245552d8e/jdo-api-3.0.1-sources.jar!/"/>
+	</lib>
 	<lib name="Gradle: org.apache.hive:hive-metastore:1.2.1" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.hive/hive-metastore/1.2.1/6987e86be951b3735e1b0ae5a40df801fddf411b/hive-metastore-1.2.1-sources.jar!/"/>
 	</lib>
 	<lib name="Gradle: org.apache.hive:hive-ant:1.2.1" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.hive/hive-ant/1.2.1/25c06924bfb050d2519634a4659d2965dba703f2/hive-ant-1.2.1-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: org.codehaus.groovy:groovy-all:2.1.6" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.codehaus.groovy/groovy-all/2.1.6/d3b861ec887a4abd351052edca7fbacdc8b9ddbd/groovy-all-2.1.6-sources.jar!/"/>
 	</lib>
 	<lib name="Gradle: org.apache.calcite:calcite-avatica:1.2.0-incubating" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.calcite/calcite-avatica/1.2.0-incubating/e60f7754dc22b4187fa4fd5a2e2219c1019b9af9/calcite-avatica-1.2.0-incubating-sources.jar!/"/>
@@ -364,6 +613,21 @@
 	</lib>
 	<lib name="Gradle: org.apache.hive:hive-exec:1.2.1" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.hive/hive-exec/1.2.1/8ce51b7c945afc542010972b37fdd13daa5754c0/hive-exec-1.2.1-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: org.apache.geronimo.specs:geronimo-jta_1.1_spec:1.1.1" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.geronimo.specs/geronimo-jta_1.1_spec/1.1.1/a84978fba1f1916bf2931e44d961705a9e64aec7/geronimo-jta_1.1_spec-1.1.1-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: javax.mail:mail:1.4.1" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/javax.mail/mail/1.4.1/805fab433b5ea319373a5dcb133b48633ad898b1/mail-1.4.1-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: org.apache.geronimo.specs:geronimo-jaspic_1.0_spec:1.0" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.geronimo.specs/geronimo-jaspic_1.0_spec/1.0/ded68014e70c18a2598b23d544c727acadcc79ac/geronimo-jaspic_1.0_spec-1.0-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: org.apache.geronimo.specs:geronimo-annotation_1.0_spec:1.1.1" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.geronimo.specs/geronimo-annotation_1.0_spec/1.1.1/653da80abd1f2cf2d515902865b22d8ebc6ef5fd/geronimo-annotation_1.0_spec-1.1.1-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: org.eclipse.jetty.aggregate:jetty-all:7.6.0.v20120127" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty.aggregate/jetty-all/7.6.0.v20120127/a84f2422767bc5264fca228a212818f42aad010f/jetty-all-7.6.0.v20120127-sources.jar!/"/>
 	</lib>
 	<lib name="Gradle: org.apache.hive:hive-service:1.2.1" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.hive/hive-service/1.2.1/78e19424f3cc54ced4f81d24271517e78941d84/hive-service-1.2.1-sources.jar!/"/>
@@ -392,107 +656,4 @@
 	<lib name="Gradle: com.intellij:annotations:12.0" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.intellij/annotations/12.0/4943118f12f706a8820f73529fcb8f5853bc0fed/annotations-12.0-sources.jar!/"/>
 	</lib>
-	<levels>
-		<level name="Gradle: xmlenc:xmlenc:0.52" value="project"/>
-		<level name="Gradle: commons-logging:commons-logging:1.1.3" value="project"/>
-		<level name="Gradle: commons-codec:commons-codec:1.6" value="project"/>
-		<level name="Gradle: commons-httpclient:commons-httpclient:3.1" value="project"/>
-		<level name="Gradle: commons-io:commons-io:2.4" value="project"/>
-		<level name="Gradle: commons-net:commons-net:3.1" value="project"/>
-		<level name="Gradle: commons-collections:commons-collections:3.2.1" value="project"/>
-		<level name="Gradle: log4j:log4j:1.2.17" value="project"/>
-		<level name="Gradle: commons-lang:commons-lang:2.6" value="project"/>
-		<level name="Gradle: commons-beanutils:commons-beanutils:1.7.0" value="project"/>
-		<level name="Gradle: commons-digester:commons-digester:1.8" value="project"/>
-		<level name="Gradle: commons-beanutils:commons-beanutils-core:1.8.0" value="project"/>
-		<level name="Gradle: commons-configuration:commons-configuration:1.6" value="project"/>
-		<level name="Gradle: org.codehaus.jackson:jackson-core-asl:1.9.13" value="project"/>
-		<level name="Gradle: org.codehaus.jackson:jackson-mapper-asl:1.9.13" value="project"/>
-		<level name="Gradle: com.google.protobuf:protobuf-java:2.5.0" value="project"/>
-		<level name="Gradle: junit:junit:4.8.1" value="project"/>
-		<level name="Gradle: org.apache.zookeeper:zookeeper:3.4.6" value="project"/>
-		<level name="Gradle: org.mortbay.jetty:jetty-util:6.1.26" value="project"/>
-		<level name="Gradle: org.tukaani:xz:1.0" value="project"/>
-		<level name="Gradle: org.apache.commons:commons-compress:1.4.1" value="project"/>
-		<level name="Gradle: javax.activation:activation:1.1" value="project"/>
-		<level name="Gradle: javax.xml.stream:stax-api:1.0-2" value="project"/>
-		<level name="Gradle: javax.xml.bind:jaxb-api:2.2.2" value="project"/>
-		<level name="Gradle: javax.servlet:servlet-api:2.5" value="project"/>
-		<level name="Gradle: com.sun.jersey:jersey-core:1.9" value="project"/>
-		<level name="Gradle: com.sun.jersey:jersey-client:1.9" value="project"/>
-		<level name="Gradle: org.codehaus.jackson:jackson-jaxrs:1.9.13" value="project"/>
-		<level name="Gradle: org.codehaus.jackson:jackson-xc:1.9.13" value="project"/>
-		<level name="Gradle: javax.inject:javax.inject:1" value="project"/>
-		<level name="Gradle: aopalliance:aopalliance:1.0" value="project"/>
-		<level name="Gradle: asm:asm:3.1" value="project"/>
-		<level name="Gradle: org.sonatype.sisu.inject:cglib:2.2.1-v20090111" value="project"/>
-		<level name="Gradle: com.google.inject:guice:3.0" value="project"/>
-		<level name="Gradle: com.sun.jersey:jersey-server:1.9" value="project"/>
-		<level name="Gradle: org.codehaus.jettison:jettison:1.1" value="project"/>
-		<level name="Gradle: com.sun.xml.bind:jaxb-impl:2.2.3-1" value="project"/>
-		<level name="Gradle: com.sun.jersey:jersey-json:1.9" value="project"/>
-		<level name="Gradle: com.sun.jersey.contribs:jersey-guice:1.9" value="project"/>
-		<level name="Gradle: org.fusesource.leveldbjni:leveldbjni-all:1.8" value="project"/>
-		<level name="Gradle: antlr:antlr:2.7.7" value="project"/>
-		<level name="Gradle: org.antlr:stringtemplate:3.2.1" value="project"/>
-		<level name="Gradle: org.datanucleus:datanucleus-core:3.2.10" value="project"/>
-		<level name="Gradle: com.jolbox:bonecp:0.8.0.RELEASE" value="project"/>
-		<level name="Gradle: org.datanucleus:datanucleus-api-jdo:3.2.6" value="project"/>
-		<level name="Gradle: org.datanucleus:datanucleus-rdbms:3.2.9" value="project"/>
-		<level name="Gradle: javax.transaction:jta:1.1" value="project"/>
-		<level name="Gradle: javax.jdo:jdo-api:3.0.1" value="project"/>
-		<level name="Gradle: org.antlr:ST4:4.0.4" value="project"/>
-		<level name="Gradle: org.apache.ant:ant-launcher:1.9.1" value="project"/>
-		<level name="Gradle: org.apache.ant:ant:1.9.1" value="project"/>
-		<level name="Gradle: oro:oro:2.0.8" value="project"/>
-		<level name="Gradle: org.apache.velocity:velocity:1.5" value="project"/>
-		<level name="Gradle: org.codehaus.groovy:groovy-all:2.1.6" value="project"/>
-		<level name="Gradle: stax:stax-api:1.0.1" value="project"/>
-		<level name="Gradle: net.sf.jpam:jpam:1.1" value="project"/>
-		<level name="Gradle: org.apache.geronimo.specs:geronimo-jta_1.1_spec:1.1.1" value="project"/>
-		<level name="Gradle: javax.mail:mail:1.4.1" value="project"/>
-		<level name="Gradle: org.apache.geronimo.specs:geronimo-jaspic_1.0_spec:1.0" value="project"/>
-		<level name="Gradle: org.apache.geronimo.specs:geronimo-annotation_1.0_spec:1.1.1" value="project"/>
-		<level name="Gradle: asm:asm-tree:3.1" value="project"/>
-		<level name="Gradle: asm:asm-commons:3.1" value="project"/>
-		<level name="Gradle: org.eclipse.jetty.aggregate:jetty-all:7.6.0.v20120127" value="project"/>
-		<level name="Gradle: org.mortbay.jetty:servlet-api:2.5-20081211" value="project"/>
-		<level name="Gradle: org.mortbay.jetty:jetty:6.1.26" value="project"/>
-		<level name="Gradle: tomcat:jasper-runtime:5.5.12" value="project"/>
-		<level name="Gradle: tomcat:jasper-compiler:5.5.12" value="project"/>
-		<level name="Gradle: org.mortbay.jetty:servlet-api-2.5:6.1.14" value="project"/>
-		<level name="Gradle: org.mortbay.jetty:jsp-api-2.1:6.1.14" value="project"/>
-		<level name="Gradle: org.eclipse.jdt:core:3.1.1" value="project"/>
-		<level name="Gradle: ant:ant:1.6.5" value="project"/>
-		<level name="Gradle: org.mortbay.jetty:jsp-2.1:6.1.14" value="project"/>
-		<level name="Gradle: commons-el:commons-el:1.0" value="project"/>
-		<level name="Gradle: net.java.dev.jets3t:jets3t:0.7.1" value="project"/>
-		<level name="Gradle: net.sf.kosmosfs:kfs:0.3" value="project"/>
-		<level name="Gradle: hsqldb:hsqldb:1.8.0.10" value="project"/>
-		<level name="Gradle: com.thoughtworks.paranamer:paranamer:2.6" value="project"/>
-		<level name="Gradle: org.apache.commons:commons-lang3:3.3.2" value="project"/>
-		<level name="Gradle: org.scala-lang:scala-library:2.10.4" value="project"/>
-		<level name="Gradle: org.eclipse.jetty.orbit:javax.servlet:3.0.0.v201112011016" value="project"/>
-		<level name="Gradle: com.esotericsoftware.reflectasm:reflectasm:1.07:shaded" value="project"/>
-		<level name="Gradle: com.esotericsoftware.minlog:minlog:1.2" value="project"/>
-		<level name="Gradle: org.objenesis:objenesis:1.2" value="project"/>
-		<level name="Gradle: com.esotericsoftware.kryo:kryo:2.21" value="project"/>
-		<level name="Gradle: org.uncommons.maths:uncommons-maths:1.2.2a" value="project"/>
-		<level name="Gradle: org.json4s:json4s-ast_2.10:3.2.10" value="project"/>
-		<level name="Gradle: org.scala-lang:scala-reflect:2.10.4" value="project"/>
-		<level name="Gradle: org.scala-lang:scalap:2.10.0" value="project"/>
-		<level name="Gradle: org.json4s:json4s-core_2.10:3.2.10" value="project"/>
-		<level name="Gradle: org.json4s:json4s-jackson_2.10:3.2.10" value="project"/>
-		<level name="Gradle: com.clearspring.analytics:stream:2.7.0" value="project"/>
-		<level name="Gradle: net.sf.py4j:py4j:0.8.2.1" value="project"/>
-		<level name="Gradle: org.clojure:clojure:1.5.1" value="project"/>
-		<level name="Gradle: org.clojure:tools.logging:0.2.3" value="project"/>
-		<level name="Gradle: org.clojure:math.numeric-tower:0.0.1" value="project"/>
-		<level name="Gradle: org.clojure:tools.cli:0.2.4" value="project"/>
-		<level name="Gradle: org.apache.commons:commons-exec:1.1" value="project"/>
-		<level name="Gradle: com.googlecode.json-simple:json-simple:1.1" value="project"/>
-		<level name="Gradle: com.googlecode.disruptor:disruptor:2.10.1" value="project"/>
-		<level name="Gradle: org.jgrapht:jgrapht-core:0.9.0" value="project"/>
-		<level name="Gradle: org.slf4j:log4j-over-slf4j:1.6.6" value="project"/>
-	</levels>
 </component>
