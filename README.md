@@ -77,7 +77,7 @@ Elasticsearch indexing host(s) can handle that many parallel indexing requests, 
 Also make sure to grant enough memory to the reduce tasks or you'll run out of memory very quickly. Sometimes
 numbers even as high as 8192 MB are required.
 
-We start the indexing with
+We start the indexing process with
 
     hadoop jar es-indexer.jar de.webis.chatnoir2.app.ESIndexer \
         -Des.nodes="{{eshost}}" \
