@@ -28,6 +28,8 @@ Assuming an Elasticsearch 2.1.x cluster, install them on each node using:
     bin/plugin install elasticsearch/elasticsearch-analysis-stempel/2.7.0
     bin/plugin install http://xbib.org/repository/org/xbib/elasticsearch/plugin/elasticsearch-langdetect/2.1.1.0/elasticsearch-langdetect-2.1.1.0-plugin.zip
 
+Restart every node after the installation.
+
 ### 2. Set Indexing Template
 For an appropriate field mapping and proper analyzer choice we use the indexing template located in
 `src/main/resources/templates/webis_warc_template.json`. The template makes sure that Elasticsearch
