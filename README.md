@@ -1,144 +1,99 @@
-ClueWeb Tools
-=============
+# Chatnoir2 Indexer
 
-Hadoop tools for manipulating ClueWeb collections, the most recent of which is [ClueWeb12 collection](http://lemurproject.org/clueweb12/).
+Hadoop MapReduce tool for indexing Webis WARC MapFiles into an Elasticsearch/Chatnoir2 index.
 
-Sign up to the mailing list at [the clueweb-list@cwi.nl mailman page](https://lists.cwi.nl/mailman/listinfo/clueweb-list).
+## Indexing Process
+The indexer will create an index automatically if it doesn't exist, but in order for the index to work properly,
+we want to adjust some settings first as described below.
 
-Getting Stated
---------------
+**NOTE:** in the following text the placeholder `{{eshost}}` stands for the ElasticSearch hostname and port
+ that you want to index to (e.g. `localhost:9200` or `betaweb020:9200`.
+ Similarly, `{{index}}` stands for the name of your index (e.g. `webis_warc_clueweb12_001`).
 
-You can clone the repo with the following command:
+### 1. Set Indexing Template
+For an appropriate field mapping and proper analyzer choice we use the indexing template located in
+`src/main/resources/templates/webis_warc_template.json`. The template makes sure that Elasticsearch
+uses correct data types for our fields and also specifies ICU tokenizers, stop words and suitable analyzers
+for different content languages. The template applies to any index whose name starts with
+`webis_warc_*`. If you want to name your index differently, change the first property in the JSON file
+accordingly.
 
-```
-$ git clone git://github.com/lintool/clueweb.git
-``` 
+In order to make our template known to ElasticSearch, we have to PUT it to the `_template` endpoint:
 
-Once you've cloned the repository, build the package with Maven:
+    curl -XPUT 'http://{{eshost}}/_template/webis_warc_template' \
+        -d '@src/main/resources/templates/webis_warc_template.json'
+        
 
-```
-$ mvn clean package appassembler:assemble
-```
+To verify that the template has been saved to the Elasticsearch cluster, open
+`http://{{eshost}}/_template/webis_warc_template?pretty` in your browser. You should see a JSON dump
+of the template we just sent.
 
-Two notes:
+### 2. Create Index
+For creating our index, we use the following cURL snippet:
 
-+ `appassembler:assemble` automatically generates a few launch scripts for you.
-+ in addition to the normal jar (`clueweb-tools-0.X-SNAPSHOT.jar`), this package uses the [Maven Shade plugin](http://maven.apache.org/plugins/maven-shade-plugin/) to create a "fat jar" (`clueweb-tools-0.X-SNAPSHOT-fatjar.jar`) that includes all dependencies except for Hadoop, so that the jar can be directly submitted via `hadoop jar ...`.
+    curl -XPUT 'http://{{eshost}}/{{index}}/' -d '
+    {
+         "settings" : {
+             "index" : {
+                 "number_of_shards" : 30,
+                 "number_of_replicas" : 0
+             }
+         }
+     }'
 
-To automatically generate project files for Eclipse:
+This will create an index with 30 shards and 0 replica named `{{index}}`. The actual number of shards depends on the
+size of your cluster and also on the amount of data you want to index. For ClueWeb09/12 I found 30 to be a working
+number, but there is no fixed rationale behind it. There are certain rules of thumb about how to chose the correct
+number of shards, but in general it's just experience. Bear in mind, though, that too many shards can cause considerable
+overhead while too few don't exploit the capabilities of a cluster with many nodes. You should take some time to think
+about the number of shards before your start indexing because once your index is created, you can't change it anymore
+without re-indexing all your data.
 
-```
-$ mvn eclipse:clean
-$ mvn eclipse:eclipse
-```
+One thing we can and will change later on, though, is the number of replica. It is advisable to set this to a moderate
+number like 2 or 3 (2 means 1 primary shard and 2 replica, i.e. 3 copies in total). The number of replica is a tradeoff
+between fail-over/data loss safety and query performance on the one hand and disk usage on the other hand.
 
-You can then use Eclipse's Import "Existing Projects into Workspace" functionality to import the project.
+For indexing purposes, though, we want to set it to 0 because we want to use our cluster resources (both CPU time
+and I/O bandwidth) to index our data and not to constantly replicate and re-balance what we just indexed throughout
+the cluster. Once your data has been indexed, activate the replica (in this case: 2) using
 
-Counting Records
-----------------
+    curl -XPUT 'http://{{eshost}}/{{index}}/_settings' -d '
+    {
+        "index" : {
+            "number_of_replicas" : 2
+        }
+    }'
 
-For sanity checking and as a "template" for other Hadoop jobs, the package provides a simple program to count WARC records in ClueWeb12:
+### 3. Start Indexing Process
+To start the indexer, we use the `hadoop` command to run this Java tool. Make sure, you set the number of reduces to
+something sensible before starting it using your local `mapred.xml` config file. The default of 1 is definitely too
+little. A number between 40 and 100 (depending on the cluster size) seems to be sensible. As long as the Elasticsearch
+indexing host(s) can handle that many parallel indexing requests, you can increase the number as you like.
 
-```
-hadoop jar target/clueweb-tools-0.X-SNAPSHOT-fatjar.jar \
- org.clueweb.app.CountClueWarcRecords -input /path/to/warc/files/
-```
+We start the indexing with
 
-Examples of `/path/to/warc/files/` are:
+    hadoop jar es-indexer.jar de.webis.chatnoir2.app.ESIndexer \
+        -Des.nodes="{{eshost}}" \
+        -sequence-files "/corpus-path/mapfile/data-r-*/data" \
+        -spamranks "/corpus-path/spam-rankings/*" \
+        -pageranks "/corpus-path/page-ranks.txt" \
+        -anchortexts "/corpus-path/anchors/*" \
+        -index "{{index}}"
 
-+ `/data/private/clueweb12/Disk1/ClueWeb12_00/*/*.warc.gz`: for a single ClueWeb12 segment
-+ `/data/private/clueweb12/Disk1/ClueWeb12_*/*/*.warc.gz`: for an entire ClueWeb12 disk
-+ `/data/private/clueweb12/Disk[1234]/ClueWeb12_*/*/*.warc.gz`: for all of ClueWeb12
+`-Des.nodes` is a comma separated list of indexing endpoints (with optional port number, default is 9200).
+In this example, it is just `{{eshost}}`, but it is strongly advised to use more than one. Usually you want to have
+a certain class of hosts that don't store any data themselves but only answer search requests and accept data
+to index. It is perfectly fine, the specify data nodes here as well, but for performance reasons your may want to
+have separate *coordinator* nodes which you should specify here.
 
-Building a Dictionary
----------------------
+`-sequence-files` is the HDFS path to your mapfile splits. `-spamranks` specifies the path to your spam ranks
+(a file with the format `<ID> <NUMBER>`). `-pageranks` is similar, but for page ranks, of course.
+`-anchortexts` are your anchor texts for certain documents (format
+`<ID> <TEXT>`, where `<TEXT>` will be cut off after a certain amount of characters during indexing).
+Last, but not least, `-index` names your actual index (the one we created before).
 
-The next step is to build a dictionary that provides three capabilities:
-
-+ a bidirectional mapping from terms (strings) to termids (integers)
-+ lookup of document frequency (*df*) by term or termid
-+ lookup of collection frequency (*cf*) by term or termid
-
-To build the dictionary, we must first compute the term statistics:
-
-```
-hadoop jar target/clueweb-tools-0.X-SNAPSHOT-fatjar.jar \
- org.clueweb.app.ComputeTermStatistics \
- -input /data/private/clueweb12/Disk1/ClueWeb12_00/*/*.warc.gz \
- -output term-stats/segment00
-```
-
-By default, the program throws away all terms with *df* less than 100, but this parameter can be set on the command line. The above command compute term statistics for a segment of ClueWeb12. It's easier to compute term statistics segment by segment to generate smaller and more manageable Hadoop jobs.
-
-Compute term statistics for all the other segments in the same manner.
-
-Next, merge all the segment statistics together:
-
-```
-hadoop jar target/clueweb-tools-0.X-SNAPSHOT-fatjar.jar \
- org.clueweb.app.MergeTermStatistics \
- -input term-stats/segment* -output term-stats-all
-```
-
-Finally, build the dictionary:
-
-```
-hadoop jar target/clueweb-tools-0.X-SNAPSHOT-fatjar.jar \
- org.clueweb.app.BuildDictionary \
- -input term-stats-all -output dictionary -count 7160086
-```
-
-You need to provide the number of terms in the dictionary via the `-count` option. That value is simply the number of output reducers from `MergeTermStatistics`.
-
-To explore the contents of the dictionary, use this little interactive program:
-
-```
-hadoop jar target/clueweb-tools-0.X-SNAPSHOT-fatjar.jar \
- org.clueweb.clueweb12.dictionary.DefaultFrequencySortedDictionary dictionary
-```
-
-On ClueWeb12, following the above instructions will create a dictionary with 7,160,086 terms.
-
-
-**Implementation details:** Tokenization is performed by first using Jsoup throw away all markup information and then passing the resulting text through Lucene's `StandardAnalyzer`.
-
-The dictionary has two components: the terms are stored as a front-coded list (which necessarily means that the terms must be sorted); a monotone minimal perfect hash function is used to hash terms (strings) into the lexicographic position. Term to termid lookup is accomplished by the hashing function (to avoid binary searching through the front-coded data structure, which is expensive). Termid to term lookup is accomplished by direct accesses into the front-coded list. An additional mapping table is used to convert the lexicographic position into the (*df*-sorted) termid. 
-
-Building Document Vectors
--------------------------
-
-With the dictionary, we can now convert the entire collection into a sequence of document vectors, where each document vector is represented by a sequence of termids; the termids map to the sequence of terms that comprise the document. These document vectors are much more compact and much faster to scan for processing purposes.
-
-The document vector is represented by the interface `org.clueweb.data.DocVector`. Currently, there are two concrete implementations:
-
-+ `VByteDocVector`, which uses Hadoop's built-in utilities for writing variable-length integers (what Hadoop calls VInt).
-+ `PForDocVector`, which uses PFor compression from Daniel Lemire's [JavaFastPFOR](https://github.com/lemire/JavaFastPFOR/) package.
-
-To build document vectors, use either `BuildVByteDocVectors` or `BuildPForDocVectors`:
-
-```
-hadoop jar target/clueweb-tools-0.X-SNAPSHOT-fatjar.jar \
- org.clueweb.app.Build{VByte,PFor}DocVectors \
- -input /data/private/clueweb12/Disk1/ClueWeb12_00/*/*.warc.gz \
- -output /data/private/clueweb12/derived/docvectors/segment00 \
- -dictionary /data/private/clueweb12/derived/dictionary \
- -reducers 100
-```
-
-Once again, it's advisable to run on a segment at a time in order to keep the Hadoop job sizes manageable. Note that the program run identity reducers to repartition the document vectors into 100 parts (to avoid the small files problem).
-
-The output directory will contain `SequenceFile`s, with a `Text` containing the WARC-TREC-ID as the key. For VByte, the value will be a `BytesWritable` object; for PFor, the value will be an `IntArrayWritable` object.
-
-To process these document vectors, either use `ProcessVByteDocVectors` or `ProcessPForDocVectors` in the `org.clueweb.app` package, which provides sample code for consuming these document vectors and converting the termids back into terms.
-
-Size comparisons, on the entire ClueWeb12 collection:
-
-+ 5.54 TB: original compressed WARC files
-+ 1.08 TB: repackaged as `VByteDocVector`s
-+ 0.86 TB: repackaged as `PForDocVector`s
-+ ~1.6 TB: uncompressed termids (collection size is ~400 billion terms)
-
-License
--------
-
-Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
+Depending on the amount of data and the performance of your cluster, the MapReduce job may run for several hours or
+even days while your data is continually fed into the index.
+You can follow the process using the Hadoop Application web interface as well as the Elasticsearch JSON search API.
+You can also install a tool such as [Elastic HQ](http://www.elastichq.org/) on your cluster to get more information
+about your indexes, the number of already indexed documents as well the performance measures of the nodes.

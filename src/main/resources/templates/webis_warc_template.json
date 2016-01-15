@@ -1,1051 +1,1049 @@
 {
-    "webis_warc_template" : {
-        "template" : "webis_warc_*",
-        "settings" : {
-            "index.query.default_field" : "body_lang_en",
-            "index" : {
-                "number_of_replicas" : 0
-            },
-            "analysis" : {
-                "filter" : {
-                    "host_stop_filter" : {
-                        "type" : "stop",
-                        "stopwords" : [
-                            "en", "www", "www2",
-                            "aero", "arpa", "asia", "biz", "cat", "com", "coop", "edu", "eu", "gov", "info", "int",
-                            "jobs", "mil", "mobi", "museum", "name", "net", "org", "post", "pro", "tel", "travel", "xxx",
-                            "ac", "ad", "ae", "af", "ag", "ai", "al", "am", "an", "ao", "aq", "ar", "as", "at", "au",
-                            "aw", "ax", "az", "ba", "bb", "bd", "be", "bf", "bg", "bh", "bi", "bj", "bm", "bn", "bo",
-                            "br", "bs", "bt", "bv", "bw", "by", "bz", "ca", "cc", "cd", "cf", "cg", "ch", "ci", "ck",
-                            "cl", "cm", "cn", "co", "cr", "cs", "cu", "cv", "cx", "cy", "cz", "dd", "de", "dj", "dk",
-                            "dm", "do", "dz", "ec", "ee", "eg", "eh", "er", "es", "et", "eu", "fi", "fj", "fk", "fm",
-                            "fo", "fr", "ga", "gb", "gd", "ge", "gf", "gg", "gh", "gi", "gl", "gm", "gn", "gp", "gq",
-                            "gr", "gs", "gt", "gu", "gw", "gy", "hk", "hm", "hn", "hr", "ht", "hu", "id", "ie", "il",
-                            "im", "in", "io", "iq", "ir", "is", "it", "je", "jm", "jo", "jp", "ke", "kg", "kh", "ki",
-                            "km", "kn", "kp", "kr", "kw", "ky", "kz", "la", "lb", "lc", "li", "lk", "lr", "ls", "lt",
-                            "lu", "lv", "ly", "ma", "mc", "md", "me", "mg", "mh", "mk", "ml", "mm", "mn", "mo", "mp",
-                            "mq", "mr", "ms", "mt", "mu", "mv", "mw", "mx", "my", "mz", "na", "nc", "ne", "nf", "ng",
-                            "ni", "nl", "no", "np", "nr", "nu", "nz", "om", "pa", "pe", "pf", "pg", "ph", "pk", "pl",
-                            "pm", "pn", "pr", "ps", "pt", "pw", "py", "qa", "re", "ro", "rs", "ru", "rw", "sa", "sb",
-                            "sc", "sd", "se", "sg", "sh", "si", "sj", "sk", "sl", "sm", "sn", "so", "sr", "st", "su",
-                            "sv", "sy", "sz", "tc", "td", "tf", "tg", "th", "tj", "tk", "tl", "tm", "tn", "to", "tp",
-                            "tr", "tt", "tv", "tw", "tz", "ua", "ug", "uk", "um", "us", "uy", "uz", "va", "vc", "ve",
-                            "vg", "vi", "vn", "vu", "wf", "ws", "ye", "yt", "yu", "za", "zm", "zr", "zw"
-                        ]
-                    },
-                    "ar_stop_filter" : {
-                        "type" : "stop",
-                        "stopwords" : [
-                            "_arabic_"
-                        ]
-                    },
-                    "bg_stop_filter" : {
-                        "type" : "stop",
-                        "stopwords" : [
-                            "_bulgarian_"
-                        ]
-                    },
-                    "ca_stop_filter" : {
-                        "type" : "stop",
-                        "stopwords" : [
-                            "_catalan_"
-                        ]
-                    },
-                    "cs_stop_filter" : {
-                        "type" : "stop",
-                        "stopwords" : [
-                            "_czech_"
-                        ]
-                    },
-                    "da_stop_filter" : {
-                        "type" : "stop",
-                        "stopwords" : [
-                            "_danish_"
-                        ]
-                    },
-                    "de_stop_filter" : {
-                        "type" : "stop",
-                        "stopwords" : [
-                            "_german_"
-                        ]
-                    },
-                    "de_stem_filter" : {
-                        "type" : "stemmer",
-                        "name" : "minimal_german"
-                    },
-                    "el_stop_filter" : {
-                        "type" : "stop",
-                        "stopwords" : [
-                            "_greek_"
-                        ]
-                    },
-                    "en_stop_filter" : {
-                        "type" : "stop",
-                        "stopwords" : [
-                            "_english_"
-                        ]
-                    },
-                    "en_stem_filter" : {
-                        "type" : "stemmer",
-                        "name" : "minimal_english"
-                    },
-                    "es_stop_filter" : {
-                        "type" : "stop",
-                        "stopwords" : [
-                            "_spanish_"
-                        ]
-                    },
-                    "es_stem_filter" : {
-                        "type" : "stemmer",
-                        "name" : "light_spanish"
-                    },
-                    "eu_stop_filter" : {
-                        "type" : "stop",
-                        "stopwords" : [
-                            "_basque_"
-                        ]
-                    },
-                    "fa_stop_filter" : {
-                        "type" : "stop",
-                        "stopwords" : [
-                            "_persian_"
-                        ]
-                    },
-                    "fi_stop_filter" : {
-                        "type" : "stop",
-                        "stopwords" : [
-                            "_finnish_"
-                        ]
-                    },
-                    "fi_stem_filter" : {
-                        "type" : "stemmer",
-                        "name" : "light_finish"
-                    },
-                    "fr_stop_filter" : {
-                        "type" : "stop",
-                        "stopwords" : [
-                            "_french_"
-                        ]
-                    },
-                    "fr_stem_filter" : {
-                        "type" : "stemmer",
-                        "name" : "minimal_french"
-                    },
-                    "gl_stop_filter" : {
-                        "type" : "stop",
-                        "stopwords" : [
-                            "_galician_"
-                        ]
-                    },
-                    "gl_stem_filter" : {
-                        "type" : "stemmer",
-                        "name" : "minimal_galician"
-                    },
-                    "he_stop_filter" : {
-                        "type" : "stop",
-                        "stopwords" : [
-                            "״", "׳", "של", "רב", "פי", "עם", "עליו", "עליהם", "על", "עד", "מן", "מכל",
-                            "מי", "מהם", "מה", "מ", "למה", "לכל", "לי", "לו", "להיות", "לה", "לא", "כן", "כמה",
-                            "כלי", "כל", "כי", "יש", "ימים", "יותר", "יד", "י", "זה", "ז", "ועל", "ומי", "ולא", "וכן",
-                            "וכל", "והיא", "והוא", "ואם", "ו", "הרבה", "הנה", "היו", "היה", "היא", "הזה", "הוא",
-                            "דבר", "ד", "ג", "בני", "בכל", "בו", "בה", "בא", "את", "אשר", "אם", "אלה", "אל",
-                            "אך", "איש", "אין", "אחת", "אחר", "אחד", "אז", "אותו", "־", "^", "?", ";", ":", "1",
-                            ".", "-", "*", "\"", "!", "שלשה", "בעל", "פני", ")", "גדול", "שם", "עלי", "עולם",
-                            "מקום", "לעולם", "לנו", "להם", "ישראל", "יודע", "זאת", "השמים", "הזאת", "הדברים", "הדבר",
-                            "הבית", "האמת", "דברי", "במקום", "בהם", "אמרו", "אינם", "אחרי", "אותם", "אדם", "(",
-                            "חלק", "שני", "שכל", "שאר", "ש", "ר", "פעמים", "נעשה", "ן", "ממנו", "מלא", "מזה", "ם",
-                            "לפי", "ל", "כמו", "כבר", "כ", "זו", "ומה", "ולכל", "ובין", "ואין", "הן", "היתה", "הא", "ה",
-                            "בל", "בין", "בזה", "ב", "אף", "אי", "אותה", "או", "אבל", "א"
-                        ]
-                    },
-                    "hi_stop_filter" : {
-                        "type" : "stop",
-                        "stopwords" : [
-                            "_hindi_"
-                        ]
-                    },
-                    "hu_stop_filter" : {
-                        "type" : "stop",
-                        "stopwords" : [
-                            "_hungarian_"
-                        ]
-                    },
-                    "hu_stem_filter" : {
-                        "type" : "stemmer",
-                        "name" : "light_hungarian"
-                    },
-                    "hy_stop_filter" : {
-                        "type" : "stop",
-                        "stopwords" : [
-                            "_armenian_"
-                        ]
-                    },
-                    "id_stop_filter" : {
-                        "type" : "stop",
-                        "stopwords" : [
-                            "_indonesian_"
-                        ]
-                    },
-                    "it_stop_filter" : {
-                        "type" : "stop",
-                        "stopwords" : [
-                            "_italian_"
-                        ]
-                    },
-                    "it_stem_filter" : {
-                        "type" : "stemmer",
-                        "name" : "light_italian"
-                    },
-                    "ja_pos_filter" : {
-                        "type" : "kuromoji_part_of_speech",
-                        "stoptags" : [
-                            "\\u52a9\\u8a5e-\\u683c\\u52a9\\u8a5e-\\u4e00\\u822c",
-                            "\\u52a9\\u8a5e-\\u7d42\\u52a9\\u8a5e"
-                        ]
-                    },
-                    "lt_stop_filter" : {
-                        "type" : "stop",
-                        "stopwords" : [
-                            "_lithuanian_"
-                        ]
-                    },
-                    "lv_stop_filter" : {
-                        "type" : "stop",
-                        "stopwords" : [
-                            "_latvian_"
-                        ]
-                    },
-                    "nl_stop_filter" : {
-                        "type" : "stop",
-                        "stopwords" : [
-                            "_dutch_"
-                        ]
-                    },
-                    "no_stop_filter" : {
-                        "type" : "stop",
-                        "stopwords" : [
-                            "_norwegian_"
-                        ]
-                    },
-                    "pt_stop_filter" : {
-                        "type" : "stop",
-                        "stopwords" : [
-                            "_portuguese_"
-                        ]
-                    },
-                    "pt_stem_filter" : {
-                        "type" : "stemmer",
-                        "name" : "minimal_portuguese"
-                    },
-                    "pl_stem_filter" : {
-                        "type" : "stemmer",
-                        "name" : "polish_stem"
-                    },
-                    "ro_stop_filter" : {
-                        "type" : "stop",
-                        "stopwords" : [
-                            "_romanian_"
-                        ]
-                    },
-                    "ru_stop_filter" : {
-                        "type" : "stop",
-                        "stopwords" : [
-                            "_russian_"
-                        ]
-                    },
-                    "ru_stem_filter" : {
-                        "type" : "stemmer",
-                        "name" : "light_russian"
-                    },
-                    "sv_stop_filter" : {
-                        "type" : "stop",
-                        "stopwords" : [
-                            "_swedish_"
-                        ]
-                    },
-                    "sv_stem_filter" : {
-                        "type" : "stemmer",
-                        "name" : "light_swedish"
-                    },
-                    "th_stop_filter" : {
-                        "type" : "stop",
-                        "stopwords" : [
-                            "_thai_"
-                        ]
-                    },
-                    "tr_stop_filter" : {
-                        "type" : "stop",
-                        "stopwords" : [
-                            "_turkish_"
-                        ]
-                    }
-                },
-                "analyzer" : {
-                    "host_analyzer" : {
-                        "type" : "custom",
-                        "tokenizer" : "host_tokenizer",
-                        "filter" : [ "host_stop_filter" ]
-                    },
-                    "path_analyzer" : {
-                        "type" : "custom",
-                        "tokenizer" : "path_tokenizer"
-                    },
-                    "query_analyzer" : {
-                        "type" : "custom",
-                        "tokenizer" : "query_tokenizer"
-                    },
-                    "ar_analyzer" : {
-                        "type" : "custom",
-                        "filter" : [
-                            "icu_normalizer",
-                            "ar_stop_filter",
-                            "icu_folding"
-                        ],
-                        "tokenizer" : "icu_tokenizer"
-                    },
-                    "bg_analyzer" : {
-                        "type" : "custom",
-                        "filter" : [
-                            "icu_normalizer",
-                            "bg_stop_filter",
-                            "icu_folding"
-                        ],
-                        "tokenizer" : "icu_tokenizer"
-                    },
-                    "ca_analyzer" : {
-                        "type" : "custom",
-                        "filter" : [
-                            "icu_normalizer",
-                            "ca_stop_filter",
-                            "icu_folding"
-                        ],
-                        "tokenizer" : "icu_tokenizer"
-                    },
-                    "cs_analyzer" : {
-                        "type" : "custom",
-                        "filter" : [
-                            "icu_normalizer",
-                            "cs_stop_filter",
-                            "icu_folding"
-                        ],
-                        "tokenizer" : "icu_tokenizer"
-                    },
-                    "da_analyzer" : {
-                        "type" : "custom",
-                        "filter" : [
-                            "icu_normalizer",
-                            "da_stop_filter",
-                            "icu_folding"
-                        ],
-                        "tokenizer" : "icu_tokenizer"
-                    },
-                    "de_analyzer" : {
-                        "type" : "custom",
-                        "filter" : [
-                            "icu_normalizer",
-                            "de_stop_filter",
-                            "de_stem_filter",
-                            "icu_folding"
-                        ],
-                        "tokenizer" : "icu_tokenizer"
-                    },
-                    "el_analyzer" : {
-                        "type" : "custom",
-                        "filter" : [
-                            "icu_normalizer",
-                            "el_stop_filter",
-                            "icu_folding"
-                        ],
-                        "tokenizer" : "icu_tokenizer"
-                    },
-                    "en_analyzer" : {
-                        "type" : "custom",
-                        "filter" : [
-                            "icu_normalizer",
-                            "en_stop_filter",
-                            "en_stem_filter",
-                            "icu_folding"
-                        ],
-                        "tokenizer" : "icu_tokenizer"
-                    },
-                    "es_analyzer" : {
-                        "type" : "custom",
-                        "filter" : [
-                            "icu_normalizer",
-                            "es_stop_filter",
-                            "es_stem_filter",
-                            "icu_folding"
-                        ],
-                        "tokenizer" : "icu_tokenizer"
-                    },
-                    "eu_analyzer" : {
-                        "type" : "custom",
-                        "filter" : [
-                            "icu_normalizer",
-                            "eu_stop_filter",
-                            "icu_folding"
-                        ],
-                        "tokenizer" : "icu_tokenizer"
-                    },
-                    "fa_analyzer" : {
-                        "type" : "custom",
-                        "filter" : [
-                            "icu_normalizer",
-                            "fa_stop_filter",
-                            "icu_folding"
-                        ],
-                        "tokenizer" : "icu_tokenizer"
-                    },
-                    "fi_analyzer" : {
-                        "type" : "custom",
-                        "filter" : [
-                            "icu_normalizer",
-                            "fi_stop_filter",
-                            "fi_stem_filter",
-                            "icu_folding"
-                        ],
-                        "tokenizer" : "icu_tokenizer"
-                    },
-                    "fr_analyzer" : {
-                        "type" : "custom",
-                        "filter" : [
-                            "icu_normalizer",
-                            "elision",
-                            "fr_stop_filter",
-                            "fr_stem_filter",
-                            "icu_folding"
-                        ],
-                        "tokenizer" : "icu_tokenizer"
-                    },
-                    "gl_analyzer" : {
-                        "type" : "custom",
-                        "filter" : [
-                            "icu_normalizer",
-                            "gl_stop_filter",
-                            "gl_stem_filter",
-                            "icu_folding"
-                        ],
-                        "tokenizer" : "icu_tokenizer"
-                    },
-                    "he_analyzer" : {
-                        "type" : "custom",
-                        "filter" : [
-                            "icu_normalizer",
-                            "he_stop_filter",
-                            "icu_folding"
-                        ],
-                        "tokenizer" : "icu_tokenizer"
-                    },
-                    "hi_analyzer" : {
-                        "type" : "custom",
-                        "filter" : [
-                            "icu_normalizer",
-                            "hi_stop_filter",
-                            "icu_folding"
-                        ],
-                        "tokenizer" : "icu_tokenizer"
-                    },
-                    "hu_analyzer" : {
-                        "type" : "custom",
-                        "filter" : [
-                            "icu_normalizer",
-                            "hu_stop_filter",
-                            "hu_stem_filter",
-                            "icu_folding"
-                        ],
-                        "tokenizer" : "icu_tokenizer"
-                    },
-                    "hy_analyzer" : {
-                        "type" : "custom",
-                        "filter" : [
-                            "icu_normalizer",
-                            "hy_stop_filter",
-                            "icu_folding"
-                        ],
-                        "tokenizer" : "icu_tokenizer"
-                    },
-                    "id_analyzer" : {
-                        "type" : "custom",
-                        "filter" : [
-                            "icu_normalizer",
-                            "id_stop_filter",
-                            "icu_folding"
-                        ],
-                        "tokenizer" : "icu_tokenizer"
-                    },
-                    "it_analyzer" : {
-                        "type" : "custom",
-                        "filter" : [
-                            "icu_normalizer",
-                            "it_stop_filter",
-                            "it_stem_filter",
-                            "icu_folding"
-                        ],
-                        "tokenizer" : "icu_tokenizer"
-                    },
-                    "ja_analyzer" : {
-                        "type" : "custom",
-                        "filter" : [
-                            "kuromoji_baseform",
-                            "ja_pos_filter",
-                            "icu_normalizer",
-                            "icu_folding",
-                            "cjk_width"
-                        ],
-                        "tokenizer" : "kuromoji_tokenizer"
-                    },
-                    "ko_analyzer" : {
-                        "type" : "cjk",
-                        "filter" : [ ]
-                    },
-                    "lt_analyzer" : {
-                        "type" : "custom",
-                        "filter" : [
-                            "icu_normalizer",
-                            "lt_stop_filter",
-                            "icu_folding"
-                        ],
-                        "tokenizer" : "icu_tokenizer"
-                    },
-                    "lv_analyzer" : {
-                        "type" : "custom",
-                        "filter" : [
-                            "icu_normalizer",
-                            "lv_stop_filter",
-                            "icu_folding"
-                        ],
-                        "tokenizer" : "icu_tokenizer"
-                    },
-                    "nl_analyzer" : {
-                        "type" : "custom",
-                        "filter" : [
-                            "icu_normalizer",
-                            "nl_stop_filter",
-                            "icu_folding"
-                        ],
-                        "tokenizer" : "icu_tokenizer"
-                    },
-                    "no_analyzer" : {
-                        "type" : "custom",
-                        "filter" : [
-                            "icu_normalizer",
-                            "no_stop_filter",
-                            "icu_folding"
-                        ],
-                        "tokenizer" : "icu_tokenizer"
-                    },
-                    "pl_analyzer" : {
-                        "type" : "custom",
-                        "filter" : [
-                            "icu_normalizer",
-                            "pl_stem_filter",
-                            "icu_folding"
-                        ],
-                        "tokenizer" : "icu_tokenizer"
-                    },
-                    "pt_analyzer" : {
-                        "type" : "custom",
-                        "filter" : [
-                            "icu_normalizer",
-                            "pt_stop_filter",
-                            "pt_stem_filter",
-                            "icu_folding"
-                        ],
-                        "tokenizer" : "icu_tokenizer"
-                    },
-                    "ro_analyzer" : {
-                        "type" : "custom",
-                        "filter" : [
-                            "icu_normalizer",
-                            "ro_stop_filter",
-                            "icu_folding"
-                        ],
-                        "tokenizer" : "icu_tokenizer"
-                    },
-                    "ru_analyzer" : {
-                        "type" : "custom",
-                        "filter" : [
-                            "icu_normalizer",
-                            "ru_stop_filter",
-                            "ru_stem_filter",
-                            "icu_folding"
-                        ],
-                        "tokenizer" : "icu_tokenizer"
-                    },
-                    "sv_analyzer" : {
-                        "type" : "custom",
-                        "filter" : [
-                            "icu_normalizer",
-                            "sv_stop_filter",
-                            "sv_stem_filter",
-                            "icu_folding"
-                        ],
-                        "tokenizer" : "icu_tokenizer"
-                    },
-                    "th_analyzer" : {
-                        "type" : "custom",
-                        "filter" : [
-                            "icu_normalizer",
-                            "th_stop_filter",
-                            "icu_folding"
-                        ],
-                        "tokenizer" : "icu_tokenizer"
-                    },
-                    "tr_analyzer" : {
-                        "type" : "custom",
-                        "filter" : [
-                            "icu_normalizer",
-                            "tr_stop_filter",
-                            "icu_folding"
-                        ],
-                        "tokenizer" : "icu_tokenizer"
-                    },
-                    "zh_analyzer" : {
-                        "type" : "custom",
-                        "filter" : [
-                            "smartcn_word",
-                            "icu_normalizer",
-                            "icu_folding"
-                        ],
-                        "tokenizer" : "smartcn_sentence"
-                    },
-                    "lowercase_analyzer" : {
-                        "type" : "custom",
-                        "filter" : [
-                            "icu_normalizer",
-                            "icu_folding"
-                        ],
-                        "tokenizer" : "keyword"
-                    },
-                    "meta_keyword_analyzer" : {
-                        "type" : "custom",
-                        "filter" : [
-                            "icu_normalizer",
-                            "icu_folding"
-                        ],
-                        "tokenizer" : "meta_keyword_tokenizer"
-                    },
-                    "default_analyzer" : {
-                        "type" : "custom",
-                        "filter" : [
-                            "icu_normalizer",
-                            "icu_folding"
-                        ],
-                        "tokenizer" : "icu_tokenizer"
-                    }
-                },
-                "tokenizer" : {
-                    "host_tokenizer" : {
-                        "type": "pattern",
-                        "pattern" : "\\."
-                    },
-                    "meta_keyword_tokenizer" : {
-                        "type": "pattern",
-                        "pattern" : "[, \\t]"
-                    },
-                    "path_tokenizer" : {
-                        "type": "path_hierarchy",
-                        "delimiter" : "/"
-                    },
-                    "query_tokenizer" : {
-                        "type": "pattern",
-                        "pattern" : "[&=]"
-                    }
-                }
-            }
+    "template" : "webis_warc_*",
+    "settings" : {
+        "index.query.default_field" : "body_lang_en",
+        "index" : {
+            "number_of_replicas" : 0
         },
-        "mappings" : {
-            "warcrecord" : {
-                "_all" : {
-                    "enabled" : false
-                },
-                "_source" : {
-                    "enabled" : true,
-                    "excludes" : [
-                        "warc_target_hostname",
-                        "warc_target_path",
-                        "warc_target_query_string"
+        "analysis" : {
+            "filter" : {
+                "host_stop_filter" : {
+                    "type" : "stop",
+                    "stopwords" : [
+                        "en", "www", "www2",
+                        "aero", "arpa", "asia", "biz", "cat", "com", "coop", "edu", "eu", "gov", "info", "int",
+                        "jobs", "mil", "mobi", "museum", "name", "net", "org", "post", "pro", "tel", "travel", "xxx",
+                        "ac", "ad", "ae", "af", "ag", "ai", "al", "am", "an", "ao", "aq", "ar", "as", "at", "au",
+                        "aw", "ax", "az", "ba", "bb", "bd", "be", "bf", "bg", "bh", "bi", "bj", "bm", "bn", "bo",
+                        "br", "bs", "bt", "bv", "bw", "by", "bz", "ca", "cc", "cd", "cf", "cg", "ch", "ci", "ck",
+                        "cl", "cm", "cn", "co", "cr", "cs", "cu", "cv", "cx", "cy", "cz", "dd", "de", "dj", "dk",
+                        "dm", "do", "dz", "ec", "ee", "eg", "eh", "er", "es", "et", "eu", "fi", "fj", "fk", "fm",
+                        "fo", "fr", "ga", "gb", "gd", "ge", "gf", "gg", "gh", "gi", "gl", "gm", "gn", "gp", "gq",
+                        "gr", "gs", "gt", "gu", "gw", "gy", "hk", "hm", "hn", "hr", "ht", "hu", "id", "ie", "il",
+                        "im", "in", "io", "iq", "ir", "is", "it", "je", "jm", "jo", "jp", "ke", "kg", "kh", "ki",
+                        "km", "kn", "kp", "kr", "kw", "ky", "kz", "la", "lb", "lc", "li", "lk", "lr", "ls", "lt",
+                        "lu", "lv", "ly", "ma", "mc", "md", "me", "mg", "mh", "mk", "ml", "mm", "mn", "mo", "mp",
+                        "mq", "mr", "ms", "mt", "mu", "mv", "mw", "mx", "my", "mz", "na", "nc", "ne", "nf", "ng",
+                        "ni", "nl", "no", "np", "nr", "nu", "nz", "om", "pa", "pe", "pf", "pg", "ph", "pk", "pl",
+                        "pm", "pn", "pr", "ps", "pt", "pw", "py", "qa", "re", "ro", "rs", "ru", "rw", "sa", "sb",
+                        "sc", "sd", "se", "sg", "sh", "si", "sj", "sk", "sl", "sm", "sn", "so", "sr", "st", "su",
+                        "sv", "sy", "sz", "tc", "td", "tf", "tg", "th", "tj", "tk", "tl", "tm", "tn", "to", "tp",
+                        "tr", "tt", "tv", "tw", "tz", "ua", "ug", "uk", "um", "us", "uy", "uz", "va", "vc", "ve",
+                        "vg", "vi", "vn", "vu", "wf", "ws", "ye", "yt", "yu", "za", "zm", "zr", "zw"
                     ]
                 },
-                "dynamic_templates" : [
-                    { "ar" : {
-                        "match" : "*_lang_ar",
-                        "match_mapping_type" : "string",
-                        "mapping" : {
-                            "type" : "string",
-                            "analyzer" : "ar_analyzer",
-                            "similarity" : "BM25"
-                        }
-                    } },
-                    { "bg" : {
-                        "match" : "*_lang_bg",
-                        "match_mapping_type" : "string",
-                        "mapping" : {
-                            "type" : "string",
-                            "analyzer" : "bg_analyzer",
-                            "similarity" : "BM25"
-                        }
-                    } },
-                    { "ca" : {
-                        "match" : "*_lang_ca",
-                        "match_mapping_type" : "string",
-                        "mapping" : {
-                            "type" : "string",
-                            "analyzer" : "ca_analyzer",
-                            "similarity" : "BM25"
-                        }
-                    } },
-                    { "cs" : {
-                        "match" : "*_lang_cs",
-                        "match_mapping_type" : "string",
-                        "mapping" : {
-                            "type" : "string",
-                            "analyzer" : "cs_analyzer",
-                            "similarity" : "BM25"
-                        }
-                    } },
-                    { "da" : {
-                        "match" : "*_lang_da",
-                        "match_mapping_type" : "string",
-                        "mapping" : {
-                            "type" : "string",
-                            "analyzer" : "da_analyzer",
-                            "similarity" : "BM25"
-                        }
-                    } },
-                    { "de" : {
-                        "match" : "*_lang_de",
-                        "match_mapping_type" : "string",
-                        "mapping" : {
-                            "type" : "string",
-                            "analyzer" : "de_analyzer",
-                            "similarity" : "BM25"
-                        }
-                    } },
-                    { "el" : {
-                        "match" : "*_lang_el",
-                        "match_mapping_type" : "string",
-                        "mapping" : {
-                            "type" : "string",
-                            "analyzer" : "el_analyzer",
-                            "similarity" : "BM25"
-                        }
-                    } },
-                    { "en" : {
-                        "match" : "*_lang_en",
-                        "match_mapping_type" : "string",
-                        "mapping" : {
-                            "type" : "string",
-                            "analyzer" : "en_analyzer",
-                            "similarity" : "BM25"
-                        }
-                    } },
-                    { "es" : {
-                        "match" : "*_lang_es",
-                        "match_mapping_type" : "string",
-                        "mapping" : {
-                            "type" : "string",
-                            "analyzer" : "es_analyzer",
-                            "similarity" : "BM25"
-                        }
-                    } },
-                    { "eu" : {
-                        "match" : "*_lang_eu",
-                        "match_mapping_type" : "string",
-                        "mapping" : {
-                            "type" : "string",
-                            "analyzer" : "eu_analyzer",
-                            "similarity" : "BM25"
-                        }
-                    } },
-                    { "fa" : {
-                        "match" : "*_lang_fa",
-                        "match_mapping_type" : "string",
-                        "mapping" : {
-                            "type" : "string",
-                            "analyzer" : "fa_analyzer",
-                            "similarity" : "BM25"
-                        }
-                    } },
-                    { "fi" : {
-                        "match" : "*_lang_fi",
-                        "match_mapping_type" : "string",
-                        "mapping" : {
-                            "type" : "string",
-                            "analyzer" : "fi_analyzer",
-                            "similarity" : "BM25"
-                        }
-                    } },
-                    { "fr" : {
-                        "match" : "*_lang_fr",
-                        "match_mapping_type" : "string",
-                        "mapping" : {
-                            "type" : "string",
-                            "analyzer" : "fr_analyzer",
-                            "similarity" : "BM25"
-                        }
-                    } },
-                    { "gl" : {
-                        "match" : "*_lang_gl",
-                        "match_mapping_type" : "string",
-                        "mapping" : {
-                            "type" : "string",
-                            "analyzer" : "gl_analyzer",
-                            "similarity" : "BM25"
-                        }
-                    } },
-                    { "he" : {
-                        "match" : "*_lang_he",
-                        "match_mapping_type" : "string",
-                        "mapping" : {
-                            "type" : "string",
-                            "analyzer" : "he_analyzer",
-                            "similarity" : "BM25"
-                        }
-                    } },
-                    { "hi" : {
-                        "match" : "*_lang_hi",
-                        "match_mapping_type" : "string",
-                        "mapping" : {
-                            "type" : "string",
-                            "analyzer" : "hi_analyzer",
-                            "similarity" : "BM25"
-                        }
-                    } },
-                    { "hu" : {
-                        "match" : "*_lang_hu",
-                        "match_mapping_type" : "string",
-                        "mapping" : {
-                            "type" : "string",
-                            "analyzer" : "hu_analyzer",
-                            "similarity" : "BM25"
-                        }
-                    } },
-                    { "hy" : {
-                        "match" : "*_lang_hy",
-                        "match_mapping_type" : "string",
-                        "mapping" : {
-                            "type" : "string",
-                            "analyzer" : "hy_analyzer",
-                            "similarity" : "BM25"
-                        }
-                    } },
-                    { "id" : {
-                        "match" : "*_lang_id",
-                        "match_mapping_type" : "string",
-                        "mapping" : {
-                            "type" : "string",
-                            "analyzer" : "id_analyzer",
-                            "similarity" : "BM25"
-                        }
-                    } },
-                    { "it" : {
-                        "match" : "*_lang_it",
-                        "match_mapping_type" : "string",
-                        "mapping" : {
-                            "type" : "string",
-                            "analyzer" : "it_analyzer",
-                            "similarity" : "BM25"
-                        }
-                    } },
-                    { "ja" : {
-                        "match" : "*_lang_ja",
-                        "match_mapping_type" : "string",
-                        "mapping" : {
-                            "type" : "string",
-                            "analyzer" : "ja_analyzer",
-                            "similarity" : "BM25"
-                        }
-                    } },
-                    { "ko" : {
-                        "match" : "*_lang_ko",
-                        "match_mapping_type" : "string",
-                        "mapping" : {
-                            "type" : "string",
-                            "analyzer" : "ko_analyzer",
-                            "similarity" : "BM25"
-                        }
-                    } },
-                    { "lt" : {
-                        "match" : "*_lang_lt",
-                        "match_mapping_type" : "string",
-                        "mapping" : {
-                            "type" : "string",
-                            "analyzer" : "lt_analyzer",
-                            "similarity" : "BM25"
-                        }
-                    } },
-                    { "lv" : {
-                        "match" : "*_lang_lv",
-                        "match_mapping_type" : "string",
-                        "mapping" : {
-                            "type" : "string",
-                            "analyzer" : "lv_analyzer",
-                            "similarity" : "BM25"
-                        }
-                    } },
-                    { "nl" : {
-                        "match" : "*_lang_nl",
-                        "match_mapping_type" : "string",
-                        "mapping" : {
-                            "type" : "string",
-                            "analyzer" : "nl_analyzer",
-                            "similarity" : "BM25"
-                        }
-                    } },
-                    { "no" : {
-                        "match" : "*_lang_no",
-                        "match_mapping_type" : "string",
-                        "mapping" : {
-                            "type" : "string",
-                            "analyzer" : "no_analyzer",
-                            "similarity" : "BM25"
-                        }
-                    } },
-                    { "pl" : {
-                        "match" : "*_lang_pl",
-                        "match_mapping_type" : "string",
-                        "mapping" : {
-                            "type" : "string",
-                            "analyzer" : "pl_analyzer",
-                            "similarity" : "BM25"
-                        }
-                    } },
-                    { "pt" : {
-                        "match" : "*_lang_pt",
-                        "match_mapping_type" : "string",
-                        "mapping" : {
-                            "type" : "string",
-                            "analyzer" : "pt_analyzer",
-                            "similarity" : "BM25"
-                        }
-                    } },
-                    { "ro" : {
-                        "match" : "*_lang_ro",
-                        "match_mapping_type" : "string",
-                        "mapping" : {
-                            "type" : "string",
-                            "analyzer" : "ro_analyzer",
-                            "similarity" : "BM25"
-                        }
-                    } },
-                    { "ru" : {
-                        "match" : "*_lang_ru",
-                        "match_mapping_type" : "string",
-                        "mapping" : {
-                            "type" : "string",
-                            "analyzer" : "ru_analyzer",
-                            "similarity" : "BM25"
-                        }
-                    } },
-                    { "sv" : {
-                        "match" : "*_lang_sv",
-                        "match_mapping_type" : "string",
-                        "mapping" : {
-                            "type" : "string",
-                            "analyzer" : "sv_analyzer",
-                            "similarity" : "BM25"
-                        }
-                    } },
-                    { "th" : {
-                        "match" : "*_lang_th",
-                        "match_mapping_type" : "string",
-                        "mapping" : {
-                            "type" : "string",
-                            "analyzer" : "th_analyzer",
-                            "similarity" : "BM25"
-                        }
-                    } },
-                    { "tr" : {
-                        "match" : "*_lang_tr",
-                        "match_mapping_type" : "string",
-                        "mapping" : {
-                            "type" : "string",
-                            "analyzer" : "tr_analyzer",
-                            "similarity" : "BM25"
-                        }
-                    } },
-                    { "zh" : {
-                        "match" : "*_lang_zh",
-                        "match_mapping_type" : "string",
-                        "mapping" : {
-                            "type" : "string",
-                            "analyzer" : "zh_analyzer",
-                            "similarity" : "BM25"
-                        }
-                    } },
-                    { "default" : {
-                        "match" : "*_lang_*",
-                        "match_mapping_type" : "string",
-                        "mapping" : {
-                            "type" : "string",
-                            "analyzer" : "default_analyzer",
-                            "similarity" : "BM25"
-                        }
-                    } }
-                ],
-                "properties" : {
-                    "warc_trec_id" : {
+                "ar_stop_filter" : {
+                    "type" : "stop",
+                    "stopwords" : [
+                        "_arabic_"
+                    ]
+                },
+                "bg_stop_filter" : {
+                    "type" : "stop",
+                    "stopwords" : [
+                        "_bulgarian_"
+                    ]
+                },
+                "ca_stop_filter" : {
+                    "type" : "stop",
+                    "stopwords" : [
+                        "_catalan_"
+                    ]
+                },
+                "cs_stop_filter" : {
+                    "type" : "stop",
+                    "stopwords" : [
+                        "_czech_"
+                    ]
+                },
+                "da_stop_filter" : {
+                    "type" : "stop",
+                    "stopwords" : [
+                        "_danish_"
+                    ]
+                },
+                "de_stop_filter" : {
+                    "type" : "stop",
+                    "stopwords" : [
+                        "_german_"
+                    ]
+                },
+                "de_stem_filter" : {
+                    "type" : "stemmer",
+                    "name" : "minimal_german"
+                },
+                "el_stop_filter" : {
+                    "type" : "stop",
+                    "stopwords" : [
+                        "_greek_"
+                    ]
+                },
+                "en_stop_filter" : {
+                    "type" : "stop",
+                    "stopwords" : [
+                        "_english_"
+                    ]
+                },
+                "en_stem_filter" : {
+                    "type" : "stemmer",
+                    "name" : "minimal_english"
+                },
+                "es_stop_filter" : {
+                    "type" : "stop",
+                    "stopwords" : [
+                        "_spanish_"
+                    ]
+                },
+                "es_stem_filter" : {
+                    "type" : "stemmer",
+                    "name" : "light_spanish"
+                },
+                "eu_stop_filter" : {
+                    "type" : "stop",
+                    "stopwords" : [
+                        "_basque_"
+                    ]
+                },
+                "fa_stop_filter" : {
+                    "type" : "stop",
+                    "stopwords" : [
+                        "_persian_"
+                    ]
+                },
+                "fi_stop_filter" : {
+                    "type" : "stop",
+                    "stopwords" : [
+                        "_finnish_"
+                    ]
+                },
+                "fi_stem_filter" : {
+                    "type" : "stemmer",
+                    "name" : "light_finish"
+                },
+                "fr_stop_filter" : {
+                    "type" : "stop",
+                    "stopwords" : [
+                        "_french_"
+                    ]
+                },
+                "fr_stem_filter" : {
+                    "type" : "stemmer",
+                    "name" : "minimal_french"
+                },
+                "gl_stop_filter" : {
+                    "type" : "stop",
+                    "stopwords" : [
+                        "_galician_"
+                    ]
+                },
+                "gl_stem_filter" : {
+                    "type" : "stemmer",
+                    "name" : "minimal_galician"
+                },
+                "he_stop_filter" : {
+                    "type" : "stop",
+                    "stopwords" : [
+                        "״", "׳", "של", "רב", "פי", "עם", "עליו", "עליהם", "על", "עד", "מן", "מכל",
+                        "מי", "מהם", "מה", "מ", "למה", "לכל", "לי", "לו", "להיות", "לה", "לא", "כן", "כמה",
+                        "כלי", "כל", "כי", "יש", "ימים", "יותר", "יד", "י", "זה", "ז", "ועל", "ומי", "ולא", "וכן",
+                        "וכל", "והיא", "והוא", "ואם", "ו", "הרבה", "הנה", "היו", "היה", "היא", "הזה", "הוא",
+                        "דבר", "ד", "ג", "בני", "בכל", "בו", "בה", "בא", "את", "אשר", "אם", "אלה", "אל",
+                        "אך", "איש", "אין", "אחת", "אחר", "אחד", "אז", "אותו", "־", "^", "?", ";", ":", "1",
+                        ".", "-", "*", "\"", "!", "שלשה", "בעל", "פני", ")", "גדול", "שם", "עלי", "עולם",
+                        "מקום", "לעולם", "לנו", "להם", "ישראל", "יודע", "זאת", "השמים", "הזאת", "הדברים", "הדבר",
+                        "הבית", "האמת", "דברי", "במקום", "בהם", "אמרו", "אינם", "אחרי", "אותם", "אדם", "(",
+                        "חלק", "שני", "שכל", "שאר", "ש", "ר", "פעמים", "נעשה", "ן", "ממנו", "מלא", "מזה", "ם",
+                        "לפי", "ל", "כמו", "כבר", "כ", "זו", "ומה", "ולכל", "ובין", "ואין", "הן", "היתה", "הא", "ה",
+                        "בל", "בין", "בזה", "ב", "אף", "אי", "אותה", "או", "אבל", "א"
+                    ]
+                },
+                "hi_stop_filter" : {
+                    "type" : "stop",
+                    "stopwords" : [
+                        "_hindi_"
+                    ]
+                },
+                "hu_stop_filter" : {
+                    "type" : "stop",
+                    "stopwords" : [
+                        "_hungarian_"
+                    ]
+                },
+                "hu_stem_filter" : {
+                    "type" : "stemmer",
+                    "name" : "light_hungarian"
+                },
+                "hy_stop_filter" : {
+                    "type" : "stop",
+                    "stopwords" : [
+                        "_armenian_"
+                    ]
+                },
+                "id_stop_filter" : {
+                    "type" : "stop",
+                    "stopwords" : [
+                        "_indonesian_"
+                    ]
+                },
+                "it_stop_filter" : {
+                    "type" : "stop",
+                    "stopwords" : [
+                        "_italian_"
+                    ]
+                },
+                "it_stem_filter" : {
+                    "type" : "stemmer",
+                    "name" : "light_italian"
+                },
+                "ja_pos_filter" : {
+                    "type" : "kuromoji_part_of_speech",
+                    "stoptags" : [
+                        "\\u52a9\\u8a5e-\\u683c\\u52a9\\u8a5e-\\u4e00\\u822c",
+                        "\\u52a9\\u8a5e-\\u7d42\\u52a9\\u8a5e"
+                    ]
+                },
+                "lt_stop_filter" : {
+                    "type" : "stop",
+                    "stopwords" : [
+                        "_lithuanian_"
+                    ]
+                },
+                "lv_stop_filter" : {
+                    "type" : "stop",
+                    "stopwords" : [
+                        "_latvian_"
+                    ]
+                },
+                "nl_stop_filter" : {
+                    "type" : "stop",
+                    "stopwords" : [
+                        "_dutch_"
+                    ]
+                },
+                "no_stop_filter" : {
+                    "type" : "stop",
+                    "stopwords" : [
+                        "_norwegian_"
+                    ]
+                },
+                "pt_stop_filter" : {
+                    "type" : "stop",
+                    "stopwords" : [
+                        "_portuguese_"
+                    ]
+                },
+                "pt_stem_filter" : {
+                    "type" : "stemmer",
+                    "name" : "minimal_portuguese"
+                },
+                "pl_stem_filter" : {
+                    "type" : "stemmer",
+                    "name" : "polish_stem"
+                },
+                "ro_stop_filter" : {
+                    "type" : "stop",
+                    "stopwords" : [
+                        "_romanian_"
+                    ]
+                },
+                "ru_stop_filter" : {
+                    "type" : "stop",
+                    "stopwords" : [
+                        "_russian_"
+                    ]
+                },
+                "ru_stem_filter" : {
+                    "type" : "stemmer",
+                    "name" : "light_russian"
+                },
+                "sv_stop_filter" : {
+                    "type" : "stop",
+                    "stopwords" : [
+                        "_swedish_"
+                    ]
+                },
+                "sv_stem_filter" : {
+                    "type" : "stemmer",
+                    "name" : "light_swedish"
+                },
+                "th_stop_filter" : {
+                    "type" : "stop",
+                    "stopwords" : [
+                        "_thai_"
+                    ]
+                },
+                "tr_stop_filter" : {
+                    "type" : "stop",
+                    "stopwords" : [
+                        "_turkish_"
+                    ]
+                }
+            },
+            "analyzer" : {
+                "host_analyzer" : {
+                    "type" : "custom",
+                    "tokenizer" : "host_tokenizer",
+                    "filter" : [ "host_stop_filter" ]
+                },
+                "path_analyzer" : {
+                    "type" : "custom",
+                    "tokenizer" : "path_tokenizer"
+                },
+                "query_analyzer" : {
+                    "type" : "custom",
+                    "tokenizer" : "query_tokenizer"
+                },
+                "ar_analyzer" : {
+                    "type" : "custom",
+                    "filter" : [
+                        "icu_normalizer",
+                        "ar_stop_filter",
+                        "icu_folding"
+                    ],
+                    "tokenizer" : "icu_tokenizer"
+                },
+                "bg_analyzer" : {
+                    "type" : "custom",
+                    "filter" : [
+                        "icu_normalizer",
+                        "bg_stop_filter",
+                        "icu_folding"
+                    ],
+                    "tokenizer" : "icu_tokenizer"
+                },
+                "ca_analyzer" : {
+                    "type" : "custom",
+                    "filter" : [
+                        "icu_normalizer",
+                        "ca_stop_filter",
+                        "icu_folding"
+                    ],
+                    "tokenizer" : "icu_tokenizer"
+                },
+                "cs_analyzer" : {
+                    "type" : "custom",
+                    "filter" : [
+                        "icu_normalizer",
+                        "cs_stop_filter",
+                        "icu_folding"
+                    ],
+                    "tokenizer" : "icu_tokenizer"
+                },
+                "da_analyzer" : {
+                    "type" : "custom",
+                    "filter" : [
+                        "icu_normalizer",
+                        "da_stop_filter",
+                        "icu_folding"
+                    ],
+                    "tokenizer" : "icu_tokenizer"
+                },
+                "de_analyzer" : {
+                    "type" : "custom",
+                    "filter" : [
+                        "icu_normalizer",
+                        "de_stop_filter",
+                        "de_stem_filter",
+                        "icu_folding"
+                    ],
+                    "tokenizer" : "icu_tokenizer"
+                },
+                "el_analyzer" : {
+                    "type" : "custom",
+                    "filter" : [
+                        "icu_normalizer",
+                        "el_stop_filter",
+                        "icu_folding"
+                    ],
+                    "tokenizer" : "icu_tokenizer"
+                },
+                "en_analyzer" : {
+                    "type" : "custom",
+                    "filter" : [
+                        "icu_normalizer",
+                        "en_stop_filter",
+                        "en_stem_filter",
+                        "icu_folding"
+                    ],
+                    "tokenizer" : "icu_tokenizer"
+                },
+                "es_analyzer" : {
+                    "type" : "custom",
+                    "filter" : [
+                        "icu_normalizer",
+                        "es_stop_filter",
+                        "es_stem_filter",
+                        "icu_folding"
+                    ],
+                    "tokenizer" : "icu_tokenizer"
+                },
+                "eu_analyzer" : {
+                    "type" : "custom",
+                    "filter" : [
+                        "icu_normalizer",
+                        "eu_stop_filter",
+                        "icu_folding"
+                    ],
+                    "tokenizer" : "icu_tokenizer"
+                },
+                "fa_analyzer" : {
+                    "type" : "custom",
+                    "filter" : [
+                        "icu_normalizer",
+                        "fa_stop_filter",
+                        "icu_folding"
+                    ],
+                    "tokenizer" : "icu_tokenizer"
+                },
+                "fi_analyzer" : {
+                    "type" : "custom",
+                    "filter" : [
+                        "icu_normalizer",
+                        "fi_stop_filter",
+                        "fi_stem_filter",
+                        "icu_folding"
+                    ],
+                    "tokenizer" : "icu_tokenizer"
+                },
+                "fr_analyzer" : {
+                    "type" : "custom",
+                    "filter" : [
+                        "icu_normalizer",
+                        "elision",
+                        "fr_stop_filter",
+                        "fr_stem_filter",
+                        "icu_folding"
+                    ],
+                    "tokenizer" : "icu_tokenizer"
+                },
+                "gl_analyzer" : {
+                    "type" : "custom",
+                    "filter" : [
+                        "icu_normalizer",
+                        "gl_stop_filter",
+                        "gl_stem_filter",
+                        "icu_folding"
+                    ],
+                    "tokenizer" : "icu_tokenizer"
+                },
+                "he_analyzer" : {
+                    "type" : "custom",
+                    "filter" : [
+                        "icu_normalizer",
+                        "he_stop_filter",
+                        "icu_folding"
+                    ],
+                    "tokenizer" : "icu_tokenizer"
+                },
+                "hi_analyzer" : {
+                    "type" : "custom",
+                    "filter" : [
+                        "icu_normalizer",
+                        "hi_stop_filter",
+                        "icu_folding"
+                    ],
+                    "tokenizer" : "icu_tokenizer"
+                },
+                "hu_analyzer" : {
+                    "type" : "custom",
+                    "filter" : [
+                        "icu_normalizer",
+                        "hu_stop_filter",
+                        "hu_stem_filter",
+                        "icu_folding"
+                    ],
+                    "tokenizer" : "icu_tokenizer"
+                },
+                "hy_analyzer" : {
+                    "type" : "custom",
+                    "filter" : [
+                        "icu_normalizer",
+                        "hy_stop_filter",
+                        "icu_folding"
+                    ],
+                    "tokenizer" : "icu_tokenizer"
+                },
+                "id_analyzer" : {
+                    "type" : "custom",
+                    "filter" : [
+                        "icu_normalizer",
+                        "id_stop_filter",
+                        "icu_folding"
+                    ],
+                    "tokenizer" : "icu_tokenizer"
+                },
+                "it_analyzer" : {
+                    "type" : "custom",
+                    "filter" : [
+                        "icu_normalizer",
+                        "it_stop_filter",
+                        "it_stem_filter",
+                        "icu_folding"
+                    ],
+                    "tokenizer" : "icu_tokenizer"
+                },
+                "ja_analyzer" : {
+                    "type" : "custom",
+                    "filter" : [
+                        "kuromoji_baseform",
+                        "ja_pos_filter",
+                        "icu_normalizer",
+                        "icu_folding",
+                        "cjk_width"
+                    ],
+                    "tokenizer" : "kuromoji_tokenizer"
+                },
+                "ko_analyzer" : {
+                    "type" : "cjk",
+                    "filter" : [ ]
+                },
+                "lt_analyzer" : {
+                    "type" : "custom",
+                    "filter" : [
+                        "icu_normalizer",
+                        "lt_stop_filter",
+                        "icu_folding"
+                    ],
+                    "tokenizer" : "icu_tokenizer"
+                },
+                "lv_analyzer" : {
+                    "type" : "custom",
+                    "filter" : [
+                        "icu_normalizer",
+                        "lv_stop_filter",
+                        "icu_folding"
+                    ],
+                    "tokenizer" : "icu_tokenizer"
+                },
+                "nl_analyzer" : {
+                    "type" : "custom",
+                    "filter" : [
+                        "icu_normalizer",
+                        "nl_stop_filter",
+                        "icu_folding"
+                    ],
+                    "tokenizer" : "icu_tokenizer"
+                },
+                "no_analyzer" : {
+                    "type" : "custom",
+                    "filter" : [
+                        "icu_normalizer",
+                        "no_stop_filter",
+                        "icu_folding"
+                    ],
+                    "tokenizer" : "icu_tokenizer"
+                },
+                "pl_analyzer" : {
+                    "type" : "custom",
+                    "filter" : [
+                        "icu_normalizer",
+                        "pl_stem_filter",
+                        "icu_folding"
+                    ],
+                    "tokenizer" : "icu_tokenizer"
+                },
+                "pt_analyzer" : {
+                    "type" : "custom",
+                    "filter" : [
+                        "icu_normalizer",
+                        "pt_stop_filter",
+                        "pt_stem_filter",
+                        "icu_folding"
+                    ],
+                    "tokenizer" : "icu_tokenizer"
+                },
+                "ro_analyzer" : {
+                    "type" : "custom",
+                    "filter" : [
+                        "icu_normalizer",
+                        "ro_stop_filter",
+                        "icu_folding"
+                    ],
+                    "tokenizer" : "icu_tokenizer"
+                },
+                "ru_analyzer" : {
+                    "type" : "custom",
+                    "filter" : [
+                        "icu_normalizer",
+                        "ru_stop_filter",
+                        "ru_stem_filter",
+                        "icu_folding"
+                    ],
+                    "tokenizer" : "icu_tokenizer"
+                },
+                "sv_analyzer" : {
+                    "type" : "custom",
+                    "filter" : [
+                        "icu_normalizer",
+                        "sv_stop_filter",
+                        "sv_stem_filter",
+                        "icu_folding"
+                    ],
+                    "tokenizer" : "icu_tokenizer"
+                },
+                "th_analyzer" : {
+                    "type" : "custom",
+                    "filter" : [
+                        "icu_normalizer",
+                        "th_stop_filter",
+                        "icu_folding"
+                    ],
+                    "tokenizer" : "icu_tokenizer"
+                },
+                "tr_analyzer" : {
+                    "type" : "custom",
+                    "filter" : [
+                        "icu_normalizer",
+                        "tr_stop_filter",
+                        "icu_folding"
+                    ],
+                    "tokenizer" : "icu_tokenizer"
+                },
+                "zh_analyzer" : {
+                    "type" : "custom",
+                    "filter" : [
+                        "smartcn_word",
+                        "icu_normalizer",
+                        "icu_folding"
+                    ],
+                    "tokenizer" : "smartcn_sentence"
+                },
+                "lowercase_analyzer" : {
+                    "type" : "custom",
+                    "filter" : [
+                        "icu_normalizer",
+                        "icu_folding"
+                    ],
+                    "tokenizer" : "keyword"
+                },
+                "meta_keyword_analyzer" : {
+                    "type" : "custom",
+                    "filter" : [
+                        "icu_normalizer",
+                        "icu_folding"
+                    ],
+                    "tokenizer" : "meta_keyword_tokenizer"
+                },
+                "default_analyzer" : {
+                    "type" : "custom",
+                    "filter" : [
+                        "icu_normalizer",
+                        "icu_folding"
+                    ],
+                    "tokenizer" : "icu_tokenizer"
+                }
+            },
+            "tokenizer" : {
+                "host_tokenizer" : {
+                    "type": "pattern",
+                    "pattern" : "\\."
+                },
+                "meta_keyword_tokenizer" : {
+                    "type": "pattern",
+                    "pattern" : "[, \\t]"
+                },
+                "path_tokenizer" : {
+                    "type": "path_hierarchy",
+                    "delimiter" : "/"
+                },
+                "query_tokenizer" : {
+                    "type": "pattern",
+                    "pattern" : "[&=]"
+                }
+            }
+        }
+    },
+    "mappings" : {
+        "warcrecord" : {
+            "_all" : {
+                "enabled" : false
+            },
+            "_source" : {
+                "enabled" : true,
+                "excludes" : [
+                    "warc_target_hostname",
+                    "warc_target_path",
+                    "warc_target_query_string"
+                ]
+            },
+            "dynamic_templates" : [
+                { "ar" : {
+                    "match" : "*_lang_ar",
+                    "match_mapping_type" : "string",
+                    "mapping" : {
                         "type" : "string",
-                        "index" : "not_analyzed"
-                    },
-                    "warc_record_id" : {
-                        "type" : "string",
-                        "index" : "not_analyzed"
-                    },
-                    "warc_target_uri" : {
-                        "type" : "string",
-                        "index" : "not_analyzed"
-                    },
-                    "warc_target_hostname" : {
-                        "type" : "string",
-                        "similarity" : "BM25",
-                        "index" : "analyzed",
-                        "analyzer" : "host_analyzer"
-                    },
-                    "warc_target_hostname_raw" : {
-                        "type" : "string",
-                        "index" : "not_analyzed"
-                    },
-                    "warc_target_path" : {
-                        "type" : "string",
-                        "similarity" : "BM25",
-                        "index" : "analyzed",
-                        "analyzer" : "path_analyzer"
-                    },
-                    "warc_target_query_string" : {
-                        "type" : "string",
-                        "similarity" : "BM25",
-                        "index" : "analyzed",
-                        "analyzer" : "query_analyzer"
-                    },
-                    "lang" : {
-                        "type" : "string",
-                        "index" : "not_analyzed"
-                    },
-                    "body_length" : {
-                        "type" : "long"
-                    },
-                    "content_type" : {
-                        "type" : "string",
-                        "index" : "not_analyzed"
-                    },
-                    "date" : {
-                        "type" : "date",
-                        "format" : "date_optional_time"
-                    },
-                    "meta_keywords" : {
-                        "type" : "string",
-                        "similarity" : "BM25",
-                        "index" : "analyzed",
-                        "analyzer" : "meta_keyword_analyzer"
-                    },
-                    "page_rank" : {
-                        "type" : "float"
-                    },
-                    "spam_rank" : {
-                        "type" : "byte"
+                        "analyzer" : "ar_analyzer",
+                        "similarity" : "BM25"
                     }
+                } },
+                { "bg" : {
+                    "match" : "*_lang_bg",
+                    "match_mapping_type" : "string",
+                    "mapping" : {
+                        "type" : "string",
+                        "analyzer" : "bg_analyzer",
+                        "similarity" : "BM25"
+                    }
+                } },
+                { "ca" : {
+                    "match" : "*_lang_ca",
+                    "match_mapping_type" : "string",
+                    "mapping" : {
+                        "type" : "string",
+                        "analyzer" : "ca_analyzer",
+                        "similarity" : "BM25"
+                    }
+                } },
+                { "cs" : {
+                    "match" : "*_lang_cs",
+                    "match_mapping_type" : "string",
+                    "mapping" : {
+                        "type" : "string",
+                        "analyzer" : "cs_analyzer",
+                        "similarity" : "BM25"
+                    }
+                } },
+                { "da" : {
+                    "match" : "*_lang_da",
+                    "match_mapping_type" : "string",
+                    "mapping" : {
+                        "type" : "string",
+                        "analyzer" : "da_analyzer",
+                        "similarity" : "BM25"
+                    }
+                } },
+                { "de" : {
+                    "match" : "*_lang_de",
+                    "match_mapping_type" : "string",
+                    "mapping" : {
+                        "type" : "string",
+                        "analyzer" : "de_analyzer",
+                        "similarity" : "BM25"
+                    }
+                } },
+                { "el" : {
+                    "match" : "*_lang_el",
+                    "match_mapping_type" : "string",
+                    "mapping" : {
+                        "type" : "string",
+                        "analyzer" : "el_analyzer",
+                        "similarity" : "BM25"
+                    }
+                } },
+                { "en" : {
+                    "match" : "*_lang_en",
+                    "match_mapping_type" : "string",
+                    "mapping" : {
+                        "type" : "string",
+                        "analyzer" : "en_analyzer",
+                        "similarity" : "BM25"
+                    }
+                } },
+                { "es" : {
+                    "match" : "*_lang_es",
+                    "match_mapping_type" : "string",
+                    "mapping" : {
+                        "type" : "string",
+                        "analyzer" : "es_analyzer",
+                        "similarity" : "BM25"
+                    }
+                } },
+                { "eu" : {
+                    "match" : "*_lang_eu",
+                    "match_mapping_type" : "string",
+                    "mapping" : {
+                        "type" : "string",
+                        "analyzer" : "eu_analyzer",
+                        "similarity" : "BM25"
+                    }
+                } },
+                { "fa" : {
+                    "match" : "*_lang_fa",
+                    "match_mapping_type" : "string",
+                    "mapping" : {
+                        "type" : "string",
+                        "analyzer" : "fa_analyzer",
+                        "similarity" : "BM25"
+                    }
+                } },
+                { "fi" : {
+                    "match" : "*_lang_fi",
+                    "match_mapping_type" : "string",
+                    "mapping" : {
+                        "type" : "string",
+                        "analyzer" : "fi_analyzer",
+                        "similarity" : "BM25"
+                    }
+                } },
+                { "fr" : {
+                    "match" : "*_lang_fr",
+                    "match_mapping_type" : "string",
+                    "mapping" : {
+                        "type" : "string",
+                        "analyzer" : "fr_analyzer",
+                        "similarity" : "BM25"
+                    }
+                } },
+                { "gl" : {
+                    "match" : "*_lang_gl",
+                    "match_mapping_type" : "string",
+                    "mapping" : {
+                        "type" : "string",
+                        "analyzer" : "gl_analyzer",
+                        "similarity" : "BM25"
+                    }
+                } },
+                { "he" : {
+                    "match" : "*_lang_he",
+                    "match_mapping_type" : "string",
+                    "mapping" : {
+                        "type" : "string",
+                        "analyzer" : "he_analyzer",
+                        "similarity" : "BM25"
+                    }
+                } },
+                { "hi" : {
+                    "match" : "*_lang_hi",
+                    "match_mapping_type" : "string",
+                    "mapping" : {
+                        "type" : "string",
+                        "analyzer" : "hi_analyzer",
+                        "similarity" : "BM25"
+                    }
+                } },
+                { "hu" : {
+                    "match" : "*_lang_hu",
+                    "match_mapping_type" : "string",
+                    "mapping" : {
+                        "type" : "string",
+                        "analyzer" : "hu_analyzer",
+                        "similarity" : "BM25"
+                    }
+                } },
+                { "hy" : {
+                    "match" : "*_lang_hy",
+                    "match_mapping_type" : "string",
+                    "mapping" : {
+                        "type" : "string",
+                        "analyzer" : "hy_analyzer",
+                        "similarity" : "BM25"
+                    }
+                } },
+                { "id" : {
+                    "match" : "*_lang_id",
+                    "match_mapping_type" : "string",
+                    "mapping" : {
+                        "type" : "string",
+                        "analyzer" : "id_analyzer",
+                        "similarity" : "BM25"
+                    }
+                } },
+                { "it" : {
+                    "match" : "*_lang_it",
+                    "match_mapping_type" : "string",
+                    "mapping" : {
+                        "type" : "string",
+                        "analyzer" : "it_analyzer",
+                        "similarity" : "BM25"
+                    }
+                } },
+                { "ja" : {
+                    "match" : "*_lang_ja",
+                    "match_mapping_type" : "string",
+                    "mapping" : {
+                        "type" : "string",
+                        "analyzer" : "ja_analyzer",
+                        "similarity" : "BM25"
+                    }
+                } },
+                { "ko" : {
+                    "match" : "*_lang_ko",
+                    "match_mapping_type" : "string",
+                    "mapping" : {
+                        "type" : "string",
+                        "analyzer" : "ko_analyzer",
+                        "similarity" : "BM25"
+                    }
+                } },
+                { "lt" : {
+                    "match" : "*_lang_lt",
+                    "match_mapping_type" : "string",
+                    "mapping" : {
+                        "type" : "string",
+                        "analyzer" : "lt_analyzer",
+                        "similarity" : "BM25"
+                    }
+                } },
+                { "lv" : {
+                    "match" : "*_lang_lv",
+                    "match_mapping_type" : "string",
+                    "mapping" : {
+                        "type" : "string",
+                        "analyzer" : "lv_analyzer",
+                        "similarity" : "BM25"
+                    }
+                } },
+                { "nl" : {
+                    "match" : "*_lang_nl",
+                    "match_mapping_type" : "string",
+                    "mapping" : {
+                        "type" : "string",
+                        "analyzer" : "nl_analyzer",
+                        "similarity" : "BM25"
+                    }
+                } },
+                { "no" : {
+                    "match" : "*_lang_no",
+                    "match_mapping_type" : "string",
+                    "mapping" : {
+                        "type" : "string",
+                        "analyzer" : "no_analyzer",
+                        "similarity" : "BM25"
+                    }
+                } },
+                { "pl" : {
+                    "match" : "*_lang_pl",
+                    "match_mapping_type" : "string",
+                    "mapping" : {
+                        "type" : "string",
+                        "analyzer" : "pl_analyzer",
+                        "similarity" : "BM25"
+                    }
+                } },
+                { "pt" : {
+                    "match" : "*_lang_pt",
+                    "match_mapping_type" : "string",
+                    "mapping" : {
+                        "type" : "string",
+                        "analyzer" : "pt_analyzer",
+                        "similarity" : "BM25"
+                    }
+                } },
+                { "ro" : {
+                    "match" : "*_lang_ro",
+                    "match_mapping_type" : "string",
+                    "mapping" : {
+                        "type" : "string",
+                        "analyzer" : "ro_analyzer",
+                        "similarity" : "BM25"
+                    }
+                } },
+                { "ru" : {
+                    "match" : "*_lang_ru",
+                    "match_mapping_type" : "string",
+                    "mapping" : {
+                        "type" : "string",
+                        "analyzer" : "ru_analyzer",
+                        "similarity" : "BM25"
+                    }
+                } },
+                { "sv" : {
+                    "match" : "*_lang_sv",
+                    "match_mapping_type" : "string",
+                    "mapping" : {
+                        "type" : "string",
+                        "analyzer" : "sv_analyzer",
+                        "similarity" : "BM25"
+                    }
+                } },
+                { "th" : {
+                    "match" : "*_lang_th",
+                    "match_mapping_type" : "string",
+                    "mapping" : {
+                        "type" : "string",
+                        "analyzer" : "th_analyzer",
+                        "similarity" : "BM25"
+                    }
+                } },
+                { "tr" : {
+                    "match" : "*_lang_tr",
+                    "match_mapping_type" : "string",
+                    "mapping" : {
+                        "type" : "string",
+                        "analyzer" : "tr_analyzer",
+                        "similarity" : "BM25"
+                    }
+                } },
+                { "zh" : {
+                    "match" : "*_lang_zh",
+                    "match_mapping_type" : "string",
+                    "mapping" : {
+                        "type" : "string",
+                        "analyzer" : "zh_analyzer",
+                        "similarity" : "BM25"
+                    }
+                } },
+                { "default" : {
+                    "match" : "*_lang_*",
+                    "match_mapping_type" : "string",
+                    "mapping" : {
+                        "type" : "string",
+                        "analyzer" : "default_analyzer",
+                        "similarity" : "BM25"
+                    }
+                } }
+            ],
+            "properties" : {
+                "warc_trec_id" : {
+                    "type" : "string",
+                    "index" : "not_analyzed"
+                },
+                "warc_record_id" : {
+                    "type" : "string",
+                    "index" : "not_analyzed"
+                },
+                "warc_target_uri" : {
+                    "type" : "string",
+                    "index" : "not_analyzed"
+                },
+                "warc_target_hostname" : {
+                    "type" : "string",
+                    "similarity" : "BM25",
+                    "index" : "analyzed",
+                    "analyzer" : "host_analyzer"
+                },
+                "warc_target_hostname_raw" : {
+                    "type" : "string",
+                    "index" : "not_analyzed"
+                },
+                "warc_target_path" : {
+                    "type" : "string",
+                    "similarity" : "BM25",
+                    "index" : "analyzed",
+                    "analyzer" : "path_analyzer"
+                },
+                "warc_target_query_string" : {
+                    "type" : "string",
+                    "similarity" : "BM25",
+                    "index" : "analyzed",
+                    "analyzer" : "query_analyzer"
+                },
+                "lang" : {
+                    "type" : "string",
+                    "index" : "not_analyzed"
+                },
+                "body_length" : {
+                    "type" : "long"
+                },
+                "content_type" : {
+                    "type" : "string",
+                    "index" : "not_analyzed"
+                },
+                "date" : {
+                    "type" : "date",
+                    "format" : "date_optional_time"
+                },
+                "meta_keywords" : {
+                    "type" : "string",
+                    "similarity" : "BM25",
+                    "index" : "analyzed",
+                    "analyzer" : "meta_keyword_analyzer"
+                },
+                "page_rank" : {
+                    "type" : "float"
+                },
+                "spam_rank" : {
+                    "type" : "byte"
                 }
             }
         }
