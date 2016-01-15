@@ -103,7 +103,7 @@ Depending on the amount of data and the performance of your cluster, the MapRedu
 even days while your data is continually fed into the index.
 You can follow the process using the Hadoop Application web interface as well as the Elasticsearch JSON search API.
 You can also install a tool such as [Elastic HQ](http://www.elastichq.org/) on your cluster to get more information
-about your indexes, the number of already indexed documents as well the performance measures of the nodes.
+about your indexes, the number of already indexed documents as well as performance measures of the nodes.
 
 ## Additional Notes
 If you try to build a fat JAR from the sources using IntelliJ IDEA and happen to get a signature verification
