@@ -17,7 +17,7 @@ uses correct data types for our fields and specifies ICU tokenizers, stop words 
 for different content languages. It also creates dynamic mappings for unknown fields that are named
 `*_lang_xy` to use the correct language by default. So, e.g., a new field `body_lang_en` would be indexed as
 English while a field `body_lang_es` would be indexed as Spanish. This also is the reason why the template
-does not contain any explicit field mappings for content, title, anchor texts, meta description or meta keywords etc.
+does not contain any explicit field mappings for content, title, anchor texts, meta description etc.
 
 The template applies to any index whose name starts with `webis_warc_*`. If you want to name your
 index differently, change the first property in the JSON file accordingly.
