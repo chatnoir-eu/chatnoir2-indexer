@@ -6,7 +6,7 @@ Hadoop MapReduce tool for indexing Webis WARC MapFiles into an Elasticsearch/Cha
 The indexer will create an index automatically if it doesn't exist, but in order for the index to work properly,
 we want to adjust some settings first as described below.
 
-**NOTE:** in the following text the placeholder `{{eshost}}` stands for the ElasticSearch hostname and port
+**NOTE:** in the following text the placeholder `{{eshost}}` stands for the Elasticsearch hostname and port
  that you want to index to (e.g. `localhost:9200` or `betaweb020:9200`.
  Similarly, `{{index}}` stands for the name of your index (e.g. `webis_warc_clueweb12_001`).
 
@@ -22,7 +22,7 @@ does not contain any explicit field mappings for content, title, anchor texts, m
 The template applies to any index whose name starts with `webis_warc_*`. If you want to name your
 index differently, change the first property in the JSON file accordingly.
 
-In order to make our template known to ElasticSearch, we have to PUT it to the `_template` endpoint:
+In order to make our template known to Elasticsearch, we have to PUT it to the `_template` endpoint:
 
     curl -XPUT 'http://{{eshost}}/_template/webis_warc_template' \
         -d '@src/main/resources/templates/webis_warc_template.json'
