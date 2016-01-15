@@ -50,7 +50,7 @@ size of your cluster and also on the amount of data you want to index. For ClueW
 number, but there is no fixed rationale behind it. There are certain rules of thumb about how to chose the correct
 number of shards, but in general it's just experience. Bear in mind, though, that too many shards can cause considerable
 overhead while too few don't exploit the capabilities of a cluster with many nodes. You should take some time to think
-about the number of shards before your start indexing because once your index is created, you can't change it anymore
+about the number of shards before you start indexing because once your index is created, you can't change it anymore
 without re-indexing all your data.
 
 One thing we can and will change later on, though, is the number of replica. It is advisable to set this to a moderate
