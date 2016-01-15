@@ -7,8 +7,8 @@ The indexer will create an index automatically if it doesn't exist, but in order
 we want to adjust some settings first as described below.
 
 **NOTE:** in the following text the placeholder `{{eshost}}` stands for the Elasticsearch hostname and port
- that you want to index to (e.g. `localhost:9200` or `betaweb020:9200`.
- Similarly, `{{index}}` stands for the name of your index (e.g. `webis_warc_clueweb12_001`).
+that you want to index to (e.g. `localhost:9200` or `betaweb020:9200`.
+Similarly, `{{index}}` stands for the name of your index (e.g. `webis_warc_clueweb12_001`).
 
 ### 1. Set Indexing Template
 For an appropriate field mapping and proper analyzer choice we use the indexing template located in
