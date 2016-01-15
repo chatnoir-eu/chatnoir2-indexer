@@ -66,9 +66,12 @@ the cluster. Once your data has been indexed, activate the replica (in this case
 
 ### 3. Start Indexing Process
 To start the indexer, we use the `hadoop` command to run this Java tool. Make sure, you set the number of reduces to
-something sensible before starting it using your local `mapred.xml` config file. The default of 1 is definitely too
+something sensible before starting it using your local `mapred-site.xml` config file. The default of 1 is definitely too
 little. A number between 40 and 100 (depending on the cluster size) seems to be sensible. As long as the Elasticsearch
 indexing host(s) can handle that many parallel indexing requests, you can increase the number as you like.
+
+Also make sure to grant enough memory to the reduce tasks or you'll run out of memory very quickly. Sometimes
+numbers even as high as 8192 MB are required.
 
 We start the indexing with
 
@@ -97,3 +100,10 @@ even days while your data is continually fed into the index.
 You can follow the process using the Hadoop Application web interface as well as the Elasticsearch JSON search API.
 You can also install a tool such as [Elastic HQ](http://www.elastichq.org/) on your cluster to get more information
 about your indexes, the number of already indexed documents as well the performance measures of the nodes.
+
+## Additional Notes
+If you try to build a fat JAR from the sources using IntelliJ IDEA and happen to get a signature verification
+exception upon starting it, you may want to run the `remove-signatures` Ant target from `es-indexer.xml`
+as post processing after building the JAR file. Certain dependency files seem to be cryptographically signed
+and I haven't found a proper way to disable these signatures automatically when building a fat JAR, other
+than removing the signature files from `META-INF` afterwards.
