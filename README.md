@@ -10,7 +10,25 @@ we want to adjust some settings first as described below.
 that you want to index to (e.g. `localhost:9200` or `betaweb020:9200`.
 Similarly, `{{index}}` stands for the name of your index (e.g. `webis_warc_clueweb12_001`).
 
-### 1. Set Indexing Template
+### 1. Install Needed Elasticsearch Plug-ins
+To support as many languages as possible as well as for automatic language detection, some non-standard
+Elasticsearch plug-ins need to be installed on all (!) cluster nodes. These are:
+
+* `analysis-icu`
+* `analysis-kuromoji`
+* `analysis-smartcn`
+* `analysis-stempel`
+* `langdetect`
+
+Assuming an Elasticsearch 2.1.x cluster, install them on each node using:
+
+    bin/plugin install elasticsearch/elasticsearch-analysis-icu/2.7.0
+    bin/plugin install elasticsearch/elasticsearch-analysis-kuromoji/2.7.0
+    bin/plugin install elasticsearch/elasticsearch-analysis-smartcn/2.7.0
+    bin/plugin install elasticsearch/elasticsearch-analysis-stempel/2.7.0
+    bin/plugin install http://xbib.org/repository/org/xbib/elasticsearch/plugin/elasticsearch-langdetect/2.1.1.0/elasticsearch-langdetect-2.1.1.0-plugin.zip
+
+### 2. Set Indexing Template
 For an appropriate field mapping and proper analyzer choice we use the indexing template located in
 `src/main/resources/templates/webis_warc_template.json`. The template makes sure that Elasticsearch
 uses correct data types for our fields and specifies ICU tokenizers, stop words and suitable analyzers
@@ -32,7 +50,7 @@ To verify that the template has been saved to the Elasticsearch cluster, open
 `http://{{eshost}}/_template/webis_warc_template?pretty` in your browser. You should see a JSON dump
 of the template we just sent.
 
-### 2. Create Index
+### 3. Create Index
 For creating our index, we use the following cURL snippet:
 
     curl -XPUT 'http://{{eshost}}/{{index}}/' -d '
@@ -68,7 +86,7 @@ the cluster. Once your data has been indexed, activate the replica (in this case
         }
     }'
 
-### 3. Start Indexing Process
+### 4. Start Indexing Process
 To start the indexer, we use the `hadoop` command to run this Java tool. Make sure, you set the number of reduces to
 something sensible before starting it using your local `mapred-site.xml` config file. The default number of 1 is
 definitely too small. A number between 40 and 100 (depending on the cluster size) seems to be sensible. As long as the
