@@ -54,7 +54,7 @@ about the number of shards before your start indexing because once your index is
 without re-indexing all your data.
 
 One thing we can and will change later on, though, is the number of replica. It is advisable to set this to a moderate
-number like 2 or 3 (2 means 1 primary shard and 2 replica, i.e. 3 copies in total). The number of replica is a tradeoff
+number like 2 or 3 (2 means 1 primary shard and 2 replica, i.e. 3 copies in total). The number of replica is a trade-off
 between fail-over/data loss safety and query performance on the one hand and disk usage on the other hand.
 
 For indexing purposes, though, we want to set it to 0 because we want to use our cluster resources (both CPU time
@@ -70,9 +70,9 @@ the cluster. Once your data has been indexed, activate the replica (in this case
 
 ### 3. Start Indexing Process
 To start the indexer, we use the `hadoop` command to run this Java tool. Make sure, you set the number of reduces to
-something sensible before starting it using your local `mapred-site.xml` config file. The default of 1 is definitely too
-little. A number between 40 and 100 (depending on the cluster size) seems to be sensible. As long as the Elasticsearch
-indexing host(s) can handle that many parallel indexing requests, you can increase the number as you like.
+something sensible before starting it using your local `mapred-site.xml` config file. The default number of 1 is
+definitely too small. A number between 40 and 100 (depending on the cluster size) seems to be sensible. As long as the
+Elasticsearch indexing host(s) can handle that many parallel indexing requests, you can increase the number as you like.
 
 Also make sure to grant enough memory to the reduce tasks or you'll run out of memory very quickly. Sometimes
 numbers even as high as 8192 MB are required.
@@ -90,7 +90,7 @@ We start the indexing with
 `-Des.nodes` is a comma separated list of indexing endpoints (with optional port number, default is 9200).
 In this example, it is just `{{eshost}}`, but it is strongly advised to use more than one. Usually you want to have
 a certain class of hosts that don't store any data themselves but only answer search requests and accept data
-to index. It is perfectly fine, the specify data nodes here as well, but for performance reasons your may want to
+to index. It is perfectly fine, to specify data nodes here as well, but for performance reasons your may want to
 have separate *coordinator* nodes which you should specify here.
 
 `-sequence-files` is the HDFS path to your mapfile splits. `-spamranks` specifies the path to your spam ranks
