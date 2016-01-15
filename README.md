@@ -13,10 +13,14 @@ we want to adjust some settings first as described below.
 ### 1. Set Indexing Template
 For an appropriate field mapping and proper analyzer choice we use the indexing template located in
 `src/main/resources/templates/webis_warc_template.json`. The template makes sure that Elasticsearch
-uses correct data types for our fields and also specifies ICU tokenizers, stop words and suitable analyzers
-for different content languages. The template applies to any index whose name starts with
-`webis_warc_*`. If you want to name your index differently, change the first property in the JSON file
-accordingly.
+uses correct data types for our fields and specifies ICU tokenizers, stop words and suitable analyzers
+for different content languages. It also creates dynamic mappings for unknown fields that are named
+`*_lang_xy` to use the correct language by default. So, e.g., a new field `body_lang_en` would be indexed as
+English while a field `body_lang_es` would be indexed as Spanish. This also is the reason why the mapping
+does not contain any explicit field mappings for content, title, anchor texts, meta description or meta keywords etc.
+
+The template applies to any index whose name starts with `webis_warc_*`. If you want to name your
+index differently, change the first property in the JSON file accordingly.
 
 In order to make our template known to ElasticSearch, we have to PUT it to the `_template` endpoint:
 
