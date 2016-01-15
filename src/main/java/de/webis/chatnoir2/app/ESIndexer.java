@@ -60,6 +60,8 @@ public class ESIndexer extends Configured implements Tool
     @Override
     public int run(final String[] args) throws Exception
     {
+        // Apache Commons CLI Options parser with new API
+        // commented out because it doesn't work with Hadoop's ancient Commons dependency
         /*final Options options = new Options();
         options.addOption(Option.builder(INDEX_INPUT_OPTION[1]).
                 argName("NAME").
@@ -97,6 +99,7 @@ public class ESIndexer extends Configured implements Tool
                 required(false).
                 build());*/
 
+        // old, ugly and deprecated but working CLI parser
         final Options options = new Options();
         options.addOption(OptionBuilder.
                 withArgName("NAME").
@@ -135,6 +138,7 @@ public class ESIndexer extends Configured implements Tool
                 create(ANCHOR_INPUT_OPTION[1]));
 
         CommandLine cmdline;
+        //final CommandLineParser parser = new DefaultParser();
         final CommandLineParser parser = new GnuParser();
         try {
             cmdline = parser.parse(options, args);

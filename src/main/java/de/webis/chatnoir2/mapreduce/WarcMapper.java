@@ -20,7 +20,6 @@ package de.webis.chatnoir2.mapreduce;
 import de.webis.chatnoir2.util.HtmlToPlainText;
 import de.webis.chatnoir2.util.LangDetector;
 import net.htmlparser.jericho.Source;
-import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.MapWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Counter;

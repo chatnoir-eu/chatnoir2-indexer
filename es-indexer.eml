@@ -8,6 +8,9 @@
 		<excludeFolder url="file://$MODULE_DIR$/.gradle"/>
 		<excludeFolder url="file://$MODULE_DIR$/build"/>
 	</contentEntry>
+	<lib name="Gradle: org.elasticsearch:elasticsearch:2.1.0" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.elasticsearch/elasticsearch/2.1.0/21f5e89bebae6711bd2fdea89e5ef13b11db608/elasticsearch-2.1.0-sources.jar!/"/>
+	</lib>
 	<lib name="Gradle: org.elasticsearch:elasticsearch-hadoop:2.1.2" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.elasticsearch/elasticsearch-hadoop/2.1.2/1e72b1a138f606ae7f42ba276e0a96409b4dc57e/elasticsearch-hadoop-2.1.2-sources.jar!/"/>
 	</lib>
@@ -17,14 +20,95 @@
 	<lib name="Gradle: org.jsoup:jsoup:1.8.3" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jsoup/jsoup/1.8.3/17b6b6cb133d73e13e2e1f3550f90d4e23451b10/jsoup-1.8.3-sources.jar!/"/>
 	</lib>
-	<lib name="Gradle: com.optimaize.languagedetector:language-detector:0.5" scope="COMPILE">
-		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.optimaize.languagedetector/language-detector/0.5/e3ea842fb1f4ce00c32d329681c666e8f49aaa61/language-detector-0.5-sources.jar!/"/>
+	<lib name="Gradle: org.apache.lucene:lucene-core:5.3.1" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-core/5.3.1/43b121579b84d4f6d6b8d2e62c4bb2d3759cc91f/lucene-core-5.3.1-sources.jar!/"/>
 	</lib>
-	<lib name="Gradle: com.google.guava:guava:16.0.1" scope="COMPILE">
-		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/16.0.1/2477d012cd5379f9696e0d9d3ccc62ad13a09ca4/guava-16.0.1-sources.jar!/"/>
+	<lib name="Gradle: org.apache.lucene:lucene-backward-codecs:5.3.1" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-backward-codecs/5.3.1/f353c28ce9495f1250a5707ec882d43e418d598d/lucene-backward-codecs-5.3.1-sources.jar!/"/>
 	</lib>
-	<lib name="Gradle: commons-cli:commons-cli:1.2" scope="COMPILE">
-		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/commons-cli/commons-cli/1.2/6c5459816530a1962ac18cd315cc775b1b384329/commons-cli-1.2-sources.jar!/"/>
+	<lib name="Gradle: org.apache.lucene:lucene-analyzers-common:5.3.1" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-analyzers-common/5.3.1/91550a313da0329d9d9791cdae46758033632ce/lucene-analyzers-common-5.3.1-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: org.apache.lucene:lucene-queries:5.3.1" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-queries/5.3.1/2085f783a2cee7a57904ed1b89155a810feff94f/lucene-queries-5.3.1-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: org.apache.lucene:lucene-memory:5.3.1" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-memory/5.3.1/c772febbe18135bd3613722fc70ae82f973803a/lucene-memory-5.3.1-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: org.apache.lucene:lucene-grouping:5.3.1" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-grouping/5.3.1/2718a3b22d0f4146494f612915a3137a721e4687/lucene-grouping-5.3.1-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: org.apache.lucene:lucene-join:5.3.1" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-join/5.3.1/43d28c890b8127bd17f44319bb76124774fa0de6/lucene-join-5.3.1-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: org.apache.lucene:lucene-highlighter:5.3.1" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-highlighter/5.3.1/8b095d7609d247cb8cde3c09c6f56a194b2e9aad/lucene-highlighter-5.3.1-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: org.apache.lucene:lucene-sandbox:5.3.1" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-sandbox/5.3.1/a101a16ecb6b7c86eb6f141592ed83813895528f/lucene-sandbox-5.3.1-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: org.apache.lucene:lucene-queryparser:5.3.1" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-queryparser/5.3.1/32f61c0f1151ff82d03ebc0b97c1bd79961981f1/lucene-queryparser-5.3.1-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: org.apache.lucene:lucene-misc:5.3.1" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-misc/5.3.1/129928616ad934756754fd0a4c7a8f13a2c00216/lucene-misc-5.3.1-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: org.apache.lucene:lucene-suggest:5.3.1" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-suggest/5.3.1/e5ddd0496e42dbae2ee2f591ea530e517879327b/lucene-suggest-5.3.1-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: org.apache.lucene:lucene-spatial3d:5.3.1" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-spatial3d/5.3.1/c968affe3f74be18f2dd83f1eaa477c4806cab2b/lucene-spatial3d-5.3.1-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: com.spatial4j:spatial4j:0.4.1" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.spatial4j/spatial4j/0.4.1/c51cd6b83293a5e26993bd9848e2766654dfdddb/spatial4j-0.4.1-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: org.apache.lucene:lucene-spatial:5.3.1" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-spatial/5.3.1/defc236ea0fb5bec61c80986ff1324ac05e9d2fd/lucene-spatial-5.3.1-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: com.google.guava:guava:18.0" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/18.0/ad97fe8faaf01a3d3faacecd58e8fa6e78a973ca/guava-18.0-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: com.carrotsearch:hppc:0.7.1" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.carrotsearch/hppc/0.7.1/a8c1a544cf6ce0d109b874ab335e68f335f773f8/hppc-0.7.1-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: joda-time:joda-time:2.8.2" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/joda-time/joda-time/2.8.2/65dd2b998571ea61a3cee68c99a1dde729b14a7e/joda-time-2.8.2-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: org.joda:joda-convert:1.2" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.joda/joda-convert/1.2/f3daaa17839418e4f066d492079d1365f61b5250/joda-convert-1.2-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: com.fasterxml.jackson.core:jackson-core:2.6.2" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.6.2/3b91c78f65697c9dc527f7235123eabca55e78/jackson-core-2.6.2-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-smile:2.6.2" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.dataformat/jackson-dataformat-smile/2.6.2/fdce03a2157357a20204aca40f0c781a45c9b06/jackson-dataformat-smile-2.6.2-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: org.yaml:snakeyaml:1.15" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.yaml/snakeyaml/1.15/7dc55271cad1cf73bb495e372164269e75d9345a/snakeyaml-1.15-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.6.2" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.dataformat/jackson-dataformat-yaml/2.6.2/12fd0380af5f1aa7a943e6ea25a905c254340b27/jackson-dataformat-yaml-2.6.2-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:2.6.2" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.dataformat/jackson-dataformat-cbor/2.6.2/1bf8aa81a1235b6c646a8728ca90896bbf4a5acf/jackson-dataformat-cbor-2.6.2-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: io.netty:netty:3.10.5.Final" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.netty/netty/3.10.5.Final/708a85b2e402ebf37245e1d676f3e0aa42f7803f/netty-3.10.5.Final-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: com.tdunning:t-digest:3.0" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.tdunning/t-digest/3.0/6195397cb8f51efd91d806bdfa468196375b329/t-digest-3.0-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: org.hdrhistogram:HdrHistogram:2.1.6" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.hdrhistogram/HdrHistogram/2.1.6/c52c8df441708342ec01488ccc169e76ac775bcc/HdrHistogram-2.1.6-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: commons-cli:commons-cli:1.3.1" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/commons-cli/commons-cli/1.3.1/12ec02d8cb9fbb33bd05506109a4fc8bcc3578/commons-cli-1.3.1-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: com.twitter:jsr166e:1.1.0" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.twitter/jsr166e/1.1.0/7558d13056c1f98be269fed58ae5a8e76c7616d4/jsr166e-1.1.0-sources.jar!/"/>
+	</lib>
+	<lib name="Gradle: com.ning:compress-lzf:1.0.3" scope="COMPILE">
+		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.ning/compress-lzf/1.0.3/4b0902929c0311e912db907f1c75d42af9bf8950/compress-lzf-1.0.3-sources.jar!/"/>
 	</lib>
 	<lib name="Gradle: commons-logging:commons-logging:1.1.3" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/commons-logging/commons-logging/1.1.3/28bb0405fddaf04f15058fbfbe01fe2780d7d3b6/commons-logging-1.1.3-sources.jar!/"/>
@@ -80,9 +164,6 @@
 	<lib name="Gradle: dk.brics.automaton:automaton:1.11-8" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/dk.brics.automaton/automaton/1.11-8/6bc89a2a9c9c5524aa275b572c0fd3699ff7a5be/automaton-1.11-8-sources.jar!/"/>
 	</lib>
-	<lib name="Gradle: joda-time:joda-time:2.5" scope="COMPILE">
-		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/joda-time/joda-time/2.5/2bd5124dfb9198af70cad30eb9ccbfa9cd670163/joda-time-2.5-sources.jar!/"/>
-	</lib>
 	<lib name="Gradle: jline:jline:2.12" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/jline/jline/2.12/acb005a73638f26f85504bbeba42e9861e8f9d9f/jline-2.12-sources.jar!/"/>
 	</lib>
@@ -118,9 +199,6 @@
 	</lib>
 	<lib name="Gradle: org.scala-lang:scala-library:2.10.4" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.scala-lang/scala-library/2.10.4/59908ab93978c1f546d3db5e05b42994b63ad515/scala-library-2.10.4-sources.jar!/"/>
-	</lib>
-	<lib name="Gradle: com.fasterxml.jackson.core:jackson-core:2.4.4" scope="COMPILE">
-		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.4.4/652bd9217e1d258cb72c1c4c50b3e6a757826d95/jackson-core-2.4.4-sources.jar!/"/>
 	</lib>
 	<lib name="Gradle: com.fasterxml.jackson.core:jackson-annotations:2.4.4" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-annotations/2.4.4/9e1cd34eb4b59486c3261d8b5a7ff16d139b4d7f/jackson-annotations-2.4.4-sources.jar!/"/>
@@ -164,17 +242,8 @@
 	<lib name="Gradle: commons-io:commons-io:2.4" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/commons-io/commons-io/2.4/f2d8698c46d1167ff24b06a840a87d91a02db891/commons-io-2.4-sources.jar!/"/>
 	</lib>
-	<lib name="Gradle: log4j:log4j:1.2.17" scope="COMPILE">
-		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/log4j/log4j/1.2.17/677abe279b68c5e7490d6d50c6951376238d7d3e/log4j-1.2.17-sources.jar!/"/>
-	</lib>
 	<lib name="Gradle: com.google.protobuf:protobuf-java:2.5.0" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.protobuf/protobuf-java/2.5.0/7a27a7fc815e481b367ead5df19b4a71ace4a419/protobuf-java-2.5.0-sources.jar!/"/>
-	</lib>
-	<lib name="Gradle: org.slf4j:slf4j-log4j12:1.7.10" scope="COMPILE">
-		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-log4j12/1.7.10/49c7ee5f2f363e6fa8ce5faa7e3be49d0124884e/slf4j-log4j12-1.7.10-sources.jar!/"/>
-	</lib>
-	<lib name="Gradle: io.netty:netty:3.8.0.Final" scope="COMPILE">
-		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.netty/netty/3.8.0.Final/5317e212bf50479fb06abf675caedbe39d396ab0/netty-3.8.0.Final-sources.jar!/"/>
 	</lib>
 	<lib name="Gradle: org.apache.zookeeper:zookeeper:3.4.6" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.zookeeper/zookeeper/3.4.6/10cb14f3893f8bdcaf4e2619a9a1f6b9cedec6b7/zookeeper-3.4.6-sources.jar!/"/>
@@ -359,9 +428,6 @@
 	<lib name="Gradle: org.slf4j:jcl-over-slf4j:1.7.10" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.slf4j/jcl-over-slf4j/1.7.10/6e04c28745fd98501a958d4e6daa40214f63b69f/jcl-over-slf4j-1.7.10-sources.jar!/"/>
 	</lib>
-	<lib name="Gradle: com.ning:compress-lzf:1.0.3" scope="COMPILE">
-		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.ning/compress-lzf/1.0.3/4b0902929c0311e912db907f1c75d42af9bf8950/compress-lzf-1.0.3-sources.jar!/"/>
-	</lib>
 	<lib name="Gradle: net.jpountz.lz4:lz4:1.3.0" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.jpountz.lz4/lz4/1.3.0/31debfaa8a55bc4af1d4fe63a8ad0a2a7e851274/lz4-1.3.0-sources.jar!/"/>
 	</lib>
@@ -515,9 +581,6 @@
 	<lib name="Gradle: com.googlecode.json-simple:json-simple:1.1" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.googlecode.json-simple/json-simple/1.1/19c6d8dee6803c520d855ff7e8a8c3d97f1271ec/json-simple-1.1-sources.jar!/"/>
 	</lib>
-	<lib name="Gradle: org.yaml:snakeyaml:1.11" scope="COMPILE">
-		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.yaml/snakeyaml/1.11/79e8349d9fb6b7810ddfae36a691b4d1f21d1ec/snakeyaml-1.11-sources.jar!/"/>
-	</lib>
 	<lib name="Gradle: com.googlecode.disruptor:disruptor:2.10.1" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.googlecode.disruptor/disruptor/2.10.1/b6702e5ec9890fc7c9f71f20ab94e2b5187fb95f/disruptor-2.10.1-sources.jar!/"/>
 	</lib>
@@ -649,11 +712,5 @@
 	</lib>
 	<lib name="Gradle: org.apache.hive.shims:hive-shims-scheduler:1.2.1" scope="COMPILE">
 		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.hive.shims/hive-shims-scheduler/1.2.1/9b4e2067413becf7966dcfd1ffb942c480a84a36/hive-shims-scheduler-1.2.1-sources.jar!/"/>
-	</lib>
-	<lib name="Gradle: net.arnx:jsonic:1.2.11" scope="COMPILE">
-		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.arnx/jsonic/1.2.11/cebf5af713ef68aa6cfbf6e5634b479786f8f7ce/jsonic-1.2.11-sources.jar!/"/>
-	</lib>
-	<lib name="Gradle: com.intellij:annotations:12.0" scope="COMPILE">
-		<srcroot url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.intellij/annotations/12.0/4943118f12f706a8820f73529fcb8f5853bc0fed/annotations-12.0-sources.jar!/"/>
 	</lib>
 </component>
