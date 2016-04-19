@@ -49,7 +49,7 @@ public class WarcAnchorMapper extends Mapper<LongWritable, Text, Text, MapWritab
         REGEX = Pattern.compile("(clueweb\\d{2}-\\w{2}\\d{4}-\\d{2}-\\d{5})\\s+(.*)");
 
         if (null == LANGUAGE_DETECTOR) {
-            LANGUAGE_DETECTOR = new LangDetector();
+            LANGUAGE_DETECTOR = new LangDetector(context);
         }
     }
 

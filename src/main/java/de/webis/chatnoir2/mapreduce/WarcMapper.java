@@ -72,7 +72,7 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
         net.htmlparser.jericho.Config.LoggerProvider = net.htmlparser.jericho.LoggerProvider.DISABLED;
 
         if (null == LANGUAGE_DETECTOR) {
-            LANGUAGE_DETECTOR = new LangDetector();
+            LANGUAGE_DETECTOR = new LangDetector(context);
         }
     }
 

@@ -47,11 +47,12 @@ public class ESIndexer extends Configured implements Tool
 {
     private static final Logger LOG = Logger.getLogger(ESIndexer.class);
 
-    public static final String[] SEQFILE_INPUT_OPTION  = { "sequence-files", "f" };
-    public static final String[] SPAMRANK_INPUT_OPTION = { "spamranks",      "s" };
-    public static final String[] PAGERANK_INPUT_OPTION = { "pageranks",      "p" };
-    public static final String[] ANCHOR_INPUT_OPTION   = { "anchortexts",    "a" };
-    public static final String[] INDEX_INPUT_OPTION    = { "index",          "i" };
+    public static final String[] SEQFILE_INPUT_OPTION    = { "sequence-files", "f" };
+    public static final String[] SPAMRANK_INPUT_OPTION   = { "spamranks",      "s" };
+    public static final String[] PAGERANK_INPUT_OPTION   = { "pageranks",      "p" };
+    public static final String[] ANCHOR_INPUT_OPTION     = { "anchortexts",    "a" };
+    public static final String[] INDEX_INPUT_OPTION      = { "index",          "i" };
+    public static final String[] LANGDETECT_INPUT_OPTION = { "langdetect",     "l" };
 
     /**
      * Run this tool.
@@ -136,6 +137,13 @@ public class ESIndexer extends Configured implements Tool
                 withDescription("input path for anchor texts").
                 isRequired(false).
                 create(ANCHOR_INPUT_OPTION[1]));
+        options.addOption(OptionBuilder.
+                withArgName("HOST:PORT").
+                hasArg().
+                withLongOpt(LANGDETECT_INPUT_OPTION[0]).
+                withDescription("langdetect host (default: localhost:9200)").
+                isRequired(false).
+                create(LANGDETECT_INPUT_OPTION[1]));
 
         CommandLine cmdline;
         //final CommandLineParser parser = new DefaultParser();
@@ -155,6 +163,7 @@ public class ESIndexer extends Configured implements Tool
         final String inputSpamRanks   = cmdline.getOptionValue(SPAMRANK_INPUT_OPTION[0]);
         final String inputPageRanks   = cmdline.getOptionValue(PAGERANK_INPUT_OPTION[0]);
         final String inputAnchors     = cmdline.getOptionValue(ANCHOR_INPUT_OPTION[0]);
+        final String langDetectHost   = cmdline.getOptionValue(LANGDETECT_INPUT_OPTION[0]);
 
         LOG.info("Tool name:    " + ESIndexer.class.getSimpleName());
         LOG.info(" - index:     "  + indexName);
@@ -178,6 +187,7 @@ public class ESIndexer extends Configured implements Tool
         conf.set("es.batch.size.bytes",        "20mb");
         conf.set("es.batch.write.retry.count", "50");
         conf.set("es.batch.write.refresh",     "false");
+        conf.set("indexer.langdetect.host",    langDetectHost);
 
         final Job job = Job.getInstance(conf);
         job.setJobName("es-index-" + indexName);

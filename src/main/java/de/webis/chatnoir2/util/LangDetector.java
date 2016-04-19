@@ -17,6 +17,7 @@
 
 package de.webis.chatnoir2.util;
 
+import org.apache.hadoop.mapreduce.Mapper;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -38,18 +39,32 @@ public class LangDetector
     // private final TextObjectFactory mShortTextFactory;
     // private final TextObjectFactory mLongTextFactory;
 
-    public LangDetector()
+    private final String mLangDetectHost;
+
+    /**
+     * Create language detector for given context.
+     * If indexer.langdetect.host is set in the configuration, that host will be used.
+     * Otherwise the default of localhost:9200 is assumed. The given host must be running an Elasticsearch
+     * instance with installed langdetect plugin.
+     *
+     * @param context Mapper context containing configuration
+     */
+    public LangDetector(Mapper.Context context)
     {
         /*final List<LanguageProfile> languageProfiles = new LanguageProfileReader().readAllBuiltIn();
         mLanguageDetector = LanguageDetectorBuilder.create(NgramExtractors.standard()).
                 withProfiles(languageProfiles).build();
         mShortTextFactory = CommonTextObjectFactories.forDetectingShortCleanText();
         mLongTextFactory = CommonTextObjectFactories.forDetectingOnLargeText();*/
+        String host = context.getConfiguration().get("indexer.langdetect.host");
+        if (null == host || host.isEmpty()) {
+            host = "localhost:9200";
+        }
+        mLangDetectHost = host;
     }
 
     /**
      * Detect language of a string.
-     * Requires an ElasticSearch instance with installed langdetect plugin running on localhost:9200.
      *
      * @param str the string whose language to detect
      * @return detected ISO language code
@@ -71,7 +86,7 @@ public class LangDetector
         }*/
 
         try {
-            final URL url            = new URL("http://localhost:9200/_langdetect");
+            final URL url            = new URL("http://" + mLangDetectHost + "/_langdetect");
             final URLConnection conn = url.openConnection();
             conn.setDoOutput(true);
             final PrintStream ps = new PrintStream(conn.getOutputStream());
