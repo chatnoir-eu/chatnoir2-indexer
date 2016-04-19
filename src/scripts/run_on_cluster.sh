@@ -21,7 +21,7 @@ if [[ "$corpus" == "09" ]] || [[ "$corpus" == "12" ]]; then
         -anchortexts "/corpora/clueweb/${corpus}-anchors/*" \
         -pageranks "/corpora/clueweb/${corpus}-page-ranks.txt" \
         -langdetect "localhost:9200" \
-        -index "clueweb${corpus}_${index_revision}" $@
+        -index "webis_warc_clueweb${corpus}_${index_revision}" $@
 elif [[ "$corpus" == "cc" ]]; then
     echo "Not implemented yet." >&2
     exit 1
