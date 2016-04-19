@@ -90,7 +90,8 @@ public class LangDetector
             final URLConnection conn = url.openConnection();
             conn.setDoOutput(true);
             final PrintStream ps = new PrintStream(conn.getOutputStream());
-            ps.print(str);
+            // add space in front of text to force JSON response, even when text is starting with ---
+            ps.print(" " + str);
             ps.close();
 
             BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
