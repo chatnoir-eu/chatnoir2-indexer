@@ -100,12 +100,11 @@ public class LangDetector
                 strBuilder.append(line);
             }
             br.close();
-
             final JSONObject json = new JSONObject(strBuilder.toString());
             return json.getJSONArray("languages").getJSONObject(0).
                     getString("language").substring(0, 2).toLowerCase();
         } catch (JSONException | IOException e) {
-            throw new IOException("Language detection failed.");
+            throw new IOException("Language detection failed: " + e.getMessage());
         }
     }
 }

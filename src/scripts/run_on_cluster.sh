@@ -1,9 +1,15 @@
 #!/usr/bin/env bash
 
 corpus="$1"
+index_revision="$2"
 
 if [[ "$corpus" != "09" ]] && [[ "$corpus" != "12" ]]; then
     echo "Invalid corpus '$corpus', valid choices are: 09, 12, cc" >&2
+    exit 1
+fi
+
+if [[ "$index_revision" == "" ]]; then
+    echo "You need to specify an index revision." >&2
     exit 1
 fi
 
@@ -14,8 +20,8 @@ if [[ "$corpus" == "09" ]] || [[ "$corpus" == "12" ]]; then
         -spamranks "/corpora/clueweb/${corpus}-spam-rankings/*" \
         -anchortexts "/corpora/clueweb/${corpus}-anchors/*" \
         -pageranks "/corpora/clueweb/${corpus}-page-ranks.txt" \
-        -langdetect "betaweb020:9200" \
-        -index "clueweb${corpus}-$(date -I)" $@
+        -langdetect "localhost:9200" \
+        -index "clueweb${corpus}_${index_revision}" $@
 elif [[ "$corpus" == "cc" ]]; then
     echo "Not implemented yet." >&2
     exit 1

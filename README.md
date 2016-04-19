@@ -20,13 +20,13 @@ Elasticsearch plug-ins need to be installed on all (!) cluster nodes. These are:
 * `analysis-stempel`
 * `langdetect`
 
-Assuming an Elasticsearch 2.1.x cluster, install them on each node using:
+Assuming an Elasticsearch 2.3.1 cluster, install them on each node using:
 
-    bin/plugin install elasticsearch/elasticsearch-analysis-icu/2.7.0
-    bin/plugin install elasticsearch/elasticsearch-analysis-kuromoji/2.7.0
-    bin/plugin install elasticsearch/elasticsearch-analysis-smartcn/2.7.0
-    bin/plugin install elasticsearch/elasticsearch-analysis-stempel/2.7.0
-    bin/plugin install http://xbib.org/repository/org/xbib/elasticsearch/plugin/elasticsearch-langdetect/2.1.1.0/elasticsearch-langdetect-2.1.1.0-plugin.zip
+    bin/plugin install analysis-icu
+    bin/plugin install analysis-kuromoji
+    bin/plugin install analysis-smartcn
+    bin/plugin install analysis-stempel
+    bin/plugin install https://github.com/jprante/elasticsearch-langdetect/releases/download/2.3.1.0/elasticsearch-langdetect-2.3.1.0-plugin.zip
 
 Restart every node after the installation.
 
@@ -94,8 +94,7 @@ something sensible before starting it using your local `mapred-site.xml` config 
 definitely too small. A number between 40 and 100 (depending on the cluster size) seems to be sensible. As long as the
 Elasticsearch indexing host(s) can handle that many parallel indexing requests, you can increase the number as you like.
 
-Also make sure to grant enough memory to the reduce tasks or you'll run out of memory very quickly. Sometimes
-numbers even as high as 8192 MB are required.
+Also make sure to grant enough memory to the reduce tasks or you'll run out of memory very quickly.
 
 We start the indexing process with
 
@@ -105,6 +104,7 @@ We start the indexing process with
         -spamranks "/corpus-path/spam-rankings/*" \
         -pageranks "/corpus-path/page-ranks.txt" \
         -anchortexts "/corpus-path/anchors/*" \
+        -langdetect "localhost:9200" \
         -index "{{index}}"
 
 `-Des.nodes` is a comma separated list of indexing endpoints (with optional port number, default is 9200).
@@ -117,13 +117,18 @@ have separate *coordinator* nodes which you should specify here.
 (a file with the format `<ID> <NUMBER>`). `-pageranks` is similar, but for page ranks, of course.
 `-anchortexts` are your anchor texts for certain documents (format
 `<ID> <TEXT>`, where `<TEXT>` will be cut off after a certain amount of characters during indexing).
-Last, but not least, `-index` names your actual index (the one we created before).
+Last, but not least, `-index` names your actual index (the one we created before) and `-langdetect` is an optional
+hostname (and port number) where the Elasticsearch langdetect plugin can be found. If left blank, `localhost:9200`
+will be assumed.
 
 Depending on the amount of data and the performance of your cluster, the MapReduce job may run for several hours or
 even days while your data is continually fed into the index.
 You can follow the process using the Hadoop Application web interface as well as the Elasticsearch JSON search API.
 You can also install a tool such as [Elastic HQ](http://www.elastichq.org/) on your cluster to get more information
 about your indexes, the number of already indexed documents as well as performance measures of the nodes.
+
+**NOTE:** For starting the indexing process, there is also script at `src/scripts/run_on_cluster.sh`
+which starts the indexer with working default values for the Betaweb cluster and ClueWeb09/12 and CommonCrawl indices.
 
 ## Additional Notes
 If you try to build a fat JAR from the sources using IntelliJ IDEA and happen to get a signature verification
