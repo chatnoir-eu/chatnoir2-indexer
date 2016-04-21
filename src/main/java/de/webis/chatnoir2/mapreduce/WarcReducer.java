@@ -42,7 +42,7 @@ public class WarcReducer extends Reducer<Text, MapWritable, NullWritable, BytesW
     {
         super.setup(context);
 
-        PARSE_ERROR_COUNTER = context.getCounter(RecordCounters.SKIPPED_RECORDS_PARSE_ERROR);
+        PARSE_ERROR_COUNTER = context.getCounter(RecordCounters.SKIPPED_RECORDS_JSON_PARSE_ERROR);
         GENERATED_COUNTER   = context.getCounter(RecordCounters.GENERATED_DOCS);
         EMPTY_COUNTER       = context.getCounter(RecordCounters.NO_CONTENT);
     }

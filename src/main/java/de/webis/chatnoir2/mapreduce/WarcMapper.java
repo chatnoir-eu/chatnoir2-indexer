@@ -44,7 +44,8 @@ import java.util.*;
 public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements WarcMapReduceBase
 {
     protected static Counter RECORDS_COUNTER;
-    protected static Counter PARSE_ERROR_COUNTER;
+    protected static Counter JSON_PARSE_ERROR_COUNTER;
+    protected static Counter CONTENT_PARSE_ERROR_COUNTER;
     protected static Counter TOO_LARGE_COUNTER;
     protected static Counter TOO_SMALL_COUNTER;
     protected static Counter TOO_DEEP_COUNTER;
@@ -60,13 +61,14 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
     {
         super.setup(context);
 
-        RECORDS_COUNTER           = context.getCounter(RecordCounters.RECORDS);
-        PARSE_ERROR_COUNTER       = context.getCounter(RecordCounters.SKIPPED_RECORDS_PARSE_ERROR);
-        TOO_LARGE_COUNTER         = context.getCounter(RecordCounters.SKIPPED_RECORDS_TOO_LARGE);
-        TOO_SMALL_COUNTER         = context.getCounter(RecordCounters.SKIPPED_RECORDS_TOO_SMALL);
-        TOO_DEEP_COUNTER          = context.getCounter(RecordCounters.SKIPPED_RECORDS_TOO_DEEP);
-        BINARY_COUNTER            = context.getCounter(RecordCounters.SKIPPED_RECORDS_BINARY);
-        LANGDETECT_FAILED_COUNTER = context.getCounter(RecordCounters.LANGDETECT_FAILED);
+        RECORDS_COUNTER             = context.getCounter(RecordCounters.RECORDS);
+        JSON_PARSE_ERROR_COUNTER    = context.getCounter(RecordCounters.SKIPPED_RECORDS_JSON_PARSE_ERROR);
+        CONTENT_PARSE_ERROR_COUNTER = context.getCounter(RecordCounters.SKIPPED_RECORDS_CONTENT_PARSE_ERROR);
+        TOO_LARGE_COUNTER           = context.getCounter(RecordCounters.SKIPPED_RECORDS_TOO_LARGE);
+        TOO_SMALL_COUNTER           = context.getCounter(RecordCounters.SKIPPED_RECORDS_TOO_SMALL);
+        TOO_DEEP_COUNTER            = context.getCounter(RecordCounters.SKIPPED_RECORDS_TOO_DEEP);
+        BINARY_COUNTER              = context.getCounter(RecordCounters.SKIPPED_RECORDS_BINARY);
+        LANGDETECT_FAILED_COUNTER   = context.getCounter(RecordCounters.LANGDETECT_FAILED);
 
         // disable Jericho log
         net.htmlparser.jericho.Config.LoggerProvider = net.htmlparser.jericho.LoggerProvider.DISABLED;
@@ -176,13 +178,22 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
                 }
             }
 
+            final Document jsoupDoc;
+            final String renderedBody;
             // create plaintext rendering from content body
-            final Document jsoupDoc = Jsoup.parse(contentBody);
-            final String renderedBody = HTML_TO_PLAIN_TEXT.getPlainText(jsoupDoc);
-            // ignore document if rendered body is too small
-            if (renderedBody.getBytes().length < 50) {
-                LOG.warn("Document " + key + " with size " + renderedBody.getBytes().length + "bytes skipped (too small)");
-                TOO_SMALL_COUNTER.increment(1);
+            try {
+                jsoupDoc     = Jsoup.parse(contentBody);
+                renderedBody = HTML_TO_PLAIN_TEXT.getPlainText(jsoupDoc);
+                // ignore document if rendered body is too small
+                if (renderedBody.getBytes().length < 50) {
+                    LOG.warn("Document " + key + " with size " + renderedBody.getBytes().length + " bytes skipped (too small)");
+                    TOO_SMALL_COUNTER.increment(1);
+                    return;
+                }
+            } catch (Exception e) {
+                LOG.error("Document parse error: " + e.getMessage());
+                LOG.error("Document was: " + contentBody);
+                CONTENT_PARSE_ERROR_COUNTER.increment(1);
                 return;
             }
 
@@ -194,7 +205,7 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
                 lang = "en";
                 LOG.warn("Language detection for document " + key + " failed, falling back to en");
                 LOG.warn("Error was: " + e.getMessage());
-                LOG.warn("Request was: " + renderedBody);
+                LOG.warn("Request was: " + contentBody);
                 LANGDETECT_FAILED_COUNTER.increment(1);
             }
             LANG_VALUE.set(lang);
@@ -223,8 +234,8 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
             LOG.warn("Document " + key + " with deep HTML tag nesting level skipped");
             TOO_DEEP_COUNTER.increment(1);
         } catch (JSONException e) {
-            LOG.warn("Document " + key + " skipped due to JSON parsing error: " + e.getMessage());
-            PARSE_ERROR_COUNTER.increment(1);
+            LOG.error("Document " + key + " skipped due to JSON parsing error: " + e.getMessage());
+            JSON_PARSE_ERROR_COUNTER.increment(1);
         }
     }
 

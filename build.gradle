@@ -17,8 +17,8 @@ configurations {
 }
 
 dependencies {
-    compile 'org.elasticsearch:elasticsearch:2.1.0'
-    compile 'org.elasticsearch:elasticsearch-hadoop:2.1.2'
+    compile 'org.elasticsearch:elasticsearch:2.3.1'
+    compile 'org.elasticsearch:elasticsearch-hadoop:2.3.0'
     compile 'net.htmlparser.jericho:jericho-html:3.4'
     compile 'org.jsoup:jsoup:1.8.3'
 }

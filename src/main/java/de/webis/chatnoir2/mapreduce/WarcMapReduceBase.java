@@ -91,7 +91,12 @@ public interface WarcMapReduceBase
         /**
          * Number of skipped records due to JSON parse errors.
          */
-        SKIPPED_RECORDS_PARSE_ERROR,
+        SKIPPED_RECORDS_JSON_PARSE_ERROR,
+
+        /**
+         * Number of skipped records due to content (HTML) parse errors.
+         */
+        SKIPPED_RECORDS_CONTENT_PARSE_ERROR,
 
         /**
          * Number of skipped records that are too large.
