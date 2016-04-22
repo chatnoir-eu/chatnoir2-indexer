@@ -11,14 +11,21 @@ repositories {
     mavenCentral()
 }
 
-configurations {
+/*configurations {
     all*.exclude group: "org.slf4j", module: "slf4j-log4j12"
     all*.exclude group: "log4j", module: "log4j"
-}
+}*/
 
 dependencies {
     compile 'org.elasticsearch:elasticsearch:2.3.1'
     compile 'org.elasticsearch:elasticsearch-hadoop:2.3.0'
     compile 'net.htmlparser.jericho:jericho-html:3.4'
     compile 'org.jsoup:jsoup:1.8.3'
+    compile 'commons-cli:commons-cli:1.3.1'
+    compile 'org.apache.hadoop:hadoop-common:2.7.2'
+    compile 'org.apache.hadoop:hadoop-mapreduce-client-core:2.7.2'
+    compile 'org.apache.hadoop:hadoop-core:1.2.1'
+    compile 'org.json:json:20160212'
+    compile 'log4j:log4j:1.2.17'
+
 }
