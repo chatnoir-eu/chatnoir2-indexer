@@ -15,7 +15,7 @@ fi
 
 if [[ "$corpus" == "09" ]] || [[ "$corpus" == "12" ]]; then
     hadoop jar "$(dirname $0)/../../build/classes/artifacts/es_indexer_jar/es-indexer.jar" "de.webis.chatnoir2.app.ESIndexer" \
-        -Des.nodes==betaweb015,betaweb016,betaweb017,betaweb018,betaweb019 \
+        -Des.nodes=betaweb015,betaweb016,betaweb017,betaweb018,betaweb019 \
         -sequence-files "/corpora/clueweb/${corpus}-mapfile/data-r-*/data" \
         -spamranks "/corpora/clueweb/${corpus}-spam-rankings/*" \
         -anchortexts "/corpora/clueweb/${corpus}-anchors/*" \
