@@ -27,7 +27,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 
 /**
- * Reducer for aggregating generating JSON docs which are sent to ElasticSearch.
+ * Reducer for aggregating mapper results and generating JSON docs which are sent to ElasticSearch.
  *
  * @author Janek Bevendorff
  */
