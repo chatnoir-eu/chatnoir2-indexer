@@ -13,13 +13,21 @@ if [[ "$index_revision" == "" ]]; then
     exit 1
 fi
 
-if [[ "$corpus" == "09" ]] || [[ "$corpus" == "12" ]]; then
+if [[ "$corpus" == "09" ]]; then
     hadoop jar "$(dirname $0)/../../build/classes/artifacts/es_indexer_jar/es-indexer.jar" "de.webis.chatnoir2.app.ESIndexer" \
         -Des.nodes=betaweb015,betaweb016,betaweb017,betaweb018,betaweb019 \
         -sequence-files "/corpora/clueweb/${corpus}-mapfile/data-r-*/data" \
         -spamranks "/corpora/clueweb/${corpus}-spam-rankings/*" \
         -anchortexts "/corpora/clueweb/${corpus}-anchors/*" \
         -pageranks "/corpora/clueweb/${corpus}-page-ranks.txt" \
+        -langdetect "localhost:9200" \
+        -index "webis_warc_clueweb${corpus}_${index_revision}" $@
+elif [[ "$corpus" == "12" ]]; then
+    hadoop jar "$(dirname $0)/../../build/classes/artifacts/es_indexer_jar/es-indexer.jar" "de.webis.chatnoir2.app.ESIndexer" \
+        -Des.nodes=betaweb015,betaweb016,betaweb017,betaweb018,betaweb019 \
+        -sequence-files "/corpora/clueweb/${corpus}-mapfile/data-r-*/data" \
+        -spamranks "/corpora/clueweb/${corpus}-spam-rankings/*" \
+        -pageranks "/corpora/clueweb/${corpus}-page-ranks.txt.bz2" \
         -langdetect "localhost:9200" \
         -index "webis_warc_clueweb${corpus}_${index_revision}" $@
 elif [[ "$corpus" == "cc" ]]; then

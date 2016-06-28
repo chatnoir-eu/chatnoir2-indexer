@@ -61,7 +61,6 @@ public interface WarcMapReduceBase
     Text WARC_RECORD_ID_VALUE           = new Text();
     Text WARC_TARGET_URI_VALUE          = new Text();
     Text WARC_TARGET_HOSTNAME_VALUE     = new Text();
-    Text WARC_TARGET_HOSTNAME_RAW_VALUE = new Text();
     Text WARC_TARGET_PATH_VALUE         = new Text();
     Text WARC_TARGET_QUERY_STRING_VALUE = new Text();
     Text CONTENT_TYPE_VALUE             = new Text();

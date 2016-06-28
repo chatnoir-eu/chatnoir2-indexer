@@ -130,16 +130,10 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
                     final String recordId = metadata.getString(k);
                     WARC_RECORD_ID_VALUE.set(recordId);
                     OUTPUT_MAP_DOC.put(WARC_RECORD_ID_KEY, WARC_RECORD_ID_VALUE);
-                    if (0 == MAPREDUCE_KEY.getLength()) {
-                        MAPREDUCE_KEY.set(recordId);
-                    }
                 } else if (k.equalsIgnoreCase("WARC-TREC-ID")) {
                     final String trecId = metadata.getString(k);
                     WARC_TREC_ID_VALUE.set(trecId);
                     OUTPUT_MAP_DOC.put(WARC_TREC_ID_KEY, WARC_TREC_ID_VALUE);
-                    if (trecId.startsWith("clueweb")) {
-                        MAPREDUCE_KEY.set(trecId);
-                    }
                 } else if (k.equalsIgnoreCase("WARC-Target-URI")) {
                     try {
                         final URI targetURI = new URI(metadata.getString(k));
@@ -148,14 +142,23 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
                         WARC_TARGET_QUERY_STRING_VALUE.set(null != targetURI.getQuery() ? targetURI.getQuery() : "");
 
                         OUTPUT_MAP_DOC.put(WARC_TARGET_HOSTNAME_KEY, WARC_TARGET_HOSTNAME_VALUE);
-                        OUTPUT_MAP_DOC.put(WARC_TARGET_HOSTNAME_RAW_KEY, WARC_TARGET_HOSTNAME_RAW_VALUE);
+                        OUTPUT_MAP_DOC.put(WARC_TARGET_HOSTNAME_RAW_KEY, WARC_TARGET_HOSTNAME_VALUE);
                         OUTPUT_MAP_DOC.put(WARC_TARGET_PATH_KEY, WARC_TARGET_PATH_VALUE);
                         OUTPUT_MAP_DOC.put(WARC_TARGET_QUERY_STRING_KEY, WARC_TARGET_QUERY_STRING_VALUE);
-                    } catch (URISyntaxException ignored) {}
+                    } catch (URISyntaxException ignored) {
+                        LOG.error("URL Exception for url '" + metadata.getString(k) + "': " + ignored.getMessage());
+                    }
 
                     WARC_TARGET_URI_VALUE.set(metadata.getString(k));
                     OUTPUT_MAP_DOC.put(WARC_TARGET_URI_KEY, WARC_TARGET_URI_VALUE);
                 }
+            }
+
+            // set MapReduce key, use ClueWeb ID if possible
+            if (0 != WARC_TREC_ID_VALUE.getLength() && WARC_TREC_ID_VALUE.toString().startsWith("clueweb")) {
+                MAPREDUCE_KEY.set(WARC_TREC_ID_VALUE);
+            } else {
+                MAPREDUCE_KEY.set(WARC_RECORD_ID_VALUE);
             }
 
             // process content (HTTP) headers
