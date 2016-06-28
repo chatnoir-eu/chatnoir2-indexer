@@ -56,16 +56,30 @@ public class WarcReducer extends Reducer<Text, MapWritable, NullWritable, BytesW
 
             for (final MapWritable value : values) {
                 for (final Writable k : value.keySet()) {
-                    final String kStr = k.toString();
-                    final String vStr = value.get(k).toString();
-                    if (kStr.startsWith(ANCHOR_TEXTS_BASE_KEY)) {
-                        if (null == outputJson.get(kStr)) {
-                            outputJson.put(kStr, new JSONArray());
+                    final String keyStr = k.toString();
+                    final Writable val = value.get(k);
+
+                    if (keyStr.startsWith(ANCHOR_TEXTS_BASE_KEY)) {
+                        if (null == outputJson.get(keyStr)) {
+                            outputJson.put(keyStr, new JSONArray());
                         }
-                        outputJson.getJSONArray(kStr).put(vStr);
+                        outputJson.getJSONArray(keyStr).put(cleanUpString(val.toString()));
                     } else {
-                        containsContent |= (kStr.startsWith(BODY_BASE_KEY) && !vStr.trim().isEmpty());
-                        outputJson.put(kStr, cleanUpString(vStr));
+                        if (val instanceof IntWritable) {
+                            outputJson.put(keyStr, ((IntWritable) val).get());
+                        } else if (val instanceof LongWritable) {
+                            outputJson.put(keyStr, ((LongWritable) val).get());
+                        } else if (val instanceof FloatWritable) {
+                            outputJson.put(keyStr, ((FloatWritable) val).get());
+                        } else if (val instanceof DoubleWritable) {
+                            outputJson.put(keyStr, ((DoubleWritable) val).get());
+                        } else if (val instanceof BooleanWritable) {
+                            outputJson.put(keyStr, ((BooleanWritable) val).get());
+                        } else {
+                            final String valStr = val.toString();
+                            containsContent |= (keyStr.startsWith(BODY_BASE_KEY) && !valStr.trim().isEmpty());
+                            outputJson.put(keyStr, cleanUpString(valStr));
+                        }
                     }
                 }
             }
