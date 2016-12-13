@@ -32,33 +32,164 @@
                         "vg", "vi", "vn", "vu", "wf", "ws", "ye", "yt", "yu", "za", "zm", "zr", "zw"
                     ]
                 },
+                "ar_stop_filter" : {
+                    "type" : "stop",
+                    "stopwords" : [
+                        "_arabic_"
+                    ]
+                },
+                "bg_stop_filter" : {
+                    "type" : "stop",
+                    "stopwords" : [
+                        "_bulgarian_"
+                    ]
+                },
+                "ca_stop_filter" : {
+                    "type" : "stop",
+                    "stopwords" : [
+                        "_catalan_"
+                    ]
+                },
+                "cs_stop_filter" : {
+                    "type" : "stop",
+                    "stopwords" : [
+                        "_czech_"
+                    ]
+                },
+                "da_stop_filter" : {
+                    "type" : "stop",
+                    "stopwords" : [
+                        "_danish_"
+                    ]
+                },
+                "de_stop_filter" : {
+                    "type" : "stop",
+                    "stopwords" : [
+                        "_german_"
+                    ]
+                },
                 "de_stem_filter" : {
                     "type" : "stemmer",
                     "name" : "minimal_german"
+                },
+                "el_stop_filter" : {
+                    "type" : "stop",
+                    "stopwords" : [
+                        "_greek_"
+                    ]
+                },
+                "en_stop_filter" : {
+                    "type" : "stop",
+                    "stopwords" : [
+                        "_english_"
+                    ]
                 },
                 "en_stem_filter" : {
                     "type" : "stemmer",
                     "name" : "minimal_english"
                 },
+                "es_stop_filter" : {
+                    "type" : "stop",
+                    "stopwords" : [
+                        "_spanish_"
+                    ]
+                },
                 "es_stem_filter" : {
                     "type" : "stemmer",
                     "name" : "light_spanish"
+                },
+                "eu_stop_filter" : {
+                    "type" : "stop",
+                    "stopwords" : [
+                        "_basque_"
+                    ]
+                },
+                "fa_stop_filter" : {
+                    "type" : "stop",
+                    "stopwords" : [
+                        "_persian_"
+                    ]
+                },
+                "fi_stop_filter" : {
+                    "type" : "stop",
+                    "stopwords" : [
+                        "_finnish_"
+                    ]
                 },
                 "fi_stem_filter" : {
                     "type" : "stemmer",
                     "name" : "light_finish"
                 },
+                "fr_stop_filter" : {
+                    "type" : "stop",
+                    "stopwords" : [
+                        "_french_"
+                    ]
+                },
                 "fr_stem_filter" : {
                     "type" : "stemmer",
                     "name" : "minimal_french"
+                },
+                "gl_stop_filter" : {
+                    "type" : "stop",
+                    "stopwords" : [
+                        "_galician_"
+                    ]
                 },
                 "gl_stem_filter" : {
                     "type" : "stemmer",
                     "name" : "minimal_galician"
                 },
+                "he_stop_filter" : {
+                    "type" : "stop",
+                    "stopwords" : [
+                        "״", "׳", "של", "רב", "פי", "עם", "עליו", "עליהם", "על", "עד", "מן", "מכל",
+                        "מי", "מהם", "מה", "מ", "למה", "לכל", "לי", "לו", "להיות", "לה", "לא", "כן", "כמה",
+                        "כלי", "כל", "כי", "יש", "ימים", "יותר", "יד", "י", "זה", "ז", "ועל", "ומי", "ולא", "וכן",
+                        "וכל", "והיא", "והוא", "ואם", "ו", "הרבה", "הנה", "היו", "היה", "היא", "הזה", "הוא",
+                        "דבר", "ד", "ג", "בני", "בכל", "בו", "בה", "בא", "את", "אשר", "אם", "אלה", "אל",
+                        "אך", "איש", "אין", "אחת", "אחר", "אחד", "אז", "אותו", "־", "^", "?", ";", ":", "1",
+                        ".", "-", "*", "\"", "!", "שלשה", "בעל", "פני", ")", "גדול", "שם", "עלי", "עולם",
+                        "מקום", "לעולם", "לנו", "להם", "ישראל", "יודע", "זאת", "השמים", "הזאת", "הדברים", "הדבר",
+                        "הבית", "האמת", "דברי", "במקום", "בהם", "אמרו", "אינם", "אחרי", "אותם", "אדם", "(",
+                        "חלק", "שני", "שכל", "שאר", "ש", "ר", "פעמים", "נעשה", "ן", "ממנו", "מלא", "מזה", "ם",
+                        "לפי", "ל", "כמו", "כבר", "כ", "זו", "ומה", "ולכל", "ובין", "ואין", "הן", "היתה", "הא", "ה",
+                        "בל", "בין", "בזה", "ב", "אף", "אי", "אותה", "או", "אבל", "א"
+                    ]
+                },
+                "hi_stop_filter" : {
+                    "type" : "stop",
+                    "stopwords" : [
+                        "_hindi_"
+                    ]
+                },
+                "hu_stop_filter" : {
+                    "type" : "stop",
+                    "stopwords" : [
+                        "_hungarian_"
+                    ]
+                },
                 "hu_stem_filter" : {
                     "type" : "stemmer",
                     "name" : "light_hungarian"
+                },
+                "hy_stop_filter" : {
+                    "type" : "stop",
+                    "stopwords" : [
+                        "_armenian_"
+                    ]
+                },
+                "id_stop_filter" : {
+                    "type" : "stop",
+                    "stopwords" : [
+                        "_indonesian_"
+                    ]
+                },
+                "it_stop_filter" : {
+                    "type" : "stop",
+                    "stopwords" : [
+                        "_italian_"
+                    ]
                 },
                 "it_stem_filter" : {
                     "type" : "stemmer",
@@ -71,6 +202,36 @@
                         "\\u52a9\\u8a5e-\\u7d42\\u52a9\\u8a5e"
                     ]
                 },
+                "lt_stop_filter" : {
+                    "type" : "stop",
+                    "stopwords" : [
+                        "_lithuanian_"
+                    ]
+                },
+                "lv_stop_filter" : {
+                    "type" : "stop",
+                    "stopwords" : [
+                        "_latvian_"
+                    ]
+                },
+                "nl_stop_filter" : {
+                    "type" : "stop",
+                    "stopwords" : [
+                        "_dutch_"
+                    ]
+                },
+                "no_stop_filter" : {
+                    "type" : "stop",
+                    "stopwords" : [
+                        "_norwegian_"
+                    ]
+                },
+                "pt_stop_filter" : {
+                    "type" : "stop",
+                    "stopwords" : [
+                        "_portuguese_"
+                    ]
+                },
                 "pt_stem_filter" : {
                     "type" : "stemmer",
                     "name" : "minimal_portuguese"
@@ -79,13 +240,43 @@
                     "type" : "stemmer",
                     "name" : "polish_stem"
                 },
+                "ro_stop_filter" : {
+                    "type" : "stop",
+                    "stopwords" : [
+                        "_romanian_"
+                    ]
+                },
+                "ru_stop_filter" : {
+                    "type" : "stop",
+                    "stopwords" : [
+                        "_russian_"
+                    ]
+                },
                 "ru_stem_filter" : {
                     "type" : "stemmer",
                     "name" : "light_russian"
                 },
+                "sv_stop_filter" : {
+                    "type" : "stop",
+                    "stopwords" : [
+                        "_swedish_"
+                    ]
+                },
                 "sv_stem_filter" : {
                     "type" : "stemmer",
                     "name" : "light_swedish"
+                },
+                "th_stop_filter" : {
+                    "type" : "stop",
+                    "stopwords" : [
+                        "_thai_"
+                    ]
+                },
+                "tr_stop_filter" : {
+                    "type" : "stop",
+                    "stopwords" : [
+                        "_turkish_"
+                    ]
                 }
             },
             "analyzer" : {
@@ -106,6 +297,7 @@
                     "type" : "custom",
                     "filter" : [
                         "icu_normalizer",
+                        "ar_stop_filter",
                         "icu_folding"
                     ],
                     "tokenizer" : "icu_tokenizer"
@@ -114,6 +306,7 @@
                     "type" : "custom",
                     "filter" : [
                         "icu_normalizer",
+                        "bg_stop_filter",
                         "icu_folding"
                     ],
                     "tokenizer" : "icu_tokenizer"
@@ -122,6 +315,7 @@
                     "type" : "custom",
                     "filter" : [
                         "icu_normalizer",
+                        "ca_stop_filter",
                         "icu_folding"
                     ],
                     "tokenizer" : "icu_tokenizer"
@@ -130,6 +324,7 @@
                     "type" : "custom",
                     "filter" : [
                         "icu_normalizer",
+                        "cs_stop_filter",
                         "icu_folding"
                     ],
                     "tokenizer" : "icu_tokenizer"
@@ -138,6 +333,7 @@
                     "type" : "custom",
                     "filter" : [
                         "icu_normalizer",
+                        "da_stop_filter",
                         "icu_folding"
                     ],
                     "tokenizer" : "icu_tokenizer"
@@ -146,6 +342,7 @@
                     "type" : "custom",
                     "filter" : [
                         "icu_normalizer",
+                        "de_stop_filter",
                         "de_stem_filter",
                         "icu_folding"
                     ],
@@ -155,6 +352,7 @@
                     "type" : "custom",
                     "filter" : [
                         "icu_normalizer",
+                        "el_stop_filter",
                         "icu_folding"
                     ],
                     "tokenizer" : "icu_tokenizer"
@@ -163,6 +361,7 @@
                     "type" : "custom",
                     "filter" : [
                         "icu_normalizer",
+                        "en_stop_filter",
                         "en_stem_filter",
                         "icu_folding"
                     ],
@@ -172,6 +371,7 @@
                     "type" : "custom",
                     "filter" : [
                         "icu_normalizer",
+                        "es_stop_filter",
                         "es_stem_filter",
                         "icu_folding"
                     ],
@@ -181,6 +381,7 @@
                     "type" : "custom",
                     "filter" : [
                         "icu_normalizer",
+                        "eu_stop_filter",
                         "icu_folding"
                     ],
                     "tokenizer" : "icu_tokenizer"
@@ -189,6 +390,7 @@
                     "type" : "custom",
                     "filter" : [
                         "icu_normalizer",
+                        "fa_stop_filter",
                         "icu_folding"
                     ],
                     "tokenizer" : "icu_tokenizer"
@@ -197,6 +399,7 @@
                     "type" : "custom",
                     "filter" : [
                         "icu_normalizer",
+                        "fi_stop_filter",
                         "fi_stem_filter",
                         "icu_folding"
                     ],
@@ -207,6 +410,7 @@
                     "filter" : [
                         "icu_normalizer",
                         "elision",
+                        "fr_stop_filter",
                         "fr_stem_filter",
                         "icu_folding"
                     ],
@@ -216,6 +420,7 @@
                     "type" : "custom",
                     "filter" : [
                         "icu_normalizer",
+                        "gl_stop_filter",
                         "gl_stem_filter",
                         "icu_folding"
                     ],
@@ -225,6 +430,7 @@
                     "type" : "custom",
                     "filter" : [
                         "icu_normalizer",
+                        "he_stop_filter",
                         "icu_folding"
                     ],
                     "tokenizer" : "icu_tokenizer"
@@ -233,6 +439,7 @@
                     "type" : "custom",
                     "filter" : [
                         "icu_normalizer",
+                        "hi_stop_filter",
                         "icu_folding"
                     ],
                     "tokenizer" : "icu_tokenizer"
@@ -241,6 +448,7 @@
                     "type" : "custom",
                     "filter" : [
                         "icu_normalizer",
+                        "hu_stop_filter",
                         "hu_stem_filter",
                         "icu_folding"
                     ],
@@ -250,6 +458,7 @@
                     "type" : "custom",
                     "filter" : [
                         "icu_normalizer",
+                        "hy_stop_filter",
                         "icu_folding"
                     ],
                     "tokenizer" : "icu_tokenizer"
@@ -258,6 +467,7 @@
                     "type" : "custom",
                     "filter" : [
                         "icu_normalizer",
+                        "id_stop_filter",
                         "icu_folding"
                     ],
                     "tokenizer" : "icu_tokenizer"
@@ -266,6 +476,7 @@
                     "type" : "custom",
                     "filter" : [
                         "icu_normalizer",
+                        "it_stop_filter",
                         "it_stem_filter",
                         "icu_folding"
                     ],
@@ -290,6 +501,7 @@
                     "type" : "custom",
                     "filter" : [
                         "icu_normalizer",
+                        "lt_stop_filter",
                         "icu_folding"
                     ],
                     "tokenizer" : "icu_tokenizer"
@@ -298,6 +510,7 @@
                     "type" : "custom",
                     "filter" : [
                         "icu_normalizer",
+                        "lv_stop_filter",
                         "icu_folding"
                     ],
                     "tokenizer" : "icu_tokenizer"
@@ -306,6 +519,7 @@
                     "type" : "custom",
                     "filter" : [
                         "icu_normalizer",
+                        "nl_stop_filter",
                         "icu_folding"
                     ],
                     "tokenizer" : "icu_tokenizer"
@@ -314,6 +528,7 @@
                     "type" : "custom",
                     "filter" : [
                         "icu_normalizer",
+                        "no_stop_filter",
                         "icu_folding"
                     ],
                     "tokenizer" : "icu_tokenizer"
@@ -330,6 +545,7 @@
                     "type" : "custom",
                     "filter" : [
                         "icu_normalizer",
+                        "pt_stop_filter",
                         "pt_stem_filter",
                         "icu_folding"
                     ],
@@ -339,6 +555,7 @@
                     "type" : "custom",
                     "filter" : [
                         "icu_normalizer",
+                        "ro_stop_filter",
                         "icu_folding"
                     ],
                     "tokenizer" : "icu_tokenizer"
@@ -347,6 +564,7 @@
                     "type" : "custom",
                     "filter" : [
                         "icu_normalizer",
+                        "ru_stop_filter",
                         "ru_stem_filter",
                         "icu_folding"
                     ],
@@ -356,6 +574,7 @@
                     "type" : "custom",
                     "filter" : [
                         "icu_normalizer",
+                        "sv_stop_filter",
                         "sv_stem_filter",
                         "icu_folding"
                     ],
@@ -365,6 +584,7 @@
                     "type" : "custom",
                     "filter" : [
                         "icu_normalizer",
+                        "th_stop_filter",
                         "icu_folding"
                     ],
                     "tokenizer" : "icu_tokenizer"
@@ -373,6 +593,7 @@
                     "type" : "custom",
                     "filter" : [
                         "icu_normalizer",
+                        "tr_stop_filter",
                         "icu_folding"
                     ],
                     "tokenizer" : "icu_tokenizer"
@@ -450,7 +671,8 @@
                     "match_mapping_type" : "string",
                     "mapping" : {
                         "type" : "string",
-                        "analyzer" : "ar_analyzer"
+                        "analyzer" : "ar_analyzer",
+                        "similarity" : "BM25"
                     }
                 } },
                 { "bg" : {
@@ -458,7 +680,8 @@
                     "match_mapping_type" : "string",
                     "mapping" : {
                         "type" : "string",
-                        "analyzer" : "bg_analyzer"
+                        "analyzer" : "bg_analyzer",
+                        "similarity" : "BM25"
                     }
                 } },
                 { "ca" : {
@@ -466,7 +689,8 @@
                     "match_mapping_type" : "string",
                     "mapping" : {
                         "type" : "string",
-                        "analyzer" : "ca_analyzer"
+                        "analyzer" : "ca_analyzer",
+                        "similarity" : "BM25"
                     }
                 } },
                 { "cs" : {
@@ -474,7 +698,8 @@
                     "match_mapping_type" : "string",
                     "mapping" : {
                         "type" : "string",
-                        "analyzer" : "cs_analyzer"
+                        "analyzer" : "cs_analyzer",
+                        "similarity" : "BM25"
                     }
                 } },
                 { "da" : {
@@ -482,7 +707,8 @@
                     "match_mapping_type" : "string",
                     "mapping" : {
                         "type" : "string",
-                        "analyzer" : "da_analyzer"
+                        "analyzer" : "da_analyzer",
+                        "similarity" : "BM25"
                     }
                 } },
                 { "de" : {
@@ -490,7 +716,8 @@
                     "match_mapping_type" : "string",
                     "mapping" : {
                         "type" : "string",
-                        "analyzer" : "de_analyzer"
+                        "analyzer" : "de_analyzer",
+                        "similarity" : "BM25"
                     }
                 } },
                 { "el" : {
@@ -498,7 +725,8 @@
                     "match_mapping_type" : "string",
                     "mapping" : {
                         "type" : "string",
-                        "analyzer" : "el_analyzer"
+                        "analyzer" : "el_analyzer",
+                        "similarity" : "BM25"
                     }
                 } },
                 { "en" : {
@@ -506,7 +734,8 @@
                     "match_mapping_type" : "string",
                     "mapping" : {
                         "type" : "string",
-                        "analyzer" : "en_analyzer"
+                        "analyzer" : "en_analyzer",
+                        "similarity" : "BM25"
                     }
                 } },
                 { "es" : {
@@ -514,7 +743,8 @@
                     "match_mapping_type" : "string",
                     "mapping" : {
                         "type" : "string",
-                        "analyzer" : "es_analyzer"
+                        "analyzer" : "es_analyzer",
+                        "similarity" : "BM25"
                     }
                 } },
                 { "eu" : {
@@ -522,7 +752,8 @@
                     "match_mapping_type" : "string",
                     "mapping" : {
                         "type" : "string",
-                        "analyzer" : "eu_analyzer"
+                        "analyzer" : "eu_analyzer",
+                        "similarity" : "BM25"
                     }
                 } },
                 { "fa" : {
@@ -530,7 +761,8 @@
                     "match_mapping_type" : "string",
                     "mapping" : {
                         "type" : "string",
-                        "analyzer" : "fa_analyzer"
+                        "analyzer" : "fa_analyzer",
+                        "similarity" : "BM25"
                     }
                 } },
                 { "fi" : {
@@ -538,7 +770,8 @@
                     "match_mapping_type" : "string",
                     "mapping" : {
                         "type" : "string",
-                        "analyzer" : "fi_analyzer"
+                        "analyzer" : "fi_analyzer",
+                        "similarity" : "BM25"
                     }
                 } },
                 { "fr" : {
@@ -546,7 +779,8 @@
                     "match_mapping_type" : "string",
                     "mapping" : {
                         "type" : "string",
-                        "analyzer" : "fr_analyzer"
+                        "analyzer" : "fr_analyzer",
+                        "similarity" : "BM25"
                     }
                 } },
                 { "gl" : {
@@ -554,7 +788,8 @@
                     "match_mapping_type" : "string",
                     "mapping" : {
                         "type" : "string",
-                        "analyzer" : "gl_analyzer"
+                        "analyzer" : "gl_analyzer",
+                        "similarity" : "BM25"
                     }
                 } },
                 { "he" : {
@@ -562,7 +797,8 @@
                     "match_mapping_type" : "string",
                     "mapping" : {
                         "type" : "string",
-                        "analyzer" : "he_analyzer"
+                        "analyzer" : "he_analyzer",
+                        "similarity" : "BM25"
                     }
                 } },
                 { "hi" : {
@@ -570,7 +806,8 @@
                     "match_mapping_type" : "string",
                     "mapping" : {
                         "type" : "string",
-                        "analyzer" : "hi_analyzer"
+                        "analyzer" : "hi_analyzer",
+                        "similarity" : "BM25"
                     }
                 } },
                 { "hu" : {
@@ -578,7 +815,8 @@
                     "match_mapping_type" : "string",
                     "mapping" : {
                         "type" : "string",
-                        "analyzer" : "hu_analyzer"
+                        "analyzer" : "hu_analyzer",
+                        "similarity" : "BM25"
                     }
                 } },
                 { "hy" : {
@@ -586,7 +824,8 @@
                     "match_mapping_type" : "string",
                     "mapping" : {
                         "type" : "string",
-                        "analyzer" : "hy_analyzer"
+                        "analyzer" : "hy_analyzer",
+                        "similarity" : "BM25"
                     }
                 } },
                 { "id" : {
@@ -594,7 +833,8 @@
                     "match_mapping_type" : "string",
                     "mapping" : {
                         "type" : "string",
-                        "analyzer" : "id_analyzer"
+                        "analyzer" : "id_analyzer",
+                        "similarity" : "BM25"
                     }
                 } },
                 { "it" : {
@@ -602,7 +842,8 @@
                     "match_mapping_type" : "string",
                     "mapping" : {
                         "type" : "string",
-                        "analyzer" : "it_analyzer"
+                        "analyzer" : "it_analyzer",
+                        "similarity" : "BM25"
                     }
                 } },
                 { "ja" : {
@@ -610,7 +851,8 @@
                     "match_mapping_type" : "string",
                     "mapping" : {
                         "type" : "string",
-                        "analyzer" : "ja_analyzer"
+                        "analyzer" : "ja_analyzer",
+                        "similarity" : "BM25"
                     }
                 } },
                 { "ko" : {
@@ -618,7 +860,8 @@
                     "match_mapping_type" : "string",
                     "mapping" : {
                         "type" : "string",
-                        "analyzer" : "ko_analyzer"
+                        "analyzer" : "ko_analyzer",
+                        "similarity" : "BM25"
                     }
                 } },
                 { "lt" : {
@@ -626,7 +869,8 @@
                     "match_mapping_type" : "string",
                     "mapping" : {
                         "type" : "string",
-                        "analyzer" : "lt_analyzer"
+                        "analyzer" : "lt_analyzer",
+                        "similarity" : "BM25"
                     }
                 } },
                 { "lv" : {
@@ -634,7 +878,8 @@
                     "match_mapping_type" : "string",
                     "mapping" : {
                         "type" : "string",
-                        "analyzer" : "lv_analyzer"
+                        "analyzer" : "lv_analyzer",
+                        "similarity" : "BM25"
                     }
                 } },
                 { "nl" : {
@@ -642,7 +887,8 @@
                     "match_mapping_type" : "string",
                     "mapping" : {
                         "type" : "string",
-                        "analyzer" : "nl_analyzer"
+                        "analyzer" : "nl_analyzer",
+                        "similarity" : "BM25"
                     }
                 } },
                 { "no" : {
@@ -650,7 +896,8 @@
                     "match_mapping_type" : "string",
                     "mapping" : {
                         "type" : "string",
-                        "analyzer" : "no_analyzer"
+                        "analyzer" : "no_analyzer",
+                        "similarity" : "BM25"
                     }
                 } },
                 { "pl" : {
@@ -658,7 +905,8 @@
                     "match_mapping_type" : "string",
                     "mapping" : {
                         "type" : "string",
-                        "analyzer" : "pl_analyzer"
+                        "analyzer" : "pl_analyzer",
+                        "similarity" : "BM25"
                     }
                 } },
                 { "pt" : {
@@ -666,7 +914,8 @@
                     "match_mapping_type" : "string",
                     "mapping" : {
                         "type" : "string",
-                        "analyzer" : "pt_analyzer"
+                        "analyzer" : "pt_analyzer",
+                        "similarity" : "BM25"
                     }
                 } },
                 { "ro" : {
@@ -674,7 +923,8 @@
                     "match_mapping_type" : "string",
                     "mapping" : {
                         "type" : "string",
-                        "analyzer" : "ro_analyzer"
+                        "analyzer" : "ro_analyzer",
+                        "similarity" : "BM25"
                     }
                 } },
                 { "ru" : {
@@ -682,7 +932,8 @@
                     "match_mapping_type" : "string",
                     "mapping" : {
                         "type" : "string",
-                        "analyzer" : "ru_analyzer"
+                        "analyzer" : "ru_analyzer",
+                        "similarity" : "BM25"
                     }
                 } },
                 { "sv" : {
@@ -690,7 +941,8 @@
                     "match_mapping_type" : "string",
                     "mapping" : {
                         "type" : "string",
-                        "analyzer" : "sv_analyzer"
+                        "analyzer" : "sv_analyzer",
+                        "similarity" : "BM25"
                     }
                 } },
                 { "th" : {
@@ -698,7 +950,8 @@
                     "match_mapping_type" : "string",
                     "mapping" : {
                         "type" : "string",
-                        "analyzer" : "th_analyzer"
+                        "analyzer" : "th_analyzer",
+                        "similarity" : "BM25"
                     }
                 } },
                 { "tr" : {
@@ -706,7 +959,8 @@
                     "match_mapping_type" : "string",
                     "mapping" : {
                         "type" : "string",
-                        "analyzer" : "tr_analyzer"
+                        "analyzer" : "tr_analyzer",
+                        "similarity" : "BM25"
                     }
                 } },
                 { "zh" : {
@@ -714,7 +968,8 @@
                     "match_mapping_type" : "string",
                     "mapping" : {
                         "type" : "string",
-                        "analyzer" : "zh_analyzer"
+                        "analyzer" : "zh_analyzer",
+                        "similarity" : "BM25"
                     }
                 } },
                 { "default" : {
@@ -722,7 +977,8 @@
                     "match_mapping_type" : "string",
                     "mapping" : {
                         "type" : "string",
-                        "analyzer" : "default_analyzer"
+                        "analyzer" : "default_analyzer",
+                        "similarity" : "BM25"
                     }
                 } }
             ],
@@ -741,6 +997,7 @@
                 },
                 "warc_target_hostname" : {
                     "type" : "string",
+                    "similarity" : "BM25",
                     "index" : "analyzed",
                     "analyzer" : "host_analyzer"
                 },
@@ -750,11 +1007,13 @@
                 },
                 "warc_target_path" : {
                     "type" : "string",
+                    "similarity" : "BM25",
                     "index" : "analyzed",
                     "analyzer" : "path_analyzer"
                 },
                 "warc_target_query_string" : {
                     "type" : "string",
+                    "similarity" : "BM25",
                     "index" : "analyzed",
                     "analyzer" : "query_analyzer"
                 },
@@ -775,6 +1034,7 @@
                 },
                 "meta_keywords" : {
                     "type" : "string",
+                    "similarity" : "BM25",
                     "index" : "analyzed",
                     "analyzer" : "meta_keyword_analyzer"
                 },
