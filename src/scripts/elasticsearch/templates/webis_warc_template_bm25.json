@@ -441,7 +441,9 @@
                 "excludes" : [
                     "warc_target_hostname",
                     "warc_target_path",
-                    "warc_target_query_string"
+                    "warc_target_query_string",
+                    "full_body_*",
+                    "headings_*"
                 ]
             },
             "dynamic_templates" : [
@@ -449,7 +451,7 @@
                     "match" : "*_lang_ar",
                     "match_mapping_type" : "string",
                     "mapping" : {
-                        "type" : "string",
+                        "type" : "text",
                         "analyzer" : "ar_analyzer",
                         "similarity" : "BM25"
                     }
@@ -458,7 +460,7 @@
                     "match" : "*_lang_bg",
                     "match_mapping_type" : "string",
                     "mapping" : {
-                        "type" : "string",
+                        "type" : "text",
                         "analyzer" : "bg_analyzer",
                         "similarity" : "BM25"
                     }
@@ -467,7 +469,7 @@
                     "match" : "*_lang_ca",
                     "match_mapping_type" : "string",
                     "mapping" : {
-                        "type" : "string",
+                        "type" : "text",
                         "analyzer" : "ca_analyzer",
                         "similarity" : "BM25"
                     }
@@ -476,7 +478,7 @@
                     "match" : "*_lang_cs",
                     "match_mapping_type" : "string",
                     "mapping" : {
-                        "type" : "string",
+                        "type" : "text",
                         "analyzer" : "cs_analyzer",
                         "similarity" : "BM25"
                     }
@@ -485,7 +487,7 @@
                     "match" : "*_lang_da",
                     "match_mapping_type" : "string",
                     "mapping" : {
-                        "type" : "string",
+                        "type" : "text",
                         "analyzer" : "da_analyzer",
                         "similarity" : "BM25"
                     }
@@ -494,7 +496,7 @@
                     "match" : "*_lang_de",
                     "match_mapping_type" : "string",
                     "mapping" : {
-                        "type" : "string",
+                        "type" : "text",
                         "analyzer" : "de_analyzer",
                         "similarity" : "BM25"
                     }
@@ -503,7 +505,7 @@
                     "match" : "*_lang_el",
                     "match_mapping_type" : "string",
                     "mapping" : {
-                        "type" : "string",
+                        "type" : "text",
                         "analyzer" : "el_analyzer",
                         "similarity" : "BM25"
                     }
@@ -512,7 +514,7 @@
                     "match" : "*_lang_en",
                     "match_mapping_type" : "string",
                     "mapping" : {
-                        "type" : "string",
+                        "type" : "text",
                         "analyzer" : "en_analyzer",
                         "similarity" : "BM25"
                     }
@@ -521,7 +523,7 @@
                     "match" : "*_lang_es",
                     "match_mapping_type" : "string",
                     "mapping" : {
-                        "type" : "string",
+                        "type" : "text",
                         "analyzer" : "es_analyzer",
                         "similarity" : "BM25"
                     }
@@ -530,7 +532,7 @@
                     "match" : "*_lang_eu",
                     "match_mapping_type" : "string",
                     "mapping" : {
-                        "type" : "string",
+                        "type" : "text",
                         "analyzer" : "eu_analyzer",
                         "similarity" : "BM25"
                     }
@@ -539,7 +541,7 @@
                     "match" : "*_lang_fa",
                     "match_mapping_type" : "string",
                     "mapping" : {
-                        "type" : "string",
+                        "type" : "text",
                         "analyzer" : "fa_analyzer",
                         "similarity" : "BM25"
                     }
@@ -548,7 +550,7 @@
                     "match" : "*_lang_fi",
                     "match_mapping_type" : "string",
                     "mapping" : {
-                        "type" : "string",
+                        "type" : "text",
                         "analyzer" : "fi_analyzer",
                         "similarity" : "BM25"
                     }
@@ -557,7 +559,7 @@
                     "match" : "*_lang_fr",
                     "match_mapping_type" : "string",
                     "mapping" : {
-                        "type" : "string",
+                        "type" : "text",
                         "analyzer" : "fr_analyzer",
                         "similarity" : "BM25"
                     }
@@ -566,7 +568,7 @@
                     "match" : "*_lang_gl",
                     "match_mapping_type" : "string",
                     "mapping" : {
-                        "type" : "string",
+                        "type" : "text",
                         "analyzer" : "gl_analyzer",
                         "similarity" : "BM25"
                     }
@@ -575,7 +577,7 @@
                     "match" : "*_lang_he",
                     "match_mapping_type" : "string",
                     "mapping" : {
-                        "type" : "string",
+                        "type" : "text",
                         "analyzer" : "he_analyzer",
                         "similarity" : "BM25"
                     }
@@ -584,7 +586,7 @@
                     "match" : "*_lang_hi",
                     "match_mapping_type" : "string",
                     "mapping" : {
-                        "type" : "string",
+                        "type" : "text",
                         "analyzer" : "hi_analyzer",
                         "similarity" : "BM25"
                     }
@@ -593,7 +595,7 @@
                     "match" : "*_lang_hu",
                     "match_mapping_type" : "string",
                     "mapping" : {
-                        "type" : "string",
+                        "type" : "text",
                         "analyzer" : "hu_analyzer",
                         "similarity" : "BM25"
                     }
@@ -602,7 +604,7 @@
                     "match" : "*_lang_hy",
                     "match_mapping_type" : "string",
                     "mapping" : {
-                        "type" : "string",
+                        "type" : "text",
                         "analyzer" : "hy_analyzer",
                         "similarity" : "BM25"
                     }
@@ -611,7 +613,7 @@
                     "match" : "*_lang_id",
                     "match_mapping_type" : "string",
                     "mapping" : {
-                        "type" : "string",
+                        "type" : "text",
                         "analyzer" : "id_analyzer",
                         "similarity" : "BM25"
                     }
@@ -620,7 +622,7 @@
                     "match" : "*_lang_it",
                     "match_mapping_type" : "string",
                     "mapping" : {
-                        "type" : "string",
+                        "type" : "text",
                         "analyzer" : "it_analyzer",
                         "similarity" : "BM25"
                     }
@@ -629,7 +631,7 @@
                     "match" : "*_lang_ja",
                     "match_mapping_type" : "string",
                     "mapping" : {
-                        "type" : "string",
+                        "type" : "text",
                         "analyzer" : "ja_analyzer",
                         "similarity" : "BM25"
                     }
@@ -638,7 +640,7 @@
                     "match" : "*_lang_ko",
                     "match_mapping_type" : "string",
                     "mapping" : {
-                        "type" : "string",
+                        "type" : "text",
                         "analyzer" : "ko_analyzer",
                         "similarity" : "BM25"
                     }
@@ -647,7 +649,7 @@
                     "match" : "*_lang_lt",
                     "match_mapping_type" : "string",
                     "mapping" : {
-                        "type" : "string",
+                        "type" : "text",
                         "analyzer" : "lt_analyzer",
                         "similarity" : "BM25"
                     }
@@ -656,7 +658,7 @@
                     "match" : "*_lang_lv",
                     "match_mapping_type" : "string",
                     "mapping" : {
-                        "type" : "string",
+                        "type" : "text",
                         "analyzer" : "lv_analyzer",
                         "similarity" : "BM25"
                     }
@@ -665,7 +667,7 @@
                     "match" : "*_lang_nl",
                     "match_mapping_type" : "string",
                     "mapping" : {
-                        "type" : "string",
+                        "type" : "text",
                         "analyzer" : "nl_analyzer",
                         "similarity" : "BM25"
                     }
@@ -674,7 +676,7 @@
                     "match" : "*_lang_no",
                     "match_mapping_type" : "string",
                     "mapping" : {
-                        "type" : "string",
+                        "type" : "text",
                         "analyzer" : "no_analyzer",
                         "similarity" : "BM25"
                     }
@@ -683,7 +685,7 @@
                     "match" : "*_lang_pl",
                     "match_mapping_type" : "string",
                     "mapping" : {
-                        "type" : "string",
+                        "type" : "text",
                         "analyzer" : "pl_analyzer",
                         "similarity" : "BM25"
                     }
@@ -692,7 +694,7 @@
                     "match" : "*_lang_pt",
                     "match_mapping_type" : "string",
                     "mapping" : {
-                        "type" : "string",
+                        "type" : "text",
                         "analyzer" : "pt_analyzer",
                         "similarity" : "BM25"
                     }
@@ -701,7 +703,7 @@
                     "match" : "*_lang_ro",
                     "match_mapping_type" : "string",
                     "mapping" : {
-                        "type" : "string",
+                        "type" : "text",
                         "analyzer" : "ro_analyzer",
                         "similarity" : "BM25"
                     }
@@ -710,7 +712,7 @@
                     "match" : "*_lang_ru",
                     "match_mapping_type" : "string",
                     "mapping" : {
-                        "type" : "string",
+                        "type" : "text",
                         "analyzer" : "ru_analyzer",
                         "similarity" : "BM25"
                     }
@@ -719,7 +721,7 @@
                     "match" : "*_lang_sv",
                     "match_mapping_type" : "string",
                     "mapping" : {
-                        "type" : "string",
+                        "type" : "text",
                         "analyzer" : "sv_analyzer",
                         "similarity" : "BM25"
                     }
@@ -728,7 +730,7 @@
                     "match" : "*_lang_th",
                     "match_mapping_type" : "string",
                     "mapping" : {
-                        "type" : "string",
+                        "type" : "text",
                         "analyzer" : "th_analyzer",
                         "similarity" : "BM25"
                     }
@@ -737,7 +739,7 @@
                     "match" : "*_lang_tr",
                     "match_mapping_type" : "string",
                     "mapping" : {
-                        "type" : "string",
+                        "type" : "text",
                         "analyzer" : "tr_analyzer",
                         "similarity" : "BM25"
                     }
@@ -746,7 +748,7 @@
                     "match" : "*_lang_zh",
                     "match_mapping_type" : "string",
                     "mapping" : {
-                        "type" : "string",
+                        "type" : "text",
                         "analyzer" : "zh_analyzer",
                         "similarity" : "BM25"
                     }
@@ -755,7 +757,7 @@
                     "match" : "*_lang_*",
                     "match_mapping_type" : "string",
                     "mapping" : {
-                        "type" : "string",
+                        "type" : "text",
                         "analyzer" : "default_analyzer",
                         "similarity" : "BM25"
                     }
@@ -763,48 +765,48 @@
             ],
             "properties" : {
                 "warc_trec_id" : {
-                    "type" : "string",
+                    "type" : "text",
                     "index" : "not_analyzed"
                 },
                 "warc_record_id" : {
-                    "type" : "string",
+                    "type" : "text",
                     "index" : "not_analyzed"
                 },
                 "warc_target_uri" : {
-                    "type" : "string",
+                    "type" : "text",
                     "index" : "not_analyzed"
                 },
                 "warc_target_hostname" : {
-                    "type" : "string",
+                    "type" : "text",
                     "similarity" : "BM25",
                     "index" : "analyzed",
                     "analyzer" : "host_analyzer"
                 },
                 "warc_target_hostname_raw" : {
-                    "type" : "string",
+                    "type" : "text",
                     "index" : "not_analyzed"
                 },
                 "warc_target_path" : {
-                    "type" : "string",
+                    "type" : "text",
                     "similarity" : "BM25",
                     "index" : "analyzed",
                     "analyzer" : "path_analyzer"
                 },
                 "warc_target_query_string" : {
-                    "type" : "string",
+                    "type" : "text",
                     "similarity" : "BM25",
                     "index" : "analyzed",
                     "analyzer" : "query_analyzer"
                 },
                 "lang" : {
-                    "type" : "string",
+                    "type" : "text",
                     "index" : "not_analyzed"
                 },
                 "body_length" : {
                     "type" : "long"
                 },
                 "content_type" : {
-                    "type" : "string",
+                    "type" : "text",
                     "index" : "not_analyzed"
                 },
                 "date" : {
@@ -812,7 +814,7 @@
                     "format" : "date_optional_time"
                 },
                 "meta_keywords" : {
-                    "type" : "string",
+                    "type" : "text",
                     "similarity" : "BM25",
                     "index" : "analyzed",
                     "analyzer" : "meta_keyword_analyzer"
