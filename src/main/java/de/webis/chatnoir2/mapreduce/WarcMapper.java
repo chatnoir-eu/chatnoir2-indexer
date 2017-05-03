@@ -177,8 +177,9 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
 
             // create plaintext rendering from content body
             String mainContent = ContentExtractor.extract(contentBody);
-            if (mainContent.getBytes().length < 50) {
-                LOG.warn("Document " + key + " with size " + mainContent.getBytes().length + " bytes skipped (too small)");
+            if (null == mainContent || mainContent.getBytes().length < 10) {
+                int size = null != mainContent ? mainContent.getBytes().length : 0;
+                LOG.warn("Document " + key + " with size " + size + " bytes skipped (too small)");
                 TOO_SMALL_COUNTER.increment(1);
                 return;
             }
@@ -192,8 +193,6 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
             } catch (IOException e) {
                 lang = "en";
                 LOG.warn("Language detection for document " + key + " failed, falling back to en");
-                LOG.warn("Error was: " + e.getMessage());
-                LOG.warn("Request was: " + contentBody);
                 LANGDETECT_FAILED_COUNTER.increment(1);
             }
             LANG_VALUE.set(lang);

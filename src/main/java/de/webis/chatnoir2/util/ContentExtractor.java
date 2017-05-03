@@ -17,7 +17,6 @@
 
 package de.webis.chatnoir2.util;
 
-import de.l3s.boilerpipe.BoilerpipeProcessingException;
 import de.l3s.boilerpipe.extractors.ArticleExtractor;
 import de.l3s.boilerpipe.extractors.DefaultExtractor;
 import de.l3s.boilerpipe.extractors.KeepEverythingExtractor;
@@ -25,7 +24,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -41,13 +39,17 @@ public class ContentExtractor
      */
     public static String extract(String html)
     {
+        if (html.trim().isEmpty()) {
+            return "";
+        }
+
         String plainText = null;
         try {
-            plainText = ArticleExtractor.getInstance().getText(html);
+            plainText = ArticleExtractor.INSTANCE.getText(html);
             if (plainText.length() < 600) {
-                plainText = DefaultExtractor.getInstance().getText(html);
+                plainText = DefaultExtractor.INSTANCE.getText(html);
             }
-        } catch (BoilerpipeProcessingException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -62,10 +64,14 @@ public class ContentExtractor
      */
     public static String extractEverything(String html)
     {
+        if (html.trim().isEmpty()) {
+            return "";
+        }
+
         String plainText = null;
         try {
             plainText = KeepEverythingExtractor.INSTANCE.getText(html);
-        } catch (BoilerpipeProcessingException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -79,23 +85,33 @@ public class ContentExtractor
      * @param maxLevel maximum heading level to extract (1-6)
      * @return extracted headings, separated by newlines
      */
-    public static String extractHeadings(String html, int maxLevel) {
-        Document doc = Jsoup.parse(html);
-        StringBuilder headings = new StringBuilder();
-
-        if (maxLevel < 1) {
-            maxLevel = 1;
-        } else if (maxLevel > 6) {
-            maxLevel = 6;
+    public static String extractHeadings(String html, int maxLevel)
+    {
+        if (html.trim().isEmpty()) {
+            return "";
         }
 
-        for (int i = 1; i <= maxLevel; ++i) {
-            List<Element> elements = doc.select(String.format("h%d", i));
-            for (Element e : elements) {
-                headings.append(e.text().replaceAll("[\\n\\r\\s]+", " "));
+        try {
+            Document doc = Jsoup.parse(html);
+            StringBuilder headings = new StringBuilder();
+
+            if (maxLevel < 1) {
+                maxLevel = 1;
+            } else if (maxLevel > 6) {
+                maxLevel = 6;
             }
-        }
 
-        return headings.toString();
+            for (int i = 1; i <= maxLevel; ++i) {
+                List<Element> elements = doc.select(String.format("h%d", i));
+                for (Element e : elements) {
+                    headings.append(e.text().replaceAll("[\\n\\r\\s]+", " "));
+                }
+            }
+
+            return headings.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
     }
 }
