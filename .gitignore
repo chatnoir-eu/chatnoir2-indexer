@@ -1,5 +1,4 @@
 .gradle
 .settings
 build
-*.properties
 .idea

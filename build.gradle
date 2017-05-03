@@ -23,6 +23,8 @@ dependencies {
     compile group: 'org.apache.hadoop', name: 'hadoop-common', version: '2.7.3'
     compile group: 'org.apache.hadoop', name: 'hadoop-mapreduce-client-core', version: '2.7.3'
     compile group: 'org.json', name: 'json', version: '20160810'
-    compile group: 'com.optimaize.languagedetector', name: 'language-detector', version: '0.6'
-    compile group: 'com.google.guava', name: 'guava', version: '21.0'
+    compile group: 'com.google.guava', name: 'guava', version: '11.0'
+    compile group: 'org.jetbrains', name: 'annotations', version: '13.0'
+    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
+    compile group: 'net.sourceforge.nekohtml', name: 'nekohtml', version: '1.9.22'
 }
