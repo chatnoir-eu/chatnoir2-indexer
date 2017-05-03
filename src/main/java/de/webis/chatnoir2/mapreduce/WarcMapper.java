@@ -1,6 +1,6 @@
 /*
  * Elasticsearch Indexer for WARC JSON Mapfiles using Hadoop MapReduce.
- * Copyright (C) 2014-2015 Janek Bevendorff <janek.bevendorff@uni-weimar.de>
+ * Copyright (C) 2014-2017 Janek Bevendorff <janek.bevendorff@uni-weimar.de>
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you
  * may not use this file except in compliance with the License. You may
@@ -17,7 +17,7 @@
 
 package de.webis.chatnoir2.mapreduce;
 
-import de.webis.chatnoir2.util.HtmlToPlainText;
+import de.webis.chatnoir2.util.ContentExtractor;
 import de.webis.chatnoir2.util.LangDetector;
 import net.htmlparser.jericho.Source;
 import org.apache.hadoop.io.MapWritable;
@@ -26,8 +26,6 @@ import org.apache.hadoop.mapreduce.Counter;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.*;
 
 import java.io.IOException;
 import java.net.URI;
@@ -45,14 +43,11 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
 {
     protected static Counter RECORDS_COUNTER;
     protected static Counter JSON_PARSE_ERROR_COUNTER;
-    protected static Counter CONTENT_PARSE_ERROR_COUNTER;
     protected static Counter TOO_LARGE_COUNTER;
     protected static Counter TOO_SMALL_COUNTER;
     protected static Counter TOO_DEEP_COUNTER;
     protected static Counter BINARY_COUNTER;
     protected static Counter LANGDETECT_FAILED_COUNTER;
-
-    protected static final HtmlToPlainText HTML_TO_PLAIN_TEXT = new HtmlToPlainText();
 
     protected static LangDetector LANGUAGE_DETECTOR = null;
 
@@ -63,7 +58,6 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
 
         RECORDS_COUNTER             = context.getCounter(RecordCounters.RECORDS);
         JSON_PARSE_ERROR_COUNTER    = context.getCounter(RecordCounters.SKIPPED_RECORDS_JSON_PARSE_ERROR);
-        CONTENT_PARSE_ERROR_COUNTER = context.getCounter(RecordCounters.SKIPPED_RECORDS_CONTENT_PARSE_ERROR);
         TOO_LARGE_COUNTER           = context.getCounter(RecordCounters.SKIPPED_RECORDS_TOO_LARGE);
         TOO_SMALL_COUNTER           = context.getCounter(RecordCounters.SKIPPED_RECORDS_TOO_SMALL);
         TOO_DEEP_COUNTER            = context.getCounter(RecordCounters.SKIPPED_RECORDS_TOO_DEEP);
@@ -181,29 +175,20 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
                 }
             }
 
-            final Document jsoupDoc;
-            final String renderedBody;
             // create plaintext rendering from content body
-            try {
-                jsoupDoc     = Jsoup.parse(contentBody);
-                renderedBody = HTML_TO_PLAIN_TEXT.getPlainText(jsoupDoc);
-                // ignore document if rendered body is too small
-                if (renderedBody.getBytes().length < 50) {
-                    LOG.warn("Document " + key + " with size " + renderedBody.getBytes().length + " bytes skipped (too small)");
-                    TOO_SMALL_COUNTER.increment(1);
-                    return;
-                }
-            } catch (Exception e) {
-                LOG.error("Document parse error: " + e.getMessage());
-                LOG.error("Document was: " + contentBody);
-                CONTENT_PARSE_ERROR_COUNTER.increment(1);
+            String mainContent = ContentExtractor.extract(contentBody);
+            if (mainContent.getBytes().length < 50) {
+                LOG.warn("Document " + key + " with size " + mainContent.getBytes().length + " bytes skipped (too small)");
+                TOO_SMALL_COUNTER.increment(1);
                 return;
             }
+            String fullContent = ContentExtractor.extractEverything(contentBody);
+            String headings = ContentExtractor.extractHeadings(contentBody, 3);
 
             // language detection
             String lang;
             try {
-                lang = LANGUAGE_DETECTOR.detect(renderedBody);
+                lang = LANGUAGE_DETECTOR.detect(mainContent);
             } catch (IOException e) {
                 lang = "en";
                 LOG.warn("Language detection for document " + key + " failed, falling back to en");
@@ -214,11 +199,18 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
             LANG_VALUE.set(lang);
             OUTPUT_MAP_DOC.put(LANG_KEY, LANG_VALUE);
 
-            // add rendered body to output document
-            BODY_LENGTH_VALUE.set(renderedBody.length());
-            BODY_VALUE.set(renderedBody);
+            // add extracted body to output document
+            BODY_LENGTH_VALUE.set(mainContent.length());
             OUTPUT_MAP_DOC.put(BODY_LENGTH_KEY, BODY_LENGTH_VALUE);
+
+            BODY_VALUE.set(mainContent);
             OUTPUT_MAP_DOC.put(new Text(BODY_BASE_KEY + LANG_VALUE), BODY_VALUE);
+
+            FULL_BODY_VALUE.set(fullContent);
+            OUTPUT_MAP_DOC.put(new Text(FULL_BODY_BASE_KEY + LANG_VALUE), FULL_BODY_VALUE);
+
+            HEADINGS_VALUE.set(headings);
+            OUTPUT_MAP_DOC.put(new Text(HEADINGS_BASE_KEY + LANG_VALUE), HEADINGS_VALUE);
 
             // parse title and meta tags within body source
             Source bodySource = new Source(contentBody);
@@ -226,9 +218,9 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
             META_DESC_VALUE.set(getMetaTagContents(bodySource, "name", "description", 400));
             META_KEYWORDS_VALUE.set(getMetaTagContents(bodySource, "name", "keywords", 400));
 
-            OUTPUT_MAP_DOC.put(new Text(TITLE_BASE_KEY + LANG_VALUE),     TITLE_VALUE);
+            OUTPUT_MAP_DOC.put(new Text(TITLE_BASE_KEY + LANG_VALUE), TITLE_VALUE);
             OUTPUT_MAP_DOC.put(new Text(META_BASE_DESC_KEY + LANG_VALUE), META_DESC_VALUE);
-            OUTPUT_MAP_DOC.put(META_KEYWORDS_KEY,                         META_KEYWORDS_VALUE);
+            OUTPUT_MAP_DOC.put(META_KEYWORDS_KEY, META_KEYWORDS_VALUE);
 
             // write final document to context
             context.write(MAPREDUCE_KEY, OUTPUT_MAP_DOC);

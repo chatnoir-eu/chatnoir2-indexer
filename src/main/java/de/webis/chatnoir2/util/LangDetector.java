@@ -1,6 +1,6 @@
 /*
  * Elasticsearch Indexer for WARC JSON Mapfiles using Hadoop MapReduce.
- * Copyright (C) 2014-2015 Janek Bevendorff <janek.bevendorff@uni-weimar.de>
+ * Copyright (C) 2014-2017 Janek Bevendorff <janek.bevendorff@uni-weimar.de>
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you
  * may not use this file except in compliance with the License. You may

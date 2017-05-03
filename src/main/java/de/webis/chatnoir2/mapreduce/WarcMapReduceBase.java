@@ -53,6 +53,8 @@ public interface WarcMapReduceBase
     String TITLE_BASE_KEY        = "title_lang_";
     String META_BASE_DESC_KEY    = "meta_desc_lang_";
     String BODY_BASE_KEY         = "body_lang_";
+    String FULL_BODY_BASE_KEY    = "full_body_lang_";
+    String HEADINGS_BASE_KEY     = "headings_lang_";
     String ANCHOR_TEXTS_BASE_KEY = "anchor_texts_lang_";
 
     Text MAPREDUCE_KEY = new Text();
@@ -70,6 +72,8 @@ public interface WarcMapReduceBase
     Text TITLE_VALUE                    = new Text();
     Text META_DESC_VALUE                = new Text();
     Text BODY_VALUE                     = new Text();
+    Text FULL_BODY_VALUE                = new Text();
+    Text HEADINGS_VALUE                 = new Text();
     Text ANCHOR_TEXT_VALUE              = new Text();
     LongWritable BODY_LENGTH_VALUE      = new LongWritable();
     LongWritable SPAM_RANK_VALUE        = new LongWritable();
@@ -91,11 +95,6 @@ public interface WarcMapReduceBase
          * Number of skipped records due to JSON parse errors.
          */
         SKIPPED_RECORDS_JSON_PARSE_ERROR,
-
-        /**
-         * Number of skipped records due to content (HTML) parse errors.
-         */
-        SKIPPED_RECORDS_CONTENT_PARSE_ERROR,
 
         /**
          * Number of skipped records that are too large.
