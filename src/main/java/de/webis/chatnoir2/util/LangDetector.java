@@ -17,16 +17,19 @@
 
 package de.webis.chatnoir2.util;
 
-import org.apache.hadoop.mapreduce.Mapper;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.google.common.base.Optional;
+import com.optimaize.langdetect.LanguageDetector;
+import com.optimaize.langdetect.LanguageDetectorBuilder;
+import com.optimaize.langdetect.i18n.LdLocale;
+import com.optimaize.langdetect.ngram.NgramExtractors;
+import com.optimaize.langdetect.profiles.LanguageProfile;
+import com.optimaize.langdetect.profiles.LanguageProfileReader;
+import com.optimaize.langdetect.text.CommonTextObjectFactories;
+import com.optimaize.langdetect.text.TextObject;
+import com.optimaize.langdetect.text.TextObjectFactory;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
-import java.net.URL;
-import java.net.URLConnection;
+import java.util.List;
 
 /**
  * Language detection helper class.
@@ -35,32 +38,20 @@ import java.net.URLConnection;
  */
 public class LangDetector
 {
-    // private final LanguageDetector mLanguageDetector;
-    // private final TextObjectFactory mShortTextFactory;
-    // private final TextObjectFactory mLongTextFactory;
-
-    private final String mLangDetectHost;
+    private final LanguageDetector mLanguageDetector;
 
     /**
      * Create language detector for given context.
-     * If indexer.langdetect.host is set in the configuration, that host will be used.
-     * Otherwise the default of localhost:9200 is assumed. The given host must be running an Elasticsearch
-     * instance with installed langdetect plugin.
      *
-     * @param context Mapper context containing configuration
+     * @throws IOException if failed to load language resources
      */
-    public LangDetector(Mapper.Context context)
+    public LangDetector() throws IOException
     {
-        /*final List<LanguageProfile> languageProfiles = new LanguageProfileReader().readAllBuiltIn();
-        mLanguageDetector = LanguageDetectorBuilder.create(NgramExtractors.standard()).
-                withProfiles(languageProfiles).build();
-        mShortTextFactory = CommonTextObjectFactories.forDetectingShortCleanText();
-        mLongTextFactory = CommonTextObjectFactories.forDetectingOnLargeText();*/
-        String host = context.getConfiguration().get("indexer.langdetect.host");
-        if (null == host || host.isEmpty()) {
-            host = "localhost:9200";
-        }
-        mLangDetectHost = host;
+        List<LanguageProfile> languageProfiles = new LanguageProfileReader().readAllBuiltIn();
+        mLanguageDetector = LanguageDetectorBuilder
+                .create(NgramExtractors.standard())
+                .withProfiles(languageProfiles)
+                .build();
     }
 
     /**
@@ -72,40 +63,19 @@ public class LangDetector
      */
     public String detect(final String str) throws IOException
     {
-        /*final TextObject textObject;
-        if (300 > renderedBody.length()) {
-            textObject = SHORT_TEXT_FACTORY.forText(renderedBody);
+        TextObjectFactory textObjectFactory;
+        if (str.length() > 400) {
+            textObjectFactory = CommonTextObjectFactories.forDetectingOnLargeText();
         } else {
-            textObject = LONG_TEXT_FACTORY.forText(renderedBody);
+            textObjectFactory = CommonTextObjectFactories.forDetectingShortCleanText();
         }
-        final Optional<LdLocale> langOpt = LANGUAGE_DETECTOR.detect(textObject);
-        if (langOpt.isPresent()) {
-            lang = langOpt.get().getLanguage().substring(0, 2).toLowerCase();
-        } else {
-            LOG.warn("Language detection failed for document " + key + ", falling back to " + lang);
-        }*/
+        TextObject textObject = textObjectFactory.forText(str);
+        Optional<LdLocale> language = mLanguageDetector.detect(textObject);
 
-        try {
-            final URL url            = new URL("http://" + mLangDetectHost + "/_langdetect");
-            final URLConnection conn = url.openConnection();
-            conn.setDoOutput(true);
-            final PrintStream ps = new PrintStream(conn.getOutputStream());
-            // add space in front of text to force JSON response, even when text is starting with ---
-            ps.print(" " + str);
-            ps.close();
-
-            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            String line;
-            final StringBuilder strBuilder = new StringBuilder();
-            while (null != (line = br.readLine())) {
-                strBuilder.append(line);
-            }
-            br.close();
-            final JSONObject json = new JSONObject(strBuilder.toString());
-            return json.getJSONArray("languages").getJSONObject(0).
-                    getString("language").substring(0, 2).toLowerCase();
-        } catch (JSONException | IOException e) {
-            throw new IOException("Language detection failed: " + e.getMessage());
+        if (!language.isPresent()) {
+            throw new IOException("Language detection failed!");
         }
+
+        return language.get().getLanguage();
     }
 }
