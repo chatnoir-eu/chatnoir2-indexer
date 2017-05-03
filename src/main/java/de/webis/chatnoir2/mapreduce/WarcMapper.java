@@ -81,7 +81,7 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
         LOG.debug("Mapping document " + key);
 
         // ignore large files
-        if (valueStr.getBytes().length > 4 * 1024 * 1024) {
+        if (valueStr.getBytes().length > 1024 * 1024) {
             LOG.warn("Skipped document " + key + " with size " + valueStr.getBytes().length + "bytes (too large)");
             TOO_LARGE_COUNTER.increment(1);
             return;
