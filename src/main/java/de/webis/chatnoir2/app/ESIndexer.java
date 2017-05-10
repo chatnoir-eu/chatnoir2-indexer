@@ -1,6 +1,6 @@
 /*
  * Elasticsearch Indexer for WARC JSON Mapfiles using Hadoop MapReduce.
- * Copyright (C) 2014-2015 Janek Bevendorff <janek.bevendorff@uni-weimar.de>
+ * Copyright (C) 2014-2017 Janek Bevendorff <janek.bevendorff@uni-weimar.de>
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you
  * may not use this file except in compliance with the License. You may
@@ -47,11 +47,11 @@ public class ESIndexer extends Configured implements Tool
 {
     private static final Logger LOG = Logger.getLogger(ESIndexer.class);
 
-    public static final String[] SEQFILE_INPUT_OPTION    = { "sequence-files", "f" };
-    public static final String[] SPAMRANK_INPUT_OPTION   = { "spamranks",      "s" };
-    public static final String[] PAGERANK_INPUT_OPTION   = { "pageranks",      "p" };
-    public static final String[] ANCHOR_INPUT_OPTION     = { "anchortexts",    "a" };
-    public static final String[] INDEX_INPUT_OPTION      = { "index",          "i" };
+    private static final String[] SEQFILE_INPUT_OPTION    = { "sequence-files", "f" };
+    private static final String[] SPAMRANK_INPUT_OPTION   = { "spamranks",      "s" };
+    private static final String[] PAGERANK_INPUT_OPTION   = { "pageranks",      "p" };
+    private static final String[] ANCHOR_INPUT_OPTION     = { "anchortexts",    "a" };
+    private static final String[] INDEX_INPUT_OPTION      = { "index",          "i" };
 
     /**
      * Run this tool.
@@ -60,46 +60,6 @@ public class ESIndexer extends Configured implements Tool
     @Override
     public int run(final String[] args) throws Exception
     {
-        // Apache Commons CLI Options parser with new API
-        // commented out because it doesn't work with Hadoop's ancient Commons dependency
-        /*final Options options = new Options();
-        options.addOption(Option.builder(INDEX_INPUT_OPTION[1]).
-                argName("NAME").
-                hasArg().
-                longOpt(INDEX_INPUT_OPTION[0]).
-                desc("index name").
-                required().
-                build());
-        options.addOption(Option.builder(SEQFILE_INPUT_OPTION[1]).
-                argName("GLOB").
-                hasArg().
-                longOpt(SEQFILE_INPUT_OPTION[0]).
-                desc("input Mapfiles").
-                required().
-                build());
-        options.addOption(Option.builder(SPAMRANK_INPUT_OPTION[1]).
-                argName("PATH").
-                hasArg().
-                longOpt(SPAMRANK_INPUT_OPTION[0]).
-                desc("input path for spam ranks").
-                required(false).
-                build());
-        options.addOption(Option.builder(PAGERANK_INPUT_OPTION[1]).
-                argName("PATH").
-                hasArg().
-                longOpt(PAGERANK_INPUT_OPTION[0]).
-                desc("input path for page ranks").
-                required(false).
-                build());
-        options.addOption(Option.builder(ANCHOR_INPUT_OPTION[1]).
-                argName("PATH").
-                hasArg().
-                longOpt(ANCHOR_INPUT_OPTION[0]).
-                desc("input path for anchor texts").
-                required(false).
-                build());*/
-
-        // old, ugly and deprecated but working CLI parser
         final Options options = new Options();
         options.addOption(OptionBuilder.
                 withArgName("NAME").
@@ -138,7 +98,6 @@ public class ESIndexer extends Configured implements Tool
                 create(ANCHOR_INPUT_OPTION[1]));
 
         CommandLine cmdline;
-        //final CommandLineParser parser = new DefaultParser();
         final CommandLineParser parser = new GnuParser();
         try {
             cmdline = parser.parse(options, args);

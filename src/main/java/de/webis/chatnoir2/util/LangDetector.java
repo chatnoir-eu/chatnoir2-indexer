@@ -17,19 +17,10 @@
 
 package de.webis.chatnoir2.util;
 
-import com.google.common.base.Optional;
-import com.optimaize.langdetect.LanguageDetector;
-import com.optimaize.langdetect.LanguageDetectorBuilder;
-import com.optimaize.langdetect.i18n.LdLocale;
-import com.optimaize.langdetect.ngram.NgramExtractors;
-import com.optimaize.langdetect.profiles.LanguageProfile;
-import com.optimaize.langdetect.profiles.LanguageProfileReader;
-import com.optimaize.langdetect.text.CommonTextObjectFactories;
-import com.optimaize.langdetect.text.TextObject;
-import com.optimaize.langdetect.text.TextObjectFactory;
+import de.aitools.ie.languagedetection.LanguageDetector;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.Locale;
 
 /**
  * Language detection helper class.
@@ -38,7 +29,8 @@ import java.util.List;
  */
 public class LangDetector
 {
-    private final LanguageDetector mLanguageDetector;
+
+    private final LanguageDetector mDetector = new LanguageDetector();
 
     /**
      * Create language detector for given context.
@@ -47,11 +39,6 @@ public class LangDetector
      */
     public LangDetector() throws IOException
     {
-        List<LanguageProfile> languageProfiles = new LanguageProfileReader().readAllBuiltIn();
-        mLanguageDetector = LanguageDetectorBuilder
-                .create(NgramExtractors.standard())
-                .withProfiles(languageProfiles)
-                .build();
     }
 
     /**
@@ -63,19 +50,7 @@ public class LangDetector
      */
     public String detect(final String str) throws IOException
     {
-        TextObjectFactory textObjectFactory;
-        if (str.length() > 400) {
-            textObjectFactory = CommonTextObjectFactories.forDetectingOnLargeText();
-        } else {
-            textObjectFactory = CommonTextObjectFactories.forDetectingShortCleanText();
-        }
-        TextObject textObject = textObjectFactory.forText(str);
-        Optional<LdLocale> language = mLanguageDetector.detect(textObject);
-
-        if (!language.isPresent()) {
-            throw new IOException("Language detection failed!");
-        }
-
-        return language.get().getLanguage();
+        Locale language = mDetector.detect(str);
+        return language.getLanguage();
     }
 }

@@ -37,10 +37,9 @@ public class WarcSpamRankMapper extends Mapper<LongWritable, Text, Text, MapWrit
         final String[] parts = value.toString().split("\\s+");
 
         MAPREDUCE_KEY.set(parts[1]);
-        SPAM_RANK_VALUE.set(Long.valueOf(parts[0]));
 
         OUTPUT_MAP_DOC.clear();
-        OUTPUT_MAP_DOC.put(SPAM_RANK_KEY, SPAM_RANK_VALUE);
+        OUTPUT_MAP_DOC.put(SPAM_RANK_KEY, new LongWritable(Long.valueOf(parts[0])));
         context.write(MAPREDUCE_KEY, OUTPUT_MAP_DOC);
     }
 }

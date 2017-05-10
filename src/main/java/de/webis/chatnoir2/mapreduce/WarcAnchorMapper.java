@@ -1,6 +1,6 @@
 /*
  * Elasticsearch Indexer for WARC JSON Mapfiles using Hadoop MapReduce.
- * Copyright (C) 2014-2015 Janek Bevendorff <janek.bevendorff@uni-weimar.de>
+ * Copyright (C) 2014-2017 Janek Bevendorff <janek.bevendorff@uni-weimar.de>
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you
  * may not use this file except in compliance with the License. You may
@@ -71,17 +71,14 @@ public class WarcAnchorMapper extends Mapper<LongWritable, Text, Text, MapWritab
             try {
                 lang = LANGUAGE_DETECTOR.detect(anchorValue);
             } catch (IOException e) {
-                lang = "en";
-                LOG.warn("Language detection for anchor text for document " + key + " failed, falling back to en");
-                LOG.warn("Error was: " + e.getMessage());
-                LOG.warn("Request was: " + anchorValue);
+                lang = "unknown";
+                LOG.warn("Language detection of anchor text for document " + key + " failed");
             }
 
             MAPREDUCE_KEY.set(recordId);
-            ANCHOR_TEXT_VALUE.set(anchorValue);
 
             OUTPUT_MAP_DOC.clear();
-            OUTPUT_MAP_DOC.put(new Text(ANCHOR_TEXTS_BASE_KEY + lang), ANCHOR_TEXT_VALUE);
+            OUTPUT_MAP_DOC.put(new Text(ANCHOR_TEXTS_KEY_PREFIX + lang), new Text(anchorValue));
             context.write(MAPREDUCE_KEY, OUTPUT_MAP_DOC);
         }
     }

@@ -19,13 +19,18 @@ package de.webis.chatnoir2.mapreduce;
 
 import de.webis.chatnoir2.util.ContentExtractor;
 import de.webis.chatnoir2.util.LangDetector;
-import net.htmlparser.jericho.Source;
+import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.MapWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Counter;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.helper.StringUtil;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.net.URI;
@@ -48,6 +53,7 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
     protected static Counter TOO_DEEP_COUNTER;
     protected static Counter BINARY_COUNTER;
     protected static Counter LANGDETECT_FAILED_COUNTER;
+    protected static Counter SKIPPED_NO_ID_COUNTER;
 
     protected static LangDetector LANGUAGE_DETECTOR = null;
 
@@ -63,9 +69,7 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
         TOO_DEEP_COUNTER            = context.getCounter(RecordCounters.SKIPPED_RECORDS_TOO_DEEP);
         BINARY_COUNTER              = context.getCounter(RecordCounters.SKIPPED_RECORDS_BINARY);
         LANGDETECT_FAILED_COUNTER   = context.getCounter(RecordCounters.LANGDETECT_FAILED);
-
-        // disable Jericho log
-        net.htmlparser.jericho.Config.LoggerProvider = net.htmlparser.jericho.LoggerProvider.DISABLED;
+        SKIPPED_NO_ID_COUNTER       = context.getCounter(RecordCounters.SKIPPED_RECORDS_NO_ID);
 
         if (null == LANGUAGE_DETECTOR) {
             LANGUAGE_DETECTOR = new LangDetector();
@@ -118,41 +122,42 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
 
             // process WARC headers
             Iterator it = metadata.keys();
+            String recordId = null;
+            String trecId = null;
             while (it.hasNext()) {
                 final String k = (String) it.next();
                 if (k.equalsIgnoreCase("WARC-Record-ID")) {
-                    final String recordId = metadata.getString(k);
-                    WARC_RECORD_ID_VALUE.set(recordId);
-                    OUTPUT_MAP_DOC.put(WARC_RECORD_ID_KEY, WARC_RECORD_ID_VALUE);
+                    recordId = metadata.getString(k);
+                    OUTPUT_MAP_DOC.put(WARC_RECORD_ID_KEY, new Text(recordId));
                 } else if (k.equalsIgnoreCase("WARC-TREC-ID")) {
-                    final String trecId = metadata.getString(k);
-                    WARC_TREC_ID_VALUE.set(trecId);
-                    OUTPUT_MAP_DOC.put(WARC_TREC_ID_KEY, WARC_TREC_ID_VALUE);
+                    trecId = metadata.getString(k);
+                    OUTPUT_MAP_DOC.put(WARC_TREC_ID_KEY, new Text(trecId));
                 } else if (k.equalsIgnoreCase("WARC-Target-URI")) {
                     try {
                         final URI targetURI = new URI(metadata.getString(k));
-                        WARC_TARGET_HOSTNAME_VALUE.set(null != targetURI.getHost() ? targetURI.getHost() : "");
-                        WARC_TARGET_PATH_VALUE.set(null != targetURI.getPath() ? targetURI.getPath() : "");
-                        WARC_TARGET_QUERY_STRING_VALUE.set(null != targetURI.getQuery() ? targetURI.getQuery() : "");
-
-                        OUTPUT_MAP_DOC.put(WARC_TARGET_HOSTNAME_KEY, WARC_TARGET_HOSTNAME_VALUE);
-                        OUTPUT_MAP_DOC.put(WARC_TARGET_HOSTNAME_RAW_KEY, WARC_TARGET_HOSTNAME_VALUE);
-                        OUTPUT_MAP_DOC.put(WARC_TARGET_PATH_KEY, WARC_TARGET_PATH_VALUE);
-                        OUTPUT_MAP_DOC.put(WARC_TARGET_QUERY_STRING_KEY, WARC_TARGET_QUERY_STRING_VALUE);
+                        OUTPUT_MAP_DOC.put(WARC_TARGET_HOSTNAME_KEY, new Text(null != targetURI.getHost() ? targetURI.getHost() : ""));
+                        OUTPUT_MAP_DOC.put(WARC_TARGET_PATH_KEY, new Text(null != targetURI.getPath() ? targetURI.getPath() : ""));
+                        OUTPUT_MAP_DOC.put(WARC_TARGET_QUERY_STRING_KEY, new Text(null != targetURI.getQuery() ? targetURI.getQuery() : ""));
                     } catch (URISyntaxException ignored) {
                         LOG.error("URL Exception for url '" + metadata.getString(k) + "': " + ignored.getMessage());
                     }
 
-                    WARC_TARGET_URI_VALUE.set(metadata.getString(k));
-                    OUTPUT_MAP_DOC.put(WARC_TARGET_URI_KEY, WARC_TARGET_URI_VALUE);
+                    OUTPUT_MAP_DOC.put(WARC_TARGET_URI_KEY, new Text(metadata.getString(k)));
                 }
             }
 
-            // set MapReduce key, use ClueWeb ID if possible
-            if (0 != WARC_TREC_ID_VALUE.getLength() && WARC_TREC_ID_VALUE.toString().startsWith("clueweb")) {
-                MAPREDUCE_KEY.set(WARC_TREC_ID_VALUE);
+            if (null == recordId && null != trecId) {
+                recordId = trecId;
+            } else if (null == recordId) {
+                SKIPPED_NO_ID_COUNTER.increment(1);
+                LOG.warn("Document skipped, because it has no ID");
+                return;
+            }
+
+            if (null != trecId) {
+                MAPREDUCE_KEY.set(trecId);
             } else {
-                MAPREDUCE_KEY.set(WARC_RECORD_ID_VALUE);
+                MAPREDUCE_KEY.set(recordId);
             }
 
             // process content (HTTP) headers
@@ -161,16 +166,14 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
                 final String k = (String) it.next();
                 if (k.equalsIgnoreCase("Content-Type")) {
                     final String[] splits = contentHeaders.getString(k).split(";");
-                    CONTENT_TYPE_VALUE.set(splits[0].trim());
-                    OUTPUT_MAP_DOC.put(CONTENT_TYPE_KEY, CONTENT_TYPE_VALUE);
+                    OUTPUT_MAP_DOC.put(CONTENT_TYPE_KEY, new Text(splits[0].trim()));
                 } else if (k.equalsIgnoreCase("Date")) {
                     final Calendar c = Calendar.getInstance();
                     final SimpleDateFormat dfInput  = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
                     final SimpleDateFormat dfOutput = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
                     try {
                         c.setTime(dfInput.parse(contentHeaders.getString(k)));
-                        DATE_VALUE.set(dfOutput.format(c.getTime()));
-                        OUTPUT_MAP_DOC.put(DATE_KEY, DATE_VALUE);
+                        OUTPUT_MAP_DOC.put(DATE_KEY, new Text(dfOutput.format(c.getTime())));
                     } catch (ParseException ignored) { }
                 }
             }
@@ -183,7 +186,7 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
                 TOO_SMALL_COUNTER.increment(1);
                 return;
             }
-            String fullContent = ContentExtractor.extractEverything(contentBody);
+            String fullContent = ContentExtractor.extractEverything(contentBody, true);
             String headings = ContentExtractor.extractHeadings(contentBody, 3);
 
             // language detection
@@ -191,35 +194,25 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
             try {
                 lang = LANGUAGE_DETECTOR.detect(mainContent);
             } catch (IOException e) {
-                lang = "en";
-                LOG.warn("Language detection for document " + key + " failed, falling back to en");
+                lang = "unknown";
+                LOG.warn("Language detection for document " + key + " failed");
                 LANGDETECT_FAILED_COUNTER.increment(1);
             }
-            LANG_VALUE.set(lang);
-            OUTPUT_MAP_DOC.put(LANG_KEY, LANG_VALUE);
+
+            OUTPUT_MAP_DOC.put(LANG_KEY, new Text(lang));
 
             // add extracted body to output document
-            BODY_LENGTH_VALUE.set(mainContent.length());
-            OUTPUT_MAP_DOC.put(BODY_LENGTH_KEY, BODY_LENGTH_VALUE);
-
-            BODY_VALUE.set(mainContent);
-            OUTPUT_MAP_DOC.put(new Text(BODY_BASE_KEY + LANG_VALUE), BODY_VALUE);
-
-            FULL_BODY_VALUE.set(fullContent);
-            OUTPUT_MAP_DOC.put(new Text(FULL_BODY_BASE_KEY + LANG_VALUE), FULL_BODY_VALUE);
-
-            HEADINGS_VALUE.set(headings);
-            OUTPUT_MAP_DOC.put(new Text(HEADINGS_BASE_KEY + LANG_VALUE), HEADINGS_VALUE);
+            OUTPUT_MAP_DOC.put(BODY_LENGTH_KEY, new LongWritable(mainContent.length()));
+            OUTPUT_MAP_DOC.put(new Text(BODY_KEY_PREFIX + lang), new Text(mainContent));
+            OUTPUT_MAP_DOC.put(new Text(FULL_BODY_KEY_PREFIX + lang), new Text(fullContent));
+            OUTPUT_MAP_DOC.put(new Text(HEADINGS_KEY_PREFIX + lang), new Text(headings));
 
             // parse title and meta tags within body source
-            Source bodySource = new Source(contentBody);
-            TITLE_VALUE.set(getDocTitle(bodySource, 90));
-            META_DESC_VALUE.set(getMetaTagContents(bodySource, "name", "description", 400));
-            META_KEYWORDS_VALUE.set(getMetaTagContents(bodySource, "name", "keywords", 400));
-
-            OUTPUT_MAP_DOC.put(new Text(TITLE_BASE_KEY + LANG_VALUE), TITLE_VALUE);
-            OUTPUT_MAP_DOC.put(new Text(META_BASE_DESC_KEY + LANG_VALUE), META_DESC_VALUE);
-            OUTPUT_MAP_DOC.put(META_KEYWORDS_KEY, META_KEYWORDS_VALUE);
+            Document bodyDoc = Jsoup.parse(contentBody);
+            OUTPUT_MAP_DOC.put(new Text(TITLE_KEY_PREFIX + lang), new Text(getDocTitle(bodyDoc, 90)));
+            OUTPUT_MAP_DOC.put(new Text(META_DESC_KEY_PREFIX + lang), new Text(
+                    getMetaTagContents(bodyDoc, "name", "description", 400)));
+            OUTPUT_MAP_DOC.put(META_KEYWORDS_KEY, new Text(getMetaTagContents(bodyDoc, "name", "keywords", 400)));
 
             // write final document to context
             context.write(MAPREDUCE_KEY, OUTPUT_MAP_DOC);
@@ -234,73 +227,51 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
     }
 
     /**
-     * Get title from source document.
+     * Get title from source document or text contents of the HTML body if no title exists.
      *
-     * @param source Jericho Source object
+     * @param doc Jsoup Document
      * @param maxLength maximum length of content to return, content that is longer will be truncated
      * @return document title
      */
-    private String getDocTitle(final Source source, final int maxLength)
+    private String getDocTitle(final Document doc, final int maxLength)
     {
-        String title = "";
-        try {
-            final List<net.htmlparser.jericho.Element> titleElements = source.getAllElements("title");
-            if (0 != titleElements.size()) {
-                title = titleElements.
-                        get(0).
-                        getTextExtractor().
-                        setIncludeAttributes(false).
-                        toString().
-                        trim();
+        String title = doc.title();
+        if (title.isEmpty()) {
+            Elements elements = doc.getElementsByTag("body");
+            if (elements.size() > 0) {
+                title =  StringUtil.normaliseWhitespace(elements.get(0).text().trim());
             }
+        }
 
-            if (title.isEmpty()) {
-                // use body as title if no real title found
-                title = source.
-                        getTextExtractor().
-                        setIncludeAttributes(false).
-                        toString().
-                        trim();
-            }
-        } catch (NullPointerException ignored) { }
-
-        // truncate title to maxLength characters
         return truncateSnippet(title, maxLength);
     }
 
     /**
      * Get meta tag contents from source document.
      *
-     * @param source Jericho Source object
+     * @param doc Jsoup Document
      * @param type which type of meta data to get (usually "name" or "http-equiv")
      * @param what what content of type "type" to get (e.g. "description" or "keywords")
      * @param maxLength maximum length of content to return, content that is longer will be truncated (-1 for no limit)
      * @return meta tag contents, empty string of none found
      */
-    private String getMetaTagContents(final Source source, final String type, final String what, final int maxLength)
+    private String getMetaTagContents(final Document doc, final String type, final String what, final int maxLength)
     {
         String metaTagContents = "";
 
-        try {
-            final List<net.htmlparser.jericho.Element> metaElements = source.getAllElements("meta");
-            if (0 != metaElements.size()) {
-                for (final net.htmlparser.jericho.Element e : metaElements) {
-                    final String typeAttr = e.getAttributeValue(type);
-                    final String contentAttr = e.getAttributeValue("content");
-                    if (null != typeAttr && null != contentAttr &&
-                            typeAttr.trim().toLowerCase().equals(what.trim().toLowerCase())) {
-                        metaTagContents = contentAttr;
-                        break;
-                    }
-                }
+        Elements metaTags = doc.getElementsByTag("meta");
+        for (Element e: metaTags) {
+            if (e.hasAttr(type) && e.hasAttr("content") && e.attr(type).equals(what)) {
+                metaTagContents = StringUtil.normaliseWhitespace(e.attr("content").trim());
+                break;
             }
+        }
 
-            if (-1 != maxLength) {
-                return truncateSnippet(metaTagContents, maxLength);
-            }
-        } catch (NullPointerException ignored) { }
+        if (-1 != maxLength) {
+            return truncateSnippet(metaTagContents, maxLength);
+        }
 
-        return metaTagContents.trim();
+        return metaTagContents;
     }
 
     /**
@@ -322,7 +293,7 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
             final int pos = snippet.lastIndexOf(' ');
             if (!wordEnded && -1 != pos) {
                 // shorten snippet if it doesn't become too short then
-                if ((int)(.6 * numCharacters) <= pos) {
+                if ((int) (.6 * numCharacters) <= pos) {
                     snippet = snippet.substring(0, pos);
                 }
             }

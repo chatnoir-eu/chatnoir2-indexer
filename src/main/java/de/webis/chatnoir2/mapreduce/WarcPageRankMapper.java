@@ -17,6 +17,7 @@
 
 package de.webis.chatnoir2.mapreduce;
 
+import org.apache.hadoop.io.DoubleWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.MapWritable;
 import org.apache.hadoop.io.Text;
@@ -37,10 +38,9 @@ public class WarcPageRankMapper extends Mapper<LongWritable, Text, Text, MapWrit
         final String[] parts = value.toString().split("\\s+");
 
         MAPREDUCE_KEY.set(parts[0]);
-        PAGE_RANK_VALUE.set(Double.valueOf(parts[1]));
 
         OUTPUT_MAP_DOC.clear();
-        OUTPUT_MAP_DOC.put(PAGE_RANK_KEY, PAGE_RANK_VALUE);
+        OUTPUT_MAP_DOC.put(PAGE_RANK_KEY, new DoubleWritable(Double.valueOf(parts[1])));
         context.write(MAPREDUCE_KEY, OUTPUT_MAP_DOC);
     }
 }

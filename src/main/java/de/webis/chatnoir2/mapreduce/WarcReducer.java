@@ -1,6 +1,6 @@
 /*
  * Elasticsearch Indexer for WARC JSON Mapfiles using Hadoop MapReduce.
- * Copyright (C) 2014-2015 Janek Bevendorff <janek.bevendorff@uni-weimar.de>
+ * Copyright (C) 2014-2017 Janek Bevendorff <janek.bevendorff@uni-weimar.de>
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you
  * may not use this file except in compliance with the License. You may
@@ -59,7 +59,7 @@ public class WarcReducer extends Reducer<Text, MapWritable, NullWritable, BytesW
                     final String keyStr = k.toString();
                     final Writable val = value.get(k);
 
-                    if (keyStr.startsWith(ANCHOR_TEXTS_BASE_KEY)) {
+                    if (keyStr.startsWith(ANCHOR_TEXTS_KEY_PREFIX)) {
                         if (null == outputJson.get(keyStr)) {
                             outputJson.put(keyStr, new JSONArray());
                         }
@@ -77,7 +77,7 @@ public class WarcReducer extends Reducer<Text, MapWritable, NullWritable, BytesW
                             outputJson.put(keyStr, ((BooleanWritable) val).get());
                         } else {
                             final String valStr = val.toString();
-                            containsContent |= (keyStr.startsWith(BODY_BASE_KEY) && !valStr.trim().isEmpty());
+                            containsContent |= (keyStr.startsWith(BODY_KEY_PREFIX) && !valStr.trim().isEmpty());
                             outputJson.put(keyStr, cleanUpString(valStr));
                         }
                     }

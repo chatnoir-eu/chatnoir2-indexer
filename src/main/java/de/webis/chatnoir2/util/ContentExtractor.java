@@ -17,14 +17,16 @@
 
 package de.webis.chatnoir2.util;
 
-import de.l3s.boilerpipe.extractors.ArticleExtractor;
-import de.l3s.boilerpipe.extractors.DefaultExtractor;
-import de.l3s.boilerpipe.extractors.KeepEverythingExtractor;
+import de.aitools.aq.web.extractor.PotthastJerichoExtractor;
 import org.jsoup.Jsoup;
+import org.jsoup.helper.StringUtil;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 /**
  * Extractor for plain text contents of HTML documents.
@@ -35,44 +37,40 @@ public class ContentExtractor
      * Extract contents.
      *
      * @param html HTML source text
-     * @return extracted plain text, null if extraction failed
+     * @return extracted plain text (may be empty)
      */
     public static String extract(String html)
     {
-        if (html.trim().isEmpty()) {
+        PotthastJerichoExtractor extractor = new PotthastJerichoExtractor();
+        extractor.setTimeoutInSeconds(5);
+        extractor.setMinParagraphLengthInCharacters(200);
+        try {
+            return extractor.extractSentences(html).stream().collect(Collectors.joining(" "));
+        } catch (ExecutionException e) {
             return "";
         }
-
-        String plainText = null;
-        try {
-            plainText = ArticleExtractor.INSTANCE.getText(html);
-            if (plainText.length() < 600) {
-                plainText = DefaultExtractor.INSTANCE.getText(html);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return plainText;
     }
 
     /**
-     * Extract all text contents from HTML, not only main article content.
+     * Extract all textual contents from HTML, not only main article content.
      *
      * @param html HTML source text
-     * @return extracted plain text, null if extraction failed
+     * @param normalizeWhitespace whether to normalize (collapse) white space
+     * @return extracted plain text, may be empty
      */
-    public static String extractEverything(String html)
+    public static String extractEverything(String html, boolean normalizeWhitespace)
     {
         if (html.trim().isEmpty()) {
             return "";
         }
 
-        String plainText = null;
-        try {
-            plainText = KeepEverythingExtractor.INSTANCE.getText(html);
-        } catch (Exception e) {
-            e.printStackTrace();
+        String plainText = "";
+        Elements body = Jsoup.parse(html).getElementsByTag("body");
+        if (body.size() > 0) {
+            plainText = body.get(0).text().trim();
+            if (normalizeWhitespace) {
+                plainText = StringUtil.normaliseWhitespace(plainText);
+            }
         }
 
         return plainText;
