@@ -34,6 +34,7 @@ dependencies {
     compile group: 'org.jsoup', name: 'jsoup', version: '1.10.2'
     compile group: 'org.apache.hadoop', name: 'hadoop-common', version: '2.7.3'
     compile group: 'org.apache.hadoop', name: 'hadoop-mapreduce-client-core', version: '2.7.3'
+    compile group: 'org.json', name: 'json', version: '20160810'
     compile project(':aitools4-aq-web-page-content-extraction')
     compile project(':aitools3-ie-languagedetection')
 }
