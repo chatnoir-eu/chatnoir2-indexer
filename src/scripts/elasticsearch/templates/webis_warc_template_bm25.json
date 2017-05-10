@@ -378,194 +378,12 @@
             "_source" : {
                 "enabled" : true,
                 "excludes" : [
-                    "warc_target_hostname",
                     "warc_target_path",
                     "warc_target_query_string",
                     "full_body_*",
                     "headings_*"
                 ]
             },
-            "dynamic_templates" : [
-                {
-                    "lang_field" : {
-                        "match" : "*_lang",
-                        "match_mapping_type" : "string",
-                        "mapping" : {
-                            "type" : "text",
-                            "fields" : {
-                                "ar" : {
-                                    "type" : "text",
-                                    "analyzer" : "ar_analyzer",
-                                    "similarity" : "BM25",
-                                    "store": true
-                                },
-                                "bg" : {
-                                    "type" : "text",
-                                    "analyzer" : "bg_analyzer",
-                                    "similarity" : "BM25",
-                                    "store": true
-                                },
-                                "ca" : {
-                                    "type" : "text",
-                                    "analyzer" : "ca_analyzer",
-                                    "similarity" : "BM25",
-                                    "store": true
-                                },
-                                "cs" : {
-                                    "type" : "text",
-                                    "analyzer" : "cs_analyzer",
-                                    "similarity" : "BM25",
-                                    "store": true
-                                },
-                                "da" : {
-                                    "type" : "text",
-                                    "analyzer" : "da_analyzer",
-                                    "similarity" : "BM25",
-                                    "store": true
-                                },
-                                "de" : {
-                                    "type" : "text",
-                                    "analyzer" : "de_analyzer",
-                                    "similarity" : "BM25",
-                                    "store": true
-                                },
-                                "el" : {
-                                    "type" : "text",
-                                    "analyzer" : "el_analyzer",
-                                    "similarity" : "BM25",
-                                    "store": true
-                                },
-                                "en" : {
-                                    "type" : "text",
-                                    "analyzer" : "en_analyzer",
-                                    "similarity" : "BM25",
-                                    "store": true
-                                },
-                                "es" : {
-                                    "type" : "text",
-                                    "analyzer" : "es_analyzer",
-                                    "similarity" : "BM25",
-                                    "store": true
-                                },
-                                "fa" : {
-                                    "type" : "text",
-                                    "analyzer" : "fa_analyzer",
-                                    "similarity" : "BM25",
-                                    "store": true
-                                },
-                                "fi" : {
-                                    "type" : "text",
-                                    "analyzer" : "fi_analyzer",
-                                    "similarity" : "BM25",
-                                    "store": true
-                                },
-                                "fr" : {
-                                    "type" : "text",
-                                    "analyzer" : "fr_analyzer",
-                                    "similarity" : "BM25",
-                                    "store": true
-                                },
-                                "hu" : {
-                                    "type" : "text",
-                                    "analyzer" : "hu_analyzer",
-                                    "similarity" : "BM25",
-                                    "store": true
-                                },
-                                "it" : {
-                                    "type" : "text",
-                                    "analyzer" : "it_analyzer",
-                                    "similarity" : "BM25",
-                                    "store": true
-                                },
-                                "ja" : {
-                                    "type" : "text",
-                                    "analyzer" : "ja_analyzer",
-                                    "similarity" : "BM25",
-                                    "store": true
-                                },
-                                "ko" : {
-                                    "type" : "text",
-                                    "analyzer" : "ko_analyzer",
-                                    "similarity" : "BM25",
-                                    "store": true
-                                },
-                                "lt" : {
-                                    "type" : "text",
-                                    "analyzer" : "lt_analyzer",
-                                    "similarity" : "BM25",
-                                    "store": true
-                                },
-                                "nl" : {
-                                    "type" : "text",
-                                    "analyzer" : "nl_analyzer",
-                                    "similarity" : "BM25",
-                                    "store": true
-                                },
-                                "no" : {
-                                    "type" : "text",
-                                    "analyzer" : "no_analyzer",
-                                    "similarity" : "BM25",
-                                    "store": true
-                                },
-                                "pl" : {
-                                    "type" : "text",
-                                    "analyzer" : "pl_analyzer",
-                                    "similarity" : "BM25",
-                                    "store": true
-                                },
-                                "pt" : {
-                                    "type" : "text",
-                                    "analyzer" : "pt_analyzer",
-                                    "similarity" : "BM25",
-                                    "store": true
-                                },
-                                "ro" : {
-                                    "type" : "text",
-                                    "analyzer" : "ro_analyzer",
-                                    "similarity" : "BM25",
-                                    "store": true
-                                },
-                                "ru" : {
-                                    "type" : "text",
-                                    "analyzer" : "ru_analyzer",
-                                    "similarity" : "BM25",
-                                    "store": true
-                                },
-                                "sv" : {
-                                    "type" : "text",
-                                    "analyzer" : "sv_analyzer",
-                                    "similarity" : "BM25",
-                                    "store": true
-                                },
-                                "th" : {
-                                    "type" : "text",
-                                    "analyzer" : "th_analyzer",
-                                    "similarity" : "BM25",
-                                    "store": true
-                                },
-                                "tr" : {
-                                    "type" : "text",
-                                    "analyzer" : "tr_analyzer",
-                                    "similarity" : "BM25",
-                                    "store": true
-                                },
-                                "zh" : {
-                                    "type" : "text",
-                                    "analyzer" : "zh_analyzer",
-                                    "similarity" : "BM25",
-                                    "store": true
-                                },
-                                "unknown" : {
-                                    "type" : "text",
-                                    "analyzer" : "default_analyzer",
-                                    "similarity" : "BM25",
-                                    "store": true
-                                }
-                            }
-                        }
-                    }
-                }
-            ],
             "properties" : {
                 "warc_trec_id" : {
                     "type" : "text",
@@ -582,25 +400,21 @@
                 "warc_target_hostname" : {
                     "type" : "text",
                     "similarity" : "BM25",
-                    "index" : "analyzed",
                     "analyzer" : "host_analyzer",
                     "fields" : {
                         "raw" : {
-                            "type" : "text",
-                            "index" : "not_analyzed"
+                            "type" : "keyword"
                         }
                     }
                 },
                 "warc_target_path" : {
                     "type" : "text",
                     "similarity" : "BM25",
-                    "index" : "analyzed",
                     "analyzer" : "path_analyzer"
                 },
                 "warc_target_query_string" : {
                     "type" : "text",
                     "similarity" : "BM25",
-                    "index" : "analyzed",
                     "analyzer" : "query_analyzer"
                 },
                 "lang" : {
@@ -621,7 +435,6 @@
                 "meta_keywords" : {
                     "type" : "text",
                     "similarity" : "BM25",
-                    "index" : "analyzed",
                     "analyzer" : "meta_keyword_analyzer"
                 },
                 "page_rank" : {
@@ -630,7 +443,342 @@
                 "spam_rank" : {
                     "type" : "byte"
                 }
-            }
+            },
+            "dynamic_templates" : [
+                {
+                    "ar" : {
+                        "path_match" : "*_lang.ar",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "text",
+                            "analyzer" : "ar_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    }
+                },
+                {
+                    "bg" : {
+                        "path_match" : "*_lang.bg",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "text",
+                            "analyzer" : "bg_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    }
+                },
+                {
+
+                    "ca" : {
+                        "path_match" : "*_lang.ca",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "text",
+                            "analyzer" : "ca_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    }
+                },
+                {
+
+                    "cs" : {
+                        "path_match" : "*_lang.cs",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "text",
+                            "analyzer" : "cs_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    }
+                },
+                {
+
+                    "da" : {
+                        "path_match" : "*_lang.da",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "text",
+                            "analyzer" : "da_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    }
+                },
+                {
+
+                    "de" : {
+                        "path_match" : "*_lang.de",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "text",
+                            "analyzer" : "de_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    }
+                },
+                {
+
+                    "el" : {
+                        "path_match" : "*_lang.el",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "text",
+                            "analyzer" : "el_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    }
+                },
+                {
+
+                    "en" : {
+                        "path_match" : "*_lang.en",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "text",
+                            "analyzer" : "en_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    }
+                },
+                {
+
+                    "es" : {
+                        "path_match" : "*_lang.es",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "text",
+                            "analyzer" : "es_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    }
+                },
+                {
+
+                    "fa" : {
+                        "path_match" : "*_lang.fa",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "text",
+                            "analyzer" : "fa_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    }
+                },
+                {
+
+                    "fi" : {
+                        "path_match" : "*_lang.fi",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "text",
+                            "analyzer" : "fi_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    }
+                },
+                {
+
+                    "fr" : {
+                        "path_match" : "*_lang.fr",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "text",
+                            "analyzer" : "fr_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    }
+                },
+                {
+
+                    "hu" : {
+                        "path_match" : "*_lang.hu",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "text",
+                            "analyzer" : "hu_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    }
+                },
+                {
+
+                    "it" : {
+                        "path_match" : "*_lang.it",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "text",
+                            "analyzer" : "it_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    }
+                },
+                {
+
+                    "ja" : {
+                        "path_match" : "*_lang.ja",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "text",
+                            "analyzer" : "ja_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    }
+                },
+                {
+
+                    "ko" : {
+                        "path_match" : "*_lang.ko",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "text",
+                            "analyzer" : "ko_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    }
+                },
+                {
+
+                    "lt" : {
+                        "path_match" : "*_lang.lt",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "text",
+                            "analyzer" : "lt_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    }
+                },
+                {
+
+                    "nl" : {
+                        "path_match" : "*_lang.nl",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "text",
+                            "analyzer" : "nl_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    }
+                },
+                {
+
+                    "no" : {
+                        "path_match" : "*_lang.no",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "text",
+                            "analyzer" : "no_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    }
+                },
+                {
+
+                    "pl" : {
+                        "path_match" : "*_lang.pl",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "text",
+                            "analyzer" : "pl_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    }
+                },
+                {
+
+                    "pt" : {
+                        "path_match" : "*_lang.pt",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "text",
+                            "analyzer" : "pt_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    }
+                },
+                {
+
+                    "ro" : {
+                        "path_match" : "*_lang.ro",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "text",
+                            "analyzer" : "ro_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    }
+                },
+                {
+
+                    "ru" : {
+                        "path_match" : "*_lang.ru",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "text",
+                            "analyzer" : "ru_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    }
+                },
+                {
+
+                    "sv" : {
+                        "path_match" : "*_lang.sv",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "text",
+                            "analyzer" : "sv_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    }
+                },
+                {
+
+                    "th" : {
+                        "path_match" : "*_lang.th",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "text",
+                            "analyzer" : "th_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    }
+                },
+                {
+
+                    "tr" : {
+                        "path_match" : "*_lang.tr",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "text",
+                            "analyzer" : "tr_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    }
+                },
+                {
+
+                    "zh" : {
+                        "path_match" : "*_lang.zh",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "text",
+                            "analyzer" : "zh_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    }
+                },
+                {
+                    "unknown" : {
+                        "path_match" : "*_lang.unknown",
+                        "match_mapping_type" : "string",
+                        "mapping" : {
+                            "type" : "text",
+                            "analyzer" : "default_analyzer",
+                            "similarity" : "BM25"
+                        }
+                    }
+                }
+            ]
         }
     }
 }
