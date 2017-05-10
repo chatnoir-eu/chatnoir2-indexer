@@ -131,11 +131,12 @@ public class ESIndexer extends Configured implements Tool
         conf.set("es.resource",                conf.get("es.resource", String.format("%s/warcrecord", indexName)));
         conf.set("es.input.json",              "true");
         conf.set("es.index.auto.create",       "yes");
-        conf.set("es.http.timeout",            "5m");
-        conf.set("es.http.retries",            "50");
-        conf.set("es.batch.size.entries",      "10000");
-        conf.set("es.batch.size.bytes",        "20mb");
-        conf.set("es.batch.write.retry.count", "50");
+        conf.set("es.http.timeout",            "1m");
+        conf.set("es.http.retries",            "5");
+        conf.set("es.batch.size.entries",      "5000");
+        conf.set("es.batch.size.bytes",        "10mb");
+        conf.set("es.batch.write.retry.count", "5");
+        conf.set("es.batch.write.retry.wait",  "30s");
         conf.set("es.batch.write.refresh",     "false");
 
         final Job job = Job.getInstance(conf);
