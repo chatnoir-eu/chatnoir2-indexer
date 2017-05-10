@@ -2,5 +2,5 @@
 gradle
 .settings
 build
-.idea
 out
+.idea

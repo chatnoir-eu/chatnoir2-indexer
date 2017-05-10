@@ -1,17 +1,33 @@
-group 'de.webis.chatnoir2'
-version '1.0-SNAPSHOT'
-
 apply plugin: 'java'
-apply plugin: 'eclipse'
 
-sourceCompatibility = 1.8
+version = '1.0'
+
+allprojects {
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+}
+
 
 repositories {
     mavenCentral()
+
+    maven {
+        url 'http://conjars.org/repo'
+    }
+
+    maven {
+        url 'http://repo.spring.io/plugins-release'
+    }
+}
+
+configurations.compile.transitive = false
+
+jar {
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
 }
 
 dependencies {
-    compile group: 'org.elasticsearch', name: 'elasticsearch-hadoop', version: '5.3.2'
+    compile group: 'org.elasticsearch', name: 'elasticsearch-hadoop', version: '5.4.0'
     compile group: 'net.htmlparser.jericho', name: 'jericho-html', version: '3.4'
     compile group: 'org.jsoup', name: 'jsoup', version: '1.10.2'
     compile group: 'de.l3s.boilerpipe', name: 'boilerpipe', version: '1.1.0'
