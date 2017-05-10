@@ -89,27 +89,22 @@ public class ContentExtractor
             return "";
         }
 
-        try {
-            Document doc = Jsoup.parse(html);
-            StringBuilder headings = new StringBuilder();
+        Document doc = Jsoup.parse(html);
+        StringBuilder headings = new StringBuilder();
 
-            if (maxLevel < 1) {
-                maxLevel = 1;
-            } else if (maxLevel > 6) {
-                maxLevel = 6;
-            }
-
-            for (int i = 1; i <= maxLevel; ++i) {
-                List<Element> elements = doc.select(String.format("h%d", i));
-                for (Element e : elements) {
-                    headings.append(e.text().replaceAll("[\\n\\r\\s]+", " "));
-                }
-            }
-
-            return headings.toString();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "";
+        if (maxLevel < 1) {
+            maxLevel = 1;
+        } else if (maxLevel > 6) {
+            maxLevel = 6;
         }
+
+        for (int i = 1; i <= maxLevel; ++i) {
+            List<Element> elements = doc.select(String.format("h%d", i));
+            for (Element e : elements) {
+                headings.append(e.text().replaceAll("[\\n\\r\\s]+", " "));
+            }
+        }
+
+        return headings.toString();
     }
 }
