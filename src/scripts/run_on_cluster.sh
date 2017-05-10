@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+JAR_VERSION="1.0-SNAPSHOT"
 corpus="$1"
 index_revision="$2"
 
@@ -14,7 +15,7 @@ if [[ "$index_revision" == "" ]]; then
 fi
 
 if [[ "$corpus" == "09" ]]; then
-    hadoop jar "$(dirname $0)/../../build/classes/artifacts/es_indexer_jar/es-indexer.jar" "de.webis.chatnoir2.app.ESIndexer" \
+    hadoop jar "$(dirname $0)/../../build/libs/es-indexer-${JAR_VERSION}.jar" "de.webis.chatnoir2.app.ESIndexer" \
         -Des.nodes=betaweb015,betaweb016,betaweb017,betaweb018,betaweb019 \
         -sequence-files "/corpora/clueweb/${corpus}-mapfile/data-r-*/data" \
         -spamranks "/corpora/clueweb/${corpus}-spam-rankings/*" \
@@ -22,7 +23,7 @@ if [[ "$corpus" == "09" ]]; then
         -pageranks "/corpora/clueweb/${corpus}-page-ranks.txt" \
         -index "webis_warc_clueweb${corpus}_${index_revision}" $@
 elif [[ "$corpus" == "12" ]]; then
-    hadoop jar "$(dirname $0)/../../build/classes/artifacts/es_indexer_jar/es-indexer.jar" "de.webis.chatnoir2.app.ESIndexer" \
+    hadoop jar "$(dirname $0)/../../build/libs/es-indexer-${JAR_VERSION}.jar" "de.webis.chatnoir2.app.ESIndexer" \
         -Des.nodes=betaweb015,betaweb016,betaweb017,betaweb018,betaweb019 \
         -sequence-files "/corpora/clueweb/${corpus}-mapfile/data-r-*/data" \
         -spamranks "/corpora/clueweb/${corpus}-spam-rankings/*" \
