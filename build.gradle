@@ -23,10 +23,22 @@ repositories {
     }
 }
 
-configurations.compile.transitive = false
+// configurations.compile.transitive = false
 
 jar {
-    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    doFirst {
+        from {
+            configurations.compile.collect {
+                it.isDirectory() ? it : zipTree(it)
+            }
+        }
+    }
+    exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA'
+    zip64 true
+}
+
+configurations {
+    all*.exclude group: 'org.apache.curator', module: 'apache-curator'
 }
 
 dependencies {

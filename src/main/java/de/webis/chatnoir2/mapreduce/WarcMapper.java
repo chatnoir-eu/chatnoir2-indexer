@@ -180,7 +180,7 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
 
             // create plaintext rendering from content body
             String mainContent = ContentExtractor.extract(contentBody);
-            if (null == mainContent || mainContent.getBytes().length < 10) {
+            if (null == mainContent || mainContent.getBytes().length < 5) {
                 int size = null != mainContent ? mainContent.getBytes().length : 0;
                 LOG.warn("Document " + key + " with size " + size + " bytes skipped (too small)");
                 TOO_SMALL_COUNTER.increment(1);
@@ -208,11 +208,15 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
             OUTPUT_MAP_DOC.put(new Text(HEADINGS_KEY_PREFIX + lang), new Text(headings));
 
             // parse title and meta tags within body source
-            Document bodyDoc = Jsoup.parse(contentBody);
-            OUTPUT_MAP_DOC.put(new Text(TITLE_KEY_PREFIX + lang), new Text(getDocTitle(bodyDoc, 90)));
-            OUTPUT_MAP_DOC.put(new Text(META_DESC_KEY_PREFIX + lang), new Text(
-                    getMetaTagContents(bodyDoc, "name", "description", 400)));
-            OUTPUT_MAP_DOC.put(META_KEYWORDS_KEY, new Text(getMetaTagContents(bodyDoc, "name", "keywords", 400)));
+            try {
+                Document bodyDoc = Jsoup.parse(contentBody);
+                OUTPUT_MAP_DOC.put(new Text(TITLE_KEY_PREFIX + lang), new Text(getDocTitle(bodyDoc, 90)));
+                OUTPUT_MAP_DOC.put(new Text(META_DESC_KEY_PREFIX + lang), new Text(
+                        getMetaTagContents(bodyDoc, "name", "description", 400)));
+                OUTPUT_MAP_DOC.put(META_KEYWORDS_KEY, new Text(getMetaTagContents(bodyDoc, "name", "keywords", 400)));
+            } catch (Exception e) {
+                LOG.warn("HTML parsing of document" + key + " failed");
+            }
 
             // write final document to context
             context.write(MAPREDUCE_KEY, OUTPUT_MAP_DOC);

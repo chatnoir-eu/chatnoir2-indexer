@@ -25,7 +25,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 /**
@@ -41,12 +40,16 @@ public class ContentExtractor
      */
     public static String extract(String html)
     {
+        if (null == html || html.trim().isEmpty()) {
+            return "";
+        }
+
         PotthastJerichoExtractor extractor = new PotthastJerichoExtractor();
-        extractor.setTimeoutInSeconds(5);
-        extractor.setMinParagraphLengthInCharacters(10);
+        extractor.setMinParagraphLengthInCharacters(70);
+        extractor.setTimeoutInSeconds(20);
         try {
             return extractor.extractSentences(html).stream().collect(Collectors.joining(" "));
-        } catch (ExecutionException | IllegalArgumentException e) {
+        } catch (Exception e) {
             return "";
         }
     }
@@ -60,20 +63,23 @@ public class ContentExtractor
      */
     public static String extractEverything(String html, boolean normalizeWhitespace)
     {
-        if (html.trim().isEmpty()) {
+        if (null == html || html.trim().isEmpty()) {
             return "";
         }
 
-        String plainText = "";
-        Elements body = Jsoup.parse(html).getElementsByTag("body");
-        if (body.size() > 0) {
-            plainText = body.get(0).text().trim();
-            if (normalizeWhitespace) {
-                plainText = StringUtil.normaliseWhitespace(plainText);
+        try {
+            String plainText = "";
+            Elements body = Jsoup.parse(html).getElementsByTag("body");
+            if (body.size() > 0) {
+                plainText = body.get(0).text().trim();
+                if (normalizeWhitespace) {
+                    plainText = StringUtil.normaliseWhitespace(plainText);
+                }
             }
+            return plainText;
+        } catch (Exception e) {
+            return html.trim();
         }
-
-        return plainText;
     }
 
     /**
@@ -85,26 +91,30 @@ public class ContentExtractor
      */
     public static String extractHeadings(String html, int maxLevel)
     {
-        if (html.trim().isEmpty()) {
+        if (null == html || html.trim().isEmpty()) {
             return "";
         }
 
-        Document doc = Jsoup.parse(html);
-        StringBuilder headings = new StringBuilder();
+        try {
+            Document doc = Jsoup.parse(html);
+            StringBuilder headings = new StringBuilder();
 
-        if (maxLevel < 1) {
-            maxLevel = 1;
-        } else if (maxLevel > 6) {
-            maxLevel = 6;
-        }
-
-        for (int i = 1; i <= maxLevel; ++i) {
-            List<Element> elements = doc.select(String.format("h%d", i));
-            for (Element e : elements) {
-                headings.append(e.text().replaceAll("[\\n\\r\\s]+", " "));
+            if (maxLevel < 1) {
+                maxLevel = 1;
+            } else if (maxLevel > 6) {
+                maxLevel = 6;
             }
-        }
 
-        return headings.toString();
+            for (int i = 1; i <= maxLevel; ++i) {
+                List<Element> elements = doc.select(String.format("h%d", i));
+                for (Element e : elements) {
+                    headings.append(StringUtil.normaliseWhitespace(e.text().trim()));
+                }
+            }
+
+            return headings.toString();
+        } catch (Exception e) {
+            return "";
+        }
     }
 }
