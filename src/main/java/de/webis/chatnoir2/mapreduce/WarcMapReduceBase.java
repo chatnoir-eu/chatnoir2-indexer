@@ -60,7 +60,7 @@ public interface WarcMapReduceBase
     Text MAPREDUCE_KEY = new Text();
 
     MapWritable OUTPUT_MAP_DOC    = new MapWritable();
-    BytesWritable OUTPUT_JSON_DOC = new BytesWritable();
+    Text OUTPUT_JSON_DOC          = new Text();
 
     /**
      * MapReduce counters.

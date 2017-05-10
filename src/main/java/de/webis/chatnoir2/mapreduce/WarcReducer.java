@@ -31,7 +31,7 @@ import java.io.IOException;
  *
  * @author Janek Bevendorff
  */
-public class WarcReducer extends Reducer<Text, MapWritable, NullWritable, BytesWritable> implements WarcMapReduceBase
+public class WarcReducer extends Reducer<Text, MapWritable, NullWritable, Text> implements WarcMapReduceBase
 {
     protected static Counter GENERATED_COUNTER;
     protected static Counter EMPTY_COUNTER;
@@ -86,9 +86,9 @@ public class WarcReducer extends Reducer<Text, MapWritable, NullWritable, BytesW
 
             // only write record if there is content
             if (containsContent) {
-                final byte[] jsonSerialization = outputJson.toString().getBytes();
-                OUTPUT_JSON_DOC.set(jsonSerialization, 0, jsonSerialization.length);
+                OUTPUT_JSON_DOC.set(outputJson.toString());
                 context.write(NullWritable.get(), OUTPUT_JSON_DOC);
+                LOG.debug("Document source: " + OUTPUT_JSON_DOC.toString());
                 GENERATED_COUNTER.increment(1);
             } else {
                 LOG.warn(String.format("Document %s skipped, no content", key.toString()));
