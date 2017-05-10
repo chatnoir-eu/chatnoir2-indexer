@@ -1,6 +1,9 @@
-apply plugin: 'java'
+group 'de.webis.chatnoir2'
+version '1.0-SNAPSHOT'
 
-version = '1.0'
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
 
 allprojects {
     sourceCompatibility = 1.8
