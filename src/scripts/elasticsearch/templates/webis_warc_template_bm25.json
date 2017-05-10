@@ -396,142 +396,170 @@
                                 "ar" : {
                                     "type" : "text",
                                     "analyzer" : "ar_analyzer",
-                                    "similarity" : "BM25"
+                                    "similarity" : "BM25",
+                                    "store": true
                                 },
                                 "bg" : {
                                     "type" : "text",
                                     "analyzer" : "bg_analyzer",
-                                    "similarity" : "BM25"
+                                    "similarity" : "BM25",
+                                    "store": true
                                 },
                                 "ca" : {
                                     "type" : "text",
                                     "analyzer" : "ca_analyzer",
-                                    "similarity" : "BM25"
+                                    "similarity" : "BM25",
+                                    "store": true
                                 },
                                 "cs" : {
                                     "type" : "text",
                                     "analyzer" : "cs_analyzer",
-                                    "similarity" : "BM25"
+                                    "similarity" : "BM25",
+                                    "store": true
                                 },
                                 "da" : {
                                     "type" : "text",
                                     "analyzer" : "da_analyzer",
-                                    "similarity" : "BM25"
+                                    "similarity" : "BM25",
+                                    "store": true
                                 },
                                 "de" : {
                                     "type" : "text",
                                     "analyzer" : "de_analyzer",
-                                    "similarity" : "BM25"
+                                    "similarity" : "BM25",
+                                    "store": true
                                 },
                                 "el" : {
                                     "type" : "text",
                                     "analyzer" : "el_analyzer",
-                                    "similarity" : "BM25"
+                                    "similarity" : "BM25",
+                                    "store": true
                                 },
                                 "en" : {
                                     "type" : "text",
                                     "analyzer" : "en_analyzer",
-                                    "similarity" : "BM25"
+                                    "similarity" : "BM25",
+                                    "store": true
                                 },
                                 "es" : {
                                     "type" : "text",
                                     "analyzer" : "es_analyzer",
-                                    "similarity" : "BM25"
+                                    "similarity" : "BM25",
+                                    "store": true
                                 },
                                 "fa" : {
                                     "type" : "text",
                                     "analyzer" : "fa_analyzer",
-                                    "similarity" : "BM25"
+                                    "similarity" : "BM25",
+                                    "store": true
                                 },
                                 "fi" : {
                                     "type" : "text",
                                     "analyzer" : "fi_analyzer",
-                                    "similarity" : "BM25"
+                                    "similarity" : "BM25",
+                                    "store": true
                                 },
                                 "fr" : {
                                     "type" : "text",
                                     "analyzer" : "fr_analyzer",
-                                    "similarity" : "BM25"
+                                    "similarity" : "BM25",
+                                    "store": true
                                 },
                                 "hu" : {
                                     "type" : "text",
                                     "analyzer" : "hu_analyzer",
-                                    "similarity" : "BM25"
+                                    "similarity" : "BM25",
+                                    "store": true
                                 },
                                 "it" : {
                                     "type" : "text",
                                     "analyzer" : "it_analyzer",
-                                    "similarity" : "BM25"
+                                    "similarity" : "BM25",
+                                    "store": true
                                 },
                                 "ja" : {
                                     "type" : "text",
                                     "analyzer" : "ja_analyzer",
-                                    "similarity" : "BM25"
+                                    "similarity" : "BM25",
+                                    "store": true
                                 },
                                 "ko" : {
                                     "type" : "text",
                                     "analyzer" : "ko_analyzer",
-                                    "similarity" : "BM25"
+                                    "similarity" : "BM25",
+                                    "store": true
                                 },
                                 "lt" : {
                                     "type" : "text",
                                     "analyzer" : "lt_analyzer",
-                                    "similarity" : "BM25"
+                                    "similarity" : "BM25",
+                                    "store": true
                                 },
                                 "nl" : {
                                     "type" : "text",
                                     "analyzer" : "nl_analyzer",
-                                    "similarity" : "BM25"
+                                    "similarity" : "BM25",
+                                    "store": true
                                 },
                                 "no" : {
                                     "type" : "text",
                                     "analyzer" : "no_analyzer",
-                                    "similarity" : "BM25"
+                                    "similarity" : "BM25",
+                                    "store": true
                                 },
                                 "pl" : {
                                     "type" : "text",
                                     "analyzer" : "pl_analyzer",
-                                    "similarity" : "BM25"
+                                    "similarity" : "BM25",
+                                    "store": true
                                 },
                                 "pt" : {
                                     "type" : "text",
                                     "analyzer" : "pt_analyzer",
-                                    "similarity" : "BM25"
+                                    "similarity" : "BM25",
+                                    "store": true
                                 },
                                 "ro" : {
                                     "type" : "text",
                                     "analyzer" : "ro_analyzer",
-                                    "similarity" : "BM25"
+                                    "similarity" : "BM25",
+                                    "store": true
                                 },
                                 "ru" : {
                                     "type" : "text",
                                     "analyzer" : "ru_analyzer",
-                                    "similarity" : "BM25"
+                                    "similarity" : "BM25",
+                                    "store": true
                                 },
                                 "sv" : {
                                     "type" : "text",
                                     "analyzer" : "sv_analyzer",
-                                    "similarity" : "BM25"
+                                    "similarity" : "BM25",
+                                    "store": true
                                 },
                                 "th" : {
                                     "type" : "text",
                                     "analyzer" : "th_analyzer",
-                                    "similarity" : "BM25"
+                                    "similarity" : "BM25",
+                                    "store": true
                                 },
                                 "tr" : {
                                     "type" : "text",
                                     "analyzer" : "tr_analyzer",
-                                    "similarity" : "BM25"
+                                    "similarity" : "BM25",
+                                    "store": true
                                 },
                                 "zh" : {
                                     "type" : "text",
                                     "analyzer" : "zh_analyzer",
-                                    "similarity" : "BM25"
+                                    "similarity" : "BM25",
+                                    "store": true
                                 },
                                 "unknown" : {
                                     "type" : "text",
                                     "analyzer" : "default_analyzer",
-                                    "similarity" : "BM25"
+                                    "similarity" : "BM25",
+                                    "store": true
                                 }
                             }
                         }
