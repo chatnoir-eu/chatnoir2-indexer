@@ -43,10 +43,10 @@ public class ContentExtractor
     {
         PotthastJerichoExtractor extractor = new PotthastJerichoExtractor();
         extractor.setTimeoutInSeconds(5);
-        extractor.setMinParagraphLengthInCharacters(200);
+        extractor.setMinParagraphLengthInCharacters(10);
         try {
             return extractor.extractSentences(html).stream().collect(Collectors.joining(" "));
-        } catch (ExecutionException e) {
+        } catch (ExecutionException | IllegalArgumentException e) {
             return "";
         }
     }
