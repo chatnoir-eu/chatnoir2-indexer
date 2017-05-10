@@ -50,7 +50,7 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
     protected static Counter JSON_PARSE_ERROR_COUNTER;
     protected static Counter TOO_LARGE_COUNTER;
     protected static Counter TOO_SMALL_COUNTER;
-    protected static Counter TOO_DEEP_COUNTER;
+    protected static Counter HTML_PARSER_ERROR_COUNTER;
     protected static Counter BINARY_COUNTER;
     protected static Counter LANGDETECT_FAILED_COUNTER;
     protected static Counter SKIPPED_NO_ID_COUNTER;
@@ -66,7 +66,7 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
         JSON_PARSE_ERROR_COUNTER    = context.getCounter(RecordCounters.SKIPPED_RECORDS_JSON_PARSE_ERROR);
         TOO_LARGE_COUNTER           = context.getCounter(RecordCounters.SKIPPED_RECORDS_TOO_LARGE);
         TOO_SMALL_COUNTER           = context.getCounter(RecordCounters.SKIPPED_RECORDS_TOO_SMALL);
-        TOO_DEEP_COUNTER            = context.getCounter(RecordCounters.SKIPPED_RECORDS_TOO_DEEP);
+        HTML_PARSER_ERROR_COUNTER   = context.getCounter(RecordCounters.SKIPPED_RECORDS_HTML_PARSE_ERROR);
         BINARY_COUNTER              = context.getCounter(RecordCounters.SKIPPED_RECORDS_BINARY);
         LANGDETECT_FAILED_COUNTER   = context.getCounter(RecordCounters.LANGDETECT_FAILED);
         SKIPPED_NO_ID_COUNTER       = context.getCounter(RecordCounters.SKIPPED_RECORDS_NO_ID);
@@ -191,9 +191,8 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
 
             // language detection
             String lang;
-            try {
-                lang = LANGUAGE_DETECTOR.detect(mainContent);
-            } catch (IOException e) {
+            lang = LANGUAGE_DETECTOR.detect(mainContent);
+            if (lang.isEmpty()) {
                 lang = "unknown";
                 LOG.warn("Language detection for document " + key + " failed");
                 LANGDETECT_FAILED_COUNTER.increment(1);
@@ -216,14 +215,11 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
                 OUTPUT_MAP_DOC.put(META_KEYWORDS_KEY, new Text(getMetaTagContents(bodyDoc, "name", "keywords", 400)));
             } catch (Exception e) {
                 LOG.warn("HTML parsing of document" + key + " failed");
+                HTML_PARSER_ERROR_COUNTER.increment(1);
             }
 
             // write final document to context
             context.write(MAPREDUCE_KEY, OUTPUT_MAP_DOC);
-        } catch (StackOverflowError e) {
-            // HTML too deeply nested
-            LOG.warn("Document " + key + " with deep HTML tag nesting level skipped");
-            TOO_DEEP_COUNTER.increment(1);
         } catch (JSONException e) {
             LOG.error("Document " + key + " skipped due to JSON parsing error: " + e.getMessage());
             JSON_PARSE_ERROR_COUNTER.increment(1);

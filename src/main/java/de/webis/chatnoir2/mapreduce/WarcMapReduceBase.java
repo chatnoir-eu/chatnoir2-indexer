@@ -87,9 +87,9 @@ public interface WarcMapReduceBase
         SKIPPED_RECORDS_TOO_SMALL,
 
         /**
-         * Number of skipped records that are too deeply nested.
+         * Number of skipped records due to HTML parser errors.
          */
-        SKIPPED_RECORDS_TOO_DEEP,
+        SKIPPED_RECORDS_HTML_PARSE_ERROR,
 
         /**
          * Number of skipped binary records.

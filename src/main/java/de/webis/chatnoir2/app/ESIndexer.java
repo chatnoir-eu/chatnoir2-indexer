@@ -157,15 +157,15 @@ public class ESIndexer extends Configured implements Tool
 
         job.waitForCompletion(true);
 
-        final Counters counters       = job.getCounters();
-        final long numDocs            = counters.findCounter(WarcMapReduceBase.RecordCounters.RECORDS).getValue();
-        final long numSkippedTooLarge = counters.findCounter(WarcMapReduceBase.RecordCounters.SKIPPED_RECORDS_TOO_LARGE).getValue();
-        final long numSkippedTooDeep  = counters.findCounter(WarcMapReduceBase.RecordCounters.SKIPPED_RECORDS_TOO_DEEP).getValue();
-        final long numGenerated       = counters.findCounter(WarcMapReduceBase.RecordCounters.GENERATED_DOCS).getValue();
-        final long numEmptyContent    = counters.findCounter(WarcMapReduceBase.RecordCounters.NO_CONTENT).getValue();
+        final Counters counters        = job.getCounters();
+        final long numDocs             = counters.findCounter(WarcMapReduceBase.RecordCounters.RECORDS).getValue();
+        final long numSkippedTooLarge  = counters.findCounter(WarcMapReduceBase.RecordCounters.SKIPPED_RECORDS_TOO_LARGE).getValue();
+        final long numSkippedParseErr  = counters.findCounter(WarcMapReduceBase.RecordCounters.SKIPPED_RECORDS_HTML_PARSE_ERROR).getValue();
+        final long numGenerated        = counters.findCounter(WarcMapReduceBase.RecordCounters.GENERATED_DOCS).getValue();
+        final long numEmptyContent     = counters.findCounter(WarcMapReduceBase.RecordCounters.NO_CONTENT).getValue();
         LOG.info(String.format("Read %d records total.", numDocs));
         LOG.info(String.format("Skipped %d oversized records.", numSkippedTooLarge));
-        LOG.info(String.format("Skipped %d too deeply nested records.", numSkippedTooDeep));
+        LOG.info(String.format("Skipped %d due to HTML parse errors.", numSkippedParseErr));
         LOG.info(String.format("Generated %d JSON documents.", numGenerated));
         LOG.info(String.format("Skipped %d documents due to no or empty plain-text content.", numEmptyContent));
 
