@@ -77,7 +77,8 @@ public class WarcAnchorMapper extends Mapper<LongWritable, Text, Text, MapWritab
             MAPREDUCE_KEY.set(recordId);
 
             OUTPUT_MAP_DOC.clear();
-            OUTPUT_MAP_DOC.put(new Text(ANCHOR_TEXTS_KEY_PREFIX + lang), new Text(anchorValue));
+            ANCHOR_TEXTS_VALUE.set(anchorValue);
+            OUTPUT_MAP_DOC.put(new Text(ANCHOR_TEXTS_KEY_PREFIX + lang), ANCHOR_TEXTS_VALUE);
             context.write(MAPREDUCE_KEY, OUTPUT_MAP_DOC);
         }
     }

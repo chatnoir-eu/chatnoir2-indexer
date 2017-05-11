@@ -40,7 +40,8 @@ public class WarcPageRankMapper extends Mapper<LongWritable, Text, Text, MapWrit
         MAPREDUCE_KEY.set(parts[0]);
 
         OUTPUT_MAP_DOC.clear();
-        OUTPUT_MAP_DOC.put(PAGE_RANK_KEY, new DoubleWritable(Double.valueOf(parts[1])));
+        PAGE_RANK_VALUE.set(Float.valueOf(parts[1]));
+        OUTPUT_MAP_DOC.put(PAGE_RANK_KEY, PAGE_RANK_VALUE);
         context.write(MAPREDUCE_KEY, OUTPUT_MAP_DOC);
     }
 }

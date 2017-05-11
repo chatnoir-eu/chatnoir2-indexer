@@ -57,6 +57,28 @@ public interface WarcMapReduceBase
     String HEADINGS_KEY_PREFIX     = "headings_lang.";
     String ANCHOR_TEXTS_KEY_PREFIX = "anchor_texts_lang.";
 
+    Text WARC_TREC_ID_VALUE             = new Text();
+    Text WARC_RECORD_ID_VALUE           = new Text();
+    Text WARC_TARGET_URI_VALUE          = new Text();
+    Text WARC_TARGET_HOSTNAME_VALUE     = new Text();
+    Text WARC_TARGET_PATH_VALUE         = new Text();
+    Text WARC_TARGET_QUERY_STRING_VALUE = new Text();
+
+    Text CONTENT_TYPE_VALUE          = new Text();
+    Text META_KEYWORDS_VALUE         = new Text();
+    Text LANG_VALUE                  = new Text();
+    Text DATE_VALUE                  = new Text();
+    LongWritable SPAM_RANK_VALUE     = new LongWritable();
+    FloatWritable PAGE_RANK_VALUE    = new FloatWritable();
+    LongWritable BODY_LENGTH_VALUE   = new LongWritable();
+  
+    Text TITLE_VALUE        = new Text();
+    Text META_DESC_VALUE    = new Text();
+    Text BODY_VALUE         = new Text();
+    Text FULL_BODY_VALUE    = new Text();
+    Text HEADINGS_VALUE     = new Text();
+    Text ANCHOR_TEXTS_VALUE = new Text();
+
     Text MAPREDUCE_KEY = new Text();
 
     MapWritable OUTPUT_MAP_DOC    = new MapWritable();

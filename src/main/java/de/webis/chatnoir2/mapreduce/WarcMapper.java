@@ -128,21 +128,30 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
                 final String k = (String) it.next();
                 if (k.equalsIgnoreCase("WARC-Record-ID")) {
                     recordId = metadata.getString(k);
-                    OUTPUT_MAP_DOC.put(WARC_RECORD_ID_KEY, new Text(recordId));
+                    WARC_RECORD_ID_VALUE.set(recordId);
+                    OUTPUT_MAP_DOC.put(WARC_RECORD_ID_KEY, WARC_RECORD_ID_VALUE);
                 } else if (k.equalsIgnoreCase("WARC-TREC-ID")) {
                     trecId = metadata.getString(k);
-                    OUTPUT_MAP_DOC.put(WARC_TREC_ID_KEY, new Text(trecId));
+                    WARC_TREC_ID_VALUE.set(trecId);
+                    OUTPUT_MAP_DOC.put(WARC_TREC_ID_KEY, WARC_TREC_ID_VALUE);
                 } else if (k.equalsIgnoreCase("WARC-Target-URI")) {
                     try {
                         final URI targetURI = new URI(metadata.getString(k));
-                        OUTPUT_MAP_DOC.put(WARC_TARGET_HOSTNAME_KEY, new Text(null != targetURI.getHost() ? targetURI.getHost() : ""));
-                        OUTPUT_MAP_DOC.put(WARC_TARGET_PATH_KEY, new Text(null != targetURI.getPath() ? targetURI.getPath() : ""));
-                        OUTPUT_MAP_DOC.put(WARC_TARGET_QUERY_STRING_KEY, new Text(null != targetURI.getQuery() ? targetURI.getQuery() : ""));
+
+                        WARC_TARGET_HOSTNAME_VALUE.set(null != targetURI.getHost() ? targetURI.getHost() : "");
+                        OUTPUT_MAP_DOC.put(WARC_TARGET_HOSTNAME_KEY, WARC_TARGET_HOSTNAME_VALUE);
+
+                        WARC_TARGET_PATH_VALUE.set(null != targetURI.getPath() ? targetURI.getPath() : "");
+                        OUTPUT_MAP_DOC.put(WARC_TARGET_PATH_KEY, WARC_TARGET_PATH_VALUE);
+
+                        WARC_TARGET_QUERY_STRING_VALUE.set(null != targetURI.getQuery() ? targetURI.getQuery() : "");
+                        OUTPUT_MAP_DOC.put(WARC_TARGET_QUERY_STRING_KEY, WARC_TARGET_QUERY_STRING_VALUE);
                     } catch (URISyntaxException ignored) {
                         LOG.error("URL Exception for url '" + metadata.getString(k) + "': " + ignored.getMessage());
                     }
 
-                    OUTPUT_MAP_DOC.put(WARC_TARGET_URI_KEY, new Text(metadata.getString(k)));
+                    WARC_TARGET_URI_VALUE.set(metadata.getString(k));
+                    OUTPUT_MAP_DOC.put(WARC_TARGET_URI_KEY, WARC_TARGET_URI_VALUE);
                 }
             }
 
@@ -166,14 +175,16 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
                 final String k = (String) it.next();
                 if (k.equalsIgnoreCase("Content-Type")) {
                     final String[] splits = contentHeaders.getString(k).split(";");
-                    OUTPUT_MAP_DOC.put(CONTENT_TYPE_KEY, new Text(splits[0].trim()));
+                    CONTENT_TYPE_VALUE.set(splits[0].trim());
+                    OUTPUT_MAP_DOC.put(CONTENT_TYPE_KEY, CONTENT_TYPE_VALUE);
                 } else if (k.equalsIgnoreCase("Date")) {
                     final Calendar c = Calendar.getInstance();
                     final SimpleDateFormat dfInput  = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
                     final SimpleDateFormat dfOutput = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
                     try {
                         c.setTime(dfInput.parse(contentHeaders.getString(k)));
-                        OUTPUT_MAP_DOC.put(DATE_KEY, new Text(dfOutput.format(c.getTime())));
+                        DATE_VALUE.set(dfOutput.format(c.getTime()));
+                        OUTPUT_MAP_DOC.put(DATE_KEY, DATE_VALUE);
                     } catch (ParseException ignored) { }
                 }
             }
@@ -198,21 +209,33 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
                 LANGDETECT_FAILED_COUNTER.increment(1);
             }
 
-            OUTPUT_MAP_DOC.put(LANG_KEY, new Text(lang));
+            LANG_VALUE.set(lang);
+            OUTPUT_MAP_DOC.put(LANG_KEY, LANG_VALUE);
 
             // add extracted body to output document
-            OUTPUT_MAP_DOC.put(BODY_LENGTH_KEY, new LongWritable(mainContent.length()));
-            OUTPUT_MAP_DOC.put(new Text(BODY_KEY_PREFIX + lang), new Text(mainContent));
-            OUTPUT_MAP_DOC.put(new Text(FULL_BODY_KEY_PREFIX + lang), new Text(fullContent));
-            OUTPUT_MAP_DOC.put(new Text(HEADINGS_KEY_PREFIX + lang), new Text(headings));
+            BODY_LENGTH_VALUE.set(mainContent.length());
+            OUTPUT_MAP_DOC.put(BODY_LENGTH_KEY, BODY_LENGTH_VALUE);
+
+            BODY_VALUE.set(mainContent);
+            OUTPUT_MAP_DOC.put(new Text(BODY_KEY_PREFIX + lang), BODY_VALUE);
+
+            FULL_BODY_VALUE.set(fullContent);
+            OUTPUT_MAP_DOC.put(new Text(FULL_BODY_KEY_PREFIX + lang), FULL_BODY_VALUE);
+
+            HEADINGS_VALUE.set(headings);
+            OUTPUT_MAP_DOC.put(new Text(HEADINGS_KEY_PREFIX + lang), HEADINGS_VALUE);
 
             // parse title and meta tags within body source
             try {
                 Document bodyDoc = Jsoup.parse(contentBody);
-                OUTPUT_MAP_DOC.put(new Text(TITLE_KEY_PREFIX + lang), new Text(getDocTitle(bodyDoc, 90)));
-                OUTPUT_MAP_DOC.put(new Text(META_DESC_KEY_PREFIX + lang), new Text(
-                        getMetaTagContents(bodyDoc, "name", "description", 400)));
-                OUTPUT_MAP_DOC.put(META_KEYWORDS_KEY, new Text(getMetaTagContents(bodyDoc, "name", "keywords", 400)));
+                TITLE_VALUE.set(getDocTitle(bodyDoc, 90));
+                OUTPUT_MAP_DOC.put(new Text(TITLE_KEY_PREFIX + lang), TITLE_VALUE);
+
+                META_DESC_VALUE.set(getMetaTagContents(bodyDoc, "name", "description", 400));
+                OUTPUT_MAP_DOC.put(new Text(META_DESC_KEY_PREFIX + lang), META_DESC_VALUE);
+
+                META_KEYWORDS_VALUE.set(getMetaTagContents(bodyDoc, "name", "keywords", 400));
+                OUTPUT_MAP_DOC.put(META_KEYWORDS_KEY, META_KEYWORDS_VALUE);
             } catch (Exception e) {
                 LOG.warn("HTML parsing of document" + key + " failed");
                 HTML_PARSER_ERROR_COUNTER.increment(1);
