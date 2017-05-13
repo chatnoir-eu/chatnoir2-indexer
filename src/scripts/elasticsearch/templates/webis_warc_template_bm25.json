@@ -378,7 +378,6 @@
             "_source" : {
                 "enabled" : true,
                 "excludes" : [
-                    "warc_target_path",
                     "warc_target_query_string",
                     "full_body_*",
                     "headings_*"
@@ -386,16 +385,13 @@
             },
             "properties" : {
                 "warc_trec_id" : {
-                    "type" : "text",
-                    "index" : "not_analyzed"
+                    "type" : "keyword"
                 },
                 "warc_record_id" : {
-                    "type" : "text",
-                    "index" : "not_analyzed"
+                    "type" : "keyword"
                 },
                 "warc_target_uri" : {
-                    "type" : "text",
-                    "index" : "not_analyzed"
+                    "type" : "keyword"
                 },
                 "warc_target_hostname" : {
                     "type" : "text",
@@ -410,7 +406,12 @@
                 "warc_target_path" : {
                     "type" : "text",
                     "similarity" : "BM25",
-                    "analyzer" : "path_analyzer"
+                    "analyzer" : "path_analyzer",
+                    "fields" : {
+                        "raw" : {
+                            "type" : "keyword"
+                        }
+                    }
                 },
                 "warc_target_query_string" : {
                     "type" : "text",
@@ -418,15 +419,13 @@
                     "analyzer" : "query_analyzer"
                 },
                 "lang" : {
-                    "type" : "text",
-                    "index" : "not_analyzed"
+                    "type" : "keyword"
                 },
                 "body_length" : {
                     "type" : "long"
                 },
                 "content_type" : {
-                    "type" : "text",
-                    "index" : "not_analyzed"
+                    "type" : "keyword"
                 },
                 "date" : {
                     "type" : "date",
