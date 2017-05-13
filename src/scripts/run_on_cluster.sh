@@ -17,6 +17,7 @@ fi
 if [[ "$corpus" == "09" ]]; then
     hadoop jar "$(dirname $0)/../../build/libs/es-indexer-${JAR_VERSION}.jar" "de.webis.chatnoir2.app.ESIndexer" \
         -Des.nodes=betaweb015,betaweb016,betaweb017,betaweb018,betaweb019 \
+        -uuid-prefix "clueweb${corpus}" \
         -sequence-files "/corpora/clueweb/${corpus}-mapfile/data-r-*/data" \
         -spamranks "/corpora/clueweb/${corpus}-spam-rankings/*" \
         -anchortexts "/corpora/clueweb/${corpus}-anchors/*" \
@@ -25,6 +26,7 @@ if [[ "$corpus" == "09" ]]; then
 elif [[ "$corpus" == "12" ]]; then
     hadoop jar "$(dirname $0)/../../build/libs/es-indexer-${JAR_VERSION}.jar" "de.webis.chatnoir2.app.ESIndexer" \
         -Des.nodes=betaweb015,betaweb016,betaweb017,betaweb018,betaweb019 \
+        -uuid-prefix "${corpus}" \
         -sequence-files "/corpora/clueweb/${corpus}-mapfile/data-r-*/data" \
         -spamranks "/corpora/clueweb/${corpus}-spam-rankings/*" \
         -pageranks "/corpora/clueweb/${corpus}-page-ranks.txt.bz2" \
