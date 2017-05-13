@@ -384,6 +384,9 @@
                 ]
             },
             "properties" : {
+                "uuid" : {
+                    "type" : "keyword"
+                },
                 "warc_trec_id" : {
                     "type" : "keyword"
                 },

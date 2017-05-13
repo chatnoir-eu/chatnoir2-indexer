@@ -17,9 +17,9 @@
 
 package de.webis.chatnoir2.mapreduce;
 
+import de.webis.WebisUUID;
 import de.webis.chatnoir2.util.ContentExtractor;
 import de.webis.chatnoir2.util.LangDetector;
-import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.MapWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Counter;
@@ -168,6 +168,10 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
             } else {
                 MAPREDUCE_KEY.set(recordId);
             }
+
+            INDEX_DOCUMENT_ID_VALUE.set(WebisUUID.generateUUID(
+                    context.getConfiguration().get("webis.mapfile.uuid.prefix"), MAPREDUCE_KEY.toString()).toString());
+            OUTPUT_MAP_DOC.put(INDEX_DOCUMENT_ID_KEY, INDEX_DOCUMENT_ID_VALUE);
 
             // process content (HTTP) headers
             it = contentHeaders.keys();

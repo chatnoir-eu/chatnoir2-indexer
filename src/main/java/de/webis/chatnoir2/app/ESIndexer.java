@@ -47,11 +47,12 @@ public class ESIndexer extends Configured implements Tool
 {
     private static final Logger LOG = Logger.getLogger(ESIndexer.class);
 
-    private static final String[] SEQFILE_INPUT_OPTION    = { "sequence-files", "f" };
-    private static final String[] SPAMRANK_INPUT_OPTION   = { "spamranks",      "s" };
-    private static final String[] PAGERANK_INPUT_OPTION   = { "pageranks",      "p" };
-    private static final String[] ANCHOR_INPUT_OPTION     = { "anchortexts",    "a" };
-    private static final String[] INDEX_INPUT_OPTION      = { "index",          "i" };
+    private static final String[] SEQFILE_INPUT_OPTION     = { "sequence-files", "f" };
+    private static final String[] UUID_PREFIX_INPUT_OPTION = { "uuid-prefix",    "u" };
+    private static final String[] SPAMRANK_INPUT_OPTION    = { "spamranks",      "s" };
+    private static final String[] PAGERANK_INPUT_OPTION    = { "pageranks",      "p" };
+    private static final String[] ANCHOR_INPUT_OPTION      = { "anchortexts",    "a" };
+    private static final String[] INDEX_INPUT_OPTION       = { "index",          "i" };
 
     /**
      * Run this tool.
@@ -68,6 +69,13 @@ public class ESIndexer extends Configured implements Tool
                 withDescription("index name").
                 isRequired().
                 create(INDEX_INPUT_OPTION[1]));
+        options.addOption(OptionBuilder.
+                withArgName("PREFIX").
+                hasArg().
+                withLongOpt(UUID_PREFIX_INPUT_OPTION[0]).
+                withDescription("UUID prefix (e.g. clueweb12)").
+                isRequired().
+                create(UUID_PREFIX_INPUT_OPTION[1]));
         options.addOption(OptionBuilder.
                 withArgName("GLOB").
                 hasArg().
@@ -114,6 +122,7 @@ public class ESIndexer extends Configured implements Tool
         final String inputSpamRanks   = cmdline.getOptionValue(SPAMRANK_INPUT_OPTION[0]);
         final String inputPageRanks   = cmdline.getOptionValue(PAGERANK_INPUT_OPTION[0]);
         final String inputAnchors     = cmdline.getOptionValue(ANCHOR_INPUT_OPTION[0]);
+        final String uuidPrefix       = cmdline.getOptionValue(UUID_PREFIX_INPUT_OPTION[0]);
 
         LOG.info("Tool name:    " + ESIndexer.class.getSimpleName());
         LOG.info(" - index:     "  + indexName);
@@ -129,6 +138,7 @@ public class ESIndexer extends Configured implements Tool
         conf.setBoolean(MRJobConfig.REDUCE_SPECULATIVE, false);
 
         conf.set("es.resource",                conf.get("es.resource", String.format("%s/warcrecord", indexName)));
+        conf.set("es.mapping.id",              "uuid");
         conf.set("es.input.json",              "true");
         conf.set("es.index.auto.create",       "yes");
         conf.set("es.http.timeout",            "1m");
@@ -138,6 +148,8 @@ public class ESIndexer extends Configured implements Tool
         conf.set("es.batch.write.retry.count", "5");
         conf.set("es.batch.write.retry.wait",  "30s");
         conf.set("es.batch.write.refresh",     "false");
+
+        conf.set("webis.mapfile.uuid.prefix", uuidPrefix);
 
         final Job job = Job.getInstance(conf);
         job.setJobName("es-index-" + indexName);

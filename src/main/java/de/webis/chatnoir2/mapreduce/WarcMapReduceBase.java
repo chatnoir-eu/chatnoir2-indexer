@@ -35,6 +35,9 @@ public interface WarcMapReduceBase
     String INPUT_PAYLOAD_HEADERS_KEY  = "headers";
     String INPUT_PAYLOAD_ENCODING_KEY = "encoding";
 
+    Text INDEX_DOCUMENT_ID_KEY   = new Text("_id");
+    Text INDEX_DOCUMENT_ID_VALUE = new Text();
+
     Text WARC_TREC_ID_KEY             = new Text("warc_trec_id");
     Text WARC_RECORD_ID_KEY           = new Text("warc_record_id");
     Text WARC_TARGET_URI_KEY          = new Text("warc_target_uri");
