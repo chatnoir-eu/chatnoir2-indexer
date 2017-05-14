@@ -32,6 +32,8 @@ import java.util.stream.Collectors;
  */
 public class ContentExtractor
 {
+    private static final PotthastJerichoExtractor mExtractor = new PotthastJerichoExtractor();
+
     /**
      * Extract contents.
      *
@@ -43,12 +45,10 @@ public class ContentExtractor
         if (null == html || html.trim().isEmpty()) {
             return "";
         }
-
-        PotthastJerichoExtractor extractor = new PotthastJerichoExtractor();
-        extractor.setMinParagraphLengthInCharacters(70);
-        extractor.setTimeoutInSeconds(20);
+        mExtractor.setMinParagraphLengthInCharacters(70);
+        mExtractor.setTimeoutInSeconds(20);
         try {
-            return extractor.extractSentences(html).stream().collect(Collectors.joining(" "));
+            return mExtractor.extractSentences(html).stream().collect(Collectors.joining(" "));
         } catch (Exception e) {
             return "";
         }
