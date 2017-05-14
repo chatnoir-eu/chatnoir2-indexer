@@ -169,9 +169,9 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
                 MAPREDUCE_KEY.set(recordId);
             }
 
-            INDEX_DOCUMENT_ID_VALUE.set(WebisUUID.generateUUID(
+            DOCUMENT_UUID_VALUE.set(WebisUUID.generateUUID(
                     context.getConfiguration().get("webis.mapfile.uuid.prefix"), MAPREDUCE_KEY.toString()).toString());
-            OUTPUT_MAP_DOC.put(INDEX_DOCUMENT_ID_KEY, INDEX_DOCUMENT_ID_VALUE);
+            OUTPUT_MAP_DOC.put(DOCUMENT_UUID_KEY, DOCUMENT_UUID_VALUE);
 
             // process content (HTTP) headers
             it = contentHeaders.keys();
