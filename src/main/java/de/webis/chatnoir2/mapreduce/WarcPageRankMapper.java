@@ -1,6 +1,6 @@
 /*
  * Elasticsearch Indexer for WARC JSON Mapfiles using Hadoop MapReduce.
- * Copyright (C) 2014-2015 Janek Bevendorff <janek.bevendorff@uni-weimar.de>
+ * Copyright (C) 2014-2017 Janek Bevendorff <janek.bevendorff@uni-weimar.de>
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you
  * may not use this file except in compliance with the License. You may
@@ -17,7 +17,6 @@
 
 package de.webis.chatnoir2.mapreduce;
 
-import org.apache.hadoop.io.DoubleWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.MapWritable;
 import org.apache.hadoop.io.Text;
@@ -39,9 +38,9 @@ public class WarcPageRankMapper extends Mapper<LongWritable, Text, Text, MapWrit
 
         MAPREDUCE_KEY.set(parts[0]);
 
-        OUTPUT_MAP_DOC.clear();
+        OUTPUT_MAP.clear();
         PAGE_RANK_VALUE.set(Float.valueOf(parts[1]));
-        OUTPUT_MAP_DOC.put(PAGE_RANK_KEY, PAGE_RANK_VALUE);
-        context.write(MAPREDUCE_KEY, OUTPUT_MAP_DOC);
+        OUTPUT_MAP.put(PAGE_RANK_KEY, PAGE_RANK_VALUE);
+        context.write(MAPREDUCE_KEY, OUTPUT_MAP);
     }
 }

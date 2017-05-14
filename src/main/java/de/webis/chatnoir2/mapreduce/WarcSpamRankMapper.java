@@ -1,6 +1,6 @@
 /*
  * Elasticsearch Indexer for WARC JSON Mapfiles using Hadoop MapReduce.
- * Copyright (C) 2014-2015 Janek Bevendorff <janek.bevendorff@uni-weimar.de>
+ * Copyright (C) 2014-2017 Janek Bevendorff <janek.bevendorff@uni-weimar.de>
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you
  * may not use this file except in compliance with the License. You may
@@ -38,9 +38,9 @@ public class WarcSpamRankMapper extends Mapper<LongWritable, Text, Text, MapWrit
 
         MAPREDUCE_KEY.set(parts[1]);
 
-        OUTPUT_MAP_DOC.clear();
+        OUTPUT_MAP.clear();
         SPAM_RANK_VALUE.set(Long.valueOf(parts[0]));
-        OUTPUT_MAP_DOC.put(SPAM_RANK_KEY, SPAM_RANK_VALUE);
-        context.write(MAPREDUCE_KEY, OUTPUT_MAP_DOC);
+        OUTPUT_MAP.put(SPAM_RANK_KEY, SPAM_RANK_VALUE);
+        context.write(MAPREDUCE_KEY, OUTPUT_MAP);
     }
 }

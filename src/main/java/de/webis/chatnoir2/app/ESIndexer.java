@@ -139,7 +139,8 @@ public class ESIndexer extends Configured implements Tool
 
         conf.set("es.resource",                conf.get("es.resource", String.format("%s/warcrecord", indexName)));
         conf.set("es.mapping.id",              "uuid");
-        conf.set("es.input.json",              "true");
+        conf.set("es.mapping.exclude",         "uuid");
+        conf.set("es.input.json",              "false");
         conf.set("es.index.auto.create",       "yes");
         conf.set("es.http.timeout",            "1m");
         conf.set("es.http.retries",            "5");

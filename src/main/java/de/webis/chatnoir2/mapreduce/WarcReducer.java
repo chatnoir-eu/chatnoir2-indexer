@@ -20,18 +20,17 @@ package de.webis.chatnoir2.mapreduce;
 import org.apache.hadoop.io.*;
 import org.apache.hadoop.mapreduce.Counter;
 import org.apache.hadoop.mapreduce.Reducer;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Reducer for aggregating mapper results and generating JSON docs which are sent to ElasticSearch.
  *
  * @author Janek Bevendorff
  */
-public class WarcReducer extends Reducer<Text, MapWritable, NullWritable, Text> implements WarcMapReduceBase
+public class WarcReducer extends Reducer<Text, MapWritable, NullWritable, MapWritable> implements WarcMapReduceBase
 {
     protected static Counter GENERATED_COUNTER;
     protected static Counter EMPTY_COUNTER;
@@ -50,64 +49,42 @@ public class WarcReducer extends Reducer<Text, MapWritable, NullWritable, Text> 
     @Override
     public void reduce(final Text key, final Iterable<MapWritable> values, final Context context) throws IOException, InterruptedException
     {
-        try {
-            final JSONObject outputJson = new JSONObject();
-            boolean containsContent = false;
+        OUTPUT_MAP.clear();
 
-            for (final MapWritable value : values) {
-                for (final Writable k : value.keySet()) {
-                    final String keyStr = k.toString();
-                    final Writable val = value.get(k);
+        boolean containsContent = false;
+        final HashMap<Text, ArrayList<Text>> anchors = new HashMap<>();
 
-                    if (keyStr.startsWith(ANCHOR_TEXTS_KEY_PREFIX)) {
-                        if (null == outputJson.get(keyStr)) {
-                            outputJson.put(keyStr, new JSONArray());
-                        }
-                        outputJson.getJSONArray(keyStr).put(cleanUpString(val.toString()));
-                    } else {
-                        if (val instanceof IntWritable) {
-                            outputJson.put(keyStr, ((IntWritable) val).get());
-                        } else if (val instanceof LongWritable) {
-                            outputJson.put(keyStr, ((LongWritable) val).get());
-                        } else if (val instanceof FloatWritable) {
-                            outputJson.put(keyStr, ((FloatWritable) val).get());
-                        } else if (val instanceof DoubleWritable) {
-                            outputJson.put(keyStr, ((DoubleWritable) val).get());
-                        } else if (val instanceof BooleanWritable) {
-                            outputJson.put(keyStr, ((BooleanWritable) val).get());
-                        } else {
-                            final String valStr = val.toString();
-                            containsContent |= (keyStr.startsWith(BODY_KEY_PREFIX) && !valStr.trim().isEmpty());
-                            outputJson.put(keyStr, cleanUpString(valStr));
-                        }
+        for (final MapWritable value : values) {
+            for (final Writable k : value.keySet()) {
+                final String keyStr = k.toString();
+                final Writable val = value.get(k);
+
+                if (keyStr.startsWith(ANCHOR_TEXTS_KEY_PREFIX)) {
+                    if (!anchors.containsKey(k)) {
+                        anchors.put((Text) k, new ArrayList<>());
                     }
+                    anchors.get(k).add((Text) val);
+                } else {
+                    containsContent |= (keyStr.startsWith(BODY_KEY_PREFIX) && !val.toString().trim().isEmpty());
+                    OUTPUT_MAP.put(k, val);
                 }
             }
-
-            // only write record if there is content
-            if (containsContent) {
-                OUTPUT_JSON_DOC.set(outputJson.toString());
-                context.write(NullWritable.get(), OUTPUT_JSON_DOC);
-                LOG.debug("Document source: " + OUTPUT_JSON_DOC.toString());
-                GENERATED_COUNTER.increment(1);
-            } else {
-                LOG.warn(String.format("Document %s skipped, no content", key.toString()));
-                EMPTY_COUNTER.increment(1);
-            }
-        } catch (JSONException e) {
-            LOG.warn("Document " + key + " skipped due to JSON parsing error: " + e.getMessage());
-            PARSE_ERROR_COUNTER.increment(1);
         }
-    }
 
-    /**
-     * Clean up Strings by replacing broken Unicode replacement characters with zero-width spaces.
-     *
-     * @param str the String to clean
-     * @return cleaned String
-     */
-    private String cleanUpString(final String str)
-    {
-        return str.replaceAll("\ufffd", "\u200b");
+        // don't continue if there is no content
+        if (!containsContent) {
+            LOG.warn(String.format("Document %s skipped, no content", key.toString()));
+            EMPTY_COUNTER.increment(1);
+            return;
+        }
+
+        for (Text k: anchors.keySet()) {
+            final ArrayWritable anchorsWritable = new ArrayWritable(Text.class);
+            anchorsWritable.set(anchors.get(k).toArray(new Text[anchors.get(k).size()]));
+            OUTPUT_MAP.put(k, anchorsWritable);
+        }
+
+        context.write(NullWritable.get(), OUTPUT_MAP);
+        GENERATED_COUNTER.increment(1);
     }
 }

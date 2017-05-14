@@ -1,6 +1,6 @@
 /*
  * Elasticsearch Indexer for WARC JSON Mapfiles using Hadoop MapReduce.
- * Copyright (C) 2014-2015 Janek Bevendorff <janek.bevendorff@uni-weimar.de>
+ * Copyright (C) 2014-2017 Janek Bevendorff <janek.bevendorff@uni-weimar.de>
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you
  * may not use this file except in compliance with the License. You may
@@ -34,6 +34,8 @@ public interface WarcMapReduceBase
     String INPUT_PAYLOAD_BODY_KEY     = "body";
     String INPUT_PAYLOAD_HEADERS_KEY  = "headers";
     String INPUT_PAYLOAD_ENCODING_KEY = "encoding";
+
+    Text MAPREDUCE_KEY = new Text();
 
     Text DOCUMENT_UUID_KEY   = new Text("uuid");
     Text DOCUMENT_UUID_VALUE = new Text();
@@ -82,10 +84,7 @@ public interface WarcMapReduceBase
     Text HEADINGS_VALUE     = new Text();
     Text ANCHOR_TEXTS_VALUE = new Text();
 
-    Text MAPREDUCE_KEY = new Text();
-
-    MapWritable OUTPUT_MAP_DOC    = new MapWritable();
-    Text OUTPUT_JSON_DOC          = new Text();
+    MapWritable OUTPUT_MAP = new MapWritable();
 
     /**
      * MapReduce counters.

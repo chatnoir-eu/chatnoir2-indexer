@@ -79,6 +79,9 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
     @Override
     public void map(final Text key, final Text value, final Context context) throws IOException, InterruptedException
     {
+        OUTPUT_MAP.clear();
+        MAPREDUCE_KEY.clear();
+
         RECORDS_COUNTER.increment(1);
         final String valueStr = value.toString();
 
@@ -92,8 +95,6 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
         }
 
         try {
-            MAPREDUCE_KEY.clear();
-            OUTPUT_MAP_DOC.clear();
             final JSONObject inputJson  = new JSONObject(valueStr);
 
             // parse input JSON
@@ -129,29 +130,29 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
                 if (k.equalsIgnoreCase("WARC-Record-ID")) {
                     recordId = metadata.getString(k);
                     WARC_RECORD_ID_VALUE.set(recordId);
-                    OUTPUT_MAP_DOC.put(WARC_RECORD_ID_KEY, WARC_RECORD_ID_VALUE);
+                    OUTPUT_MAP.put(WARC_RECORD_ID_KEY, WARC_RECORD_ID_VALUE);
                 } else if (k.equalsIgnoreCase("WARC-TREC-ID")) {
                     trecId = metadata.getString(k);
                     WARC_TREC_ID_VALUE.set(trecId);
-                    OUTPUT_MAP_DOC.put(WARC_TREC_ID_KEY, WARC_TREC_ID_VALUE);
+                    OUTPUT_MAP.put(WARC_TREC_ID_KEY, WARC_TREC_ID_VALUE);
                 } else if (k.equalsIgnoreCase("WARC-Target-URI")) {
                     try {
                         final URI targetURI = new URI(metadata.getString(k));
 
                         WARC_TARGET_HOSTNAME_VALUE.set(null != targetURI.getHost() ? targetURI.getHost() : "");
-                        OUTPUT_MAP_DOC.put(WARC_TARGET_HOSTNAME_KEY, WARC_TARGET_HOSTNAME_VALUE);
+                        OUTPUT_MAP.put(WARC_TARGET_HOSTNAME_KEY, WARC_TARGET_HOSTNAME_VALUE);
 
                         WARC_TARGET_PATH_VALUE.set(null != targetURI.getPath() ? targetURI.getPath() : "");
-                        OUTPUT_MAP_DOC.put(WARC_TARGET_PATH_KEY, WARC_TARGET_PATH_VALUE);
+                        OUTPUT_MAP.put(WARC_TARGET_PATH_KEY, WARC_TARGET_PATH_VALUE);
 
                         WARC_TARGET_QUERY_STRING_VALUE.set(null != targetURI.getQuery() ? targetURI.getQuery() : "");
-                        OUTPUT_MAP_DOC.put(WARC_TARGET_QUERY_STRING_KEY, WARC_TARGET_QUERY_STRING_VALUE);
+                        OUTPUT_MAP.put(WARC_TARGET_QUERY_STRING_KEY, WARC_TARGET_QUERY_STRING_VALUE);
                     } catch (URISyntaxException ignored) {
                         LOG.error("URL Exception for url '" + metadata.getString(k) + "': " + ignored.getMessage());
                     }
 
                     WARC_TARGET_URI_VALUE.set(metadata.getString(k));
-                    OUTPUT_MAP_DOC.put(WARC_TARGET_URI_KEY, WARC_TARGET_URI_VALUE);
+                    OUTPUT_MAP.put(WARC_TARGET_URI_KEY, WARC_TARGET_URI_VALUE);
                 }
             }
 
@@ -171,7 +172,7 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
 
             DOCUMENT_UUID_VALUE.set(WebisUUID.generateUUID(
                     context.getConfiguration().get("webis.mapfile.uuid.prefix"), MAPREDUCE_KEY.toString()).toString());
-            OUTPUT_MAP_DOC.put(DOCUMENT_UUID_KEY, DOCUMENT_UUID_VALUE);
+            OUTPUT_MAP.put(DOCUMENT_UUID_KEY, DOCUMENT_UUID_VALUE);
 
             // process content (HTTP) headers
             it = contentHeaders.keys();
@@ -180,7 +181,7 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
                 if (k.equalsIgnoreCase("Content-Type")) {
                     final String[] splits = contentHeaders.getString(k).split(";");
                     CONTENT_TYPE_VALUE.set(splits[0].trim());
-                    OUTPUT_MAP_DOC.put(CONTENT_TYPE_KEY, CONTENT_TYPE_VALUE);
+                    OUTPUT_MAP.put(CONTENT_TYPE_KEY, CONTENT_TYPE_VALUE);
                 } else if (k.equalsIgnoreCase("Date")) {
                     final Calendar c = Calendar.getInstance();
                     final SimpleDateFormat dfInput  = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
@@ -188,7 +189,7 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
                     try {
                         c.setTime(dfInput.parse(contentHeaders.getString(k)));
                         DATE_VALUE.set(dfOutput.format(c.getTime()));
-                        OUTPUT_MAP_DOC.put(DATE_KEY, DATE_VALUE);
+                        OUTPUT_MAP.put(DATE_KEY, DATE_VALUE);
                     } catch (ParseException ignored) { }
                 }
             }
@@ -214,39 +215,39 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
             }
 
             LANG_VALUE.set(lang);
-            OUTPUT_MAP_DOC.put(LANG_KEY, LANG_VALUE);
+            OUTPUT_MAP.put(LANG_KEY, LANG_VALUE);
 
             // add extracted body to output document
             BODY_LENGTH_VALUE.set(mainContent.length());
-            OUTPUT_MAP_DOC.put(BODY_LENGTH_KEY, BODY_LENGTH_VALUE);
+            OUTPUT_MAP.put(BODY_LENGTH_KEY, BODY_LENGTH_VALUE);
 
             BODY_VALUE.set(mainContent);
-            OUTPUT_MAP_DOC.put(new Text(BODY_KEY_PREFIX + lang), BODY_VALUE);
+            OUTPUT_MAP.put(new Text(BODY_KEY_PREFIX + lang), BODY_VALUE);
 
             FULL_BODY_VALUE.set(fullContent);
-            OUTPUT_MAP_DOC.put(new Text(FULL_BODY_KEY_PREFIX + lang), FULL_BODY_VALUE);
+            OUTPUT_MAP.put(new Text(FULL_BODY_KEY_PREFIX + lang), FULL_BODY_VALUE);
 
             HEADINGS_VALUE.set(headings);
-            OUTPUT_MAP_DOC.put(new Text(HEADINGS_KEY_PREFIX + lang), HEADINGS_VALUE);
+            OUTPUT_MAP.put(new Text(HEADINGS_KEY_PREFIX + lang), HEADINGS_VALUE);
 
             // parse title and meta tags within body source
             try {
                 Document bodyDoc = Jsoup.parse(contentBody);
                 TITLE_VALUE.set(getDocTitle(bodyDoc, 90));
-                OUTPUT_MAP_DOC.put(new Text(TITLE_KEY_PREFIX + lang), TITLE_VALUE);
+                OUTPUT_MAP.put(new Text(TITLE_KEY_PREFIX + lang), TITLE_VALUE);
 
                 META_DESC_VALUE.set(getMetaTagContents(bodyDoc, "name", "description", 400));
-                OUTPUT_MAP_DOC.put(new Text(META_DESC_KEY_PREFIX + lang), META_DESC_VALUE);
+                OUTPUT_MAP.put(new Text(META_DESC_KEY_PREFIX + lang), META_DESC_VALUE);
 
                 META_KEYWORDS_VALUE.set(getMetaTagContents(bodyDoc, "name", "keywords", 400));
-                OUTPUT_MAP_DOC.put(META_KEYWORDS_KEY, META_KEYWORDS_VALUE);
+                OUTPUT_MAP.put(META_KEYWORDS_KEY, META_KEYWORDS_VALUE);
             } catch (Exception e) {
                 LOG.warn("HTML parsing of document" + key + " failed");
                 HTML_PARSER_ERROR_COUNTER.increment(1);
             }
 
             // write final document to context
-            context.write(MAPREDUCE_KEY, OUTPUT_MAP_DOC);
+            context.write(MAPREDUCE_KEY, OUTPUT_MAP);
         } catch (JSONException e) {
             LOG.error("Document " + key + " skipped due to JSON parsing error: " + e.getMessage());
             JSON_PARSE_ERROR_COUNTER.increment(1);
