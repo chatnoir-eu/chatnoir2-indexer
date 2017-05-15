@@ -4,7 +4,7 @@ JAR_VERSION="1.0-SNAPSHOT"
 corpus="$1"
 index_revision="$2"
 
-if [[ "$corpus" != "09" ]] && [[ "$corpus" != "12" ]]; then
+if [[ "$corpus" != "09" ]] && [[ "$corpus" != "12" ]] && [[ "$corpus" != "cc" ]]; then
     echo "Invalid corpus '$corpus', valid choices are: 09, 12, cc" >&2
     exit 1
 fi
@@ -32,6 +32,10 @@ elif [[ "$corpus" == "12" ]]; then
         -pageranks "/corpora/clueweb/${corpus}-page-ranks.txt.bz2" \
         -index "webis_warc_clueweb${corpus}_${index_revision}" $@
 elif [[ "$corpus" == "cc" ]]; then
-    echo "Not implemented yet." >&2
-    exit 1
+    hadoop jar "$(dirname $0)/../../build/libs/es-indexer-${JAR_VERSION}.jar" "de.webis.chatnoir2.app.ESIndexer" \
+        -Des.nodes=betaweb015,betaweb016,betaweb017,betaweb018,betaweb019 \
+        -Dmapreduce.job.split.metainfo.maxsize=-1 \
+        -uuid-prefix "commoncrawl" \
+        -sequence-files "/corpora/corpus-commoncrawl/CC-MAIN-2015-11-mapfile/data-r-*/data" \
+        -index "webis_warc_commoncrawl15_${index_revision}" $@
 fi
