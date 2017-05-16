@@ -38,15 +38,17 @@ public class ContentExtractor
      * Extract contents.
      *
      * @param html HTML source text
+     * @param languages languages to extract
      * @return extracted plain text (may be empty)
      */
-    public static String extract(String html)
+    public static String extract(String html, String... languages)
     {
         if (null == html || html.trim().isEmpty()) {
             return "";
         }
         mExtractor.setMinParagraphLengthInCharacters(70);
         mExtractor.setTimeoutInSeconds(20);
+        mExtractor.setExtractLanguages(languages);
         try {
             return mExtractor.extractSentences(html).stream().collect(Collectors.joining(" "));
         } catch (Exception e) {

@@ -194,20 +194,9 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
                 }
             }
 
-            // create plaintext rendering from content body
-            String mainContent = ContentExtractor.extract(contentBody);
-            if (null == mainContent || mainContent.getBytes().length < 5) {
-                int size = null != mainContent ? mainContent.getBytes().length : 0;
-                LOG.warn("Document " + key + " with size " + size + " bytes skipped (too small)");
-                TOO_SMALL_COUNTER.increment(1);
-                return;
-            }
-            String fullContent = ContentExtractor.extractEverything(contentBody, true);
-            String headings = ContentExtractor.extractHeadings(contentBody, 3);
-
             // language detection
             String lang;
-            lang = LANGUAGE_DETECTOR.detect(mainContent);
+            lang = LANGUAGE_DETECTOR.detect(contentBody);
             if (lang.isEmpty()) {
                 lang = "unknown";
                 LOG.warn("Language detection for document " + key + " failed");
@@ -216,6 +205,17 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
 
             LANG_VALUE.set(lang);
             OUTPUT_MAP.put(LANG_KEY, LANG_VALUE);
+
+            // create plaintext rendering from content body
+            String mainContent = ContentExtractor.extract(contentBody, lang, "en");
+            if (null == mainContent || mainContent.getBytes().length < 5) {
+                int size = null != mainContent ? mainContent.getBytes().length : 0;
+                LOG.warn("Document " + key + " with size " + size + " bytes skipped (too small)");
+                TOO_SMALL_COUNTER.increment(1);
+                return;
+            }
+            String fullContent = ContentExtractor.extractEverything(contentBody, true);
+            String headings = ContentExtractor.extractHeadings(contentBody, 3);
 
             // add extracted body to output document
             BODY_LENGTH_VALUE.set(mainContent.length());
