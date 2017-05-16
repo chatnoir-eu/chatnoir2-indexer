@@ -207,7 +207,12 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
             OUTPUT_MAP.put(LANG_KEY, LANG_VALUE);
 
             // create plaintext rendering from content body
-            String mainContent = ContentExtractor.extract(contentBody, lang, "en");
+            String mainContent;
+            if (lang.equalsIgnoreCase("en")) {
+                mainContent = ContentExtractor.extract(contentBody, "en");
+            } else {
+                mainContent = ContentExtractor.extract(contentBody, lang, "en");
+            }
             if (null == mainContent || mainContent.getBytes().length < 5) {
                 int size = null != mainContent ? mainContent.getBytes().length : 0;
                 LOG.warn("Document " + key + " with size " + size + " bytes skipped (too small)");
