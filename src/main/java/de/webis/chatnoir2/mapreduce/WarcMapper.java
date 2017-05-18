@@ -194,9 +194,12 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
                 }
             }
 
+            // full content extraction (all text nodes)
+            String fullContent = ContentExtractor.extractEverything(contentBody, true);
+
             // language detection
             String lang;
-            lang = LANGUAGE_DETECTOR.detect(contentBody);
+            lang = LANGUAGE_DETECTOR.detect(fullContent);
             if (lang.isEmpty()) {
                 lang = "unknown";
                 LOG.warn("Language detection for document " + key + " failed");
@@ -219,7 +222,6 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
                 TOO_SMALL_COUNTER.increment(1);
                 return;
             }
-            String fullContent = ContentExtractor.extractEverything(contentBody, true);
             String headings = ContentExtractor.extractHeadings(contentBody, 3);
 
             // add extracted body to output document

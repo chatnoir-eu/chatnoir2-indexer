@@ -46,7 +46,7 @@ public class ContentExtractor
         if (null == html || html.trim().isEmpty()) {
             return "";
         }
-        mExtractor.setMinParagraphLengthInCharacters(70);
+        mExtractor.setMinParagraphLengthInCharacters(50);
         mExtractor.setTimeoutInSeconds(20);
         mExtractor.setExtractLanguages(languages);
         try {
