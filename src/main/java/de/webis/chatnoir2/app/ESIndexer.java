@@ -144,8 +144,8 @@ public class ESIndexer extends Configured implements Tool
         conf.set("es.index.auto.create",       "yes");
         conf.set("es.http.timeout",            "1m");
         conf.set("es.http.retries",            "5");
-        conf.set("es.batch.size.entries",      "8000");
-        conf.set("es.batch.size.bytes",        "3mb");
+        conf.set("es.batch.size.entries",      "5000");
+        conf.set("es.batch.size.bytes",        "2mb");
         conf.set("es.batch.write.retry.count", "5");
         conf.set("es.batch.write.retry.wait",  "30s");
         conf.set("es.batch.write.refresh",     "false");
