@@ -195,7 +195,7 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
             }
 
             // full content extraction (all text nodes)
-            String fullContent = ContentExtractor.extractEverything(contentBody, true);
+            String fullContent = ContentExtractor.extractEverything(contentBody);
 
             // language detection
             String lang;

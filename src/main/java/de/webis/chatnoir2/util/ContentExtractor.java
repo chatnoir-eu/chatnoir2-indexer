@@ -22,7 +22,11 @@ import org.jsoup.Jsoup;
 import org.jsoup.helper.StringUtil;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
+import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
+import org.jsoup.select.NodeTraversor;
+import org.jsoup.select.NodeVisitor;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -49,6 +53,7 @@ public class ContentExtractor
         mExtractor.setMinParagraphLengthInCharacters(50);
         mExtractor.setTimeoutInSeconds(20);
         mExtractor.setExtractLanguages(languages);
+        mExtractor.setExtractAltTexts(false);
         try {
             return mExtractor.extractSentences(html).stream().collect(Collectors.joining(" "));
         } catch (Exception e) {
@@ -60,10 +65,9 @@ public class ContentExtractor
      * Extract all textual contents from HTML, not only main article content.
      *
      * @param html HTML source text
-     * @param normalizeWhitespace whether to normalize (collapse) white space
      * @return extracted plain text, may be empty
      */
-    public static String extractEverything(String html, boolean normalizeWhitespace)
+    public static String extractEverything(String html)
     {
         if (null == html || html.trim().isEmpty()) {
             return "";
@@ -73,10 +77,32 @@ public class ContentExtractor
             String plainText = "";
             Elements body = Jsoup.parse(html).getElementsByTag("body");
             if (body.size() > 0) {
-                plainText = body.get(0).text().trim();
-                if (normalizeWhitespace) {
-                    plainText = StringUtil.normaliseWhitespace(plainText);
-                }
+
+                // modified version of org.jsoup.nodes.Element#text() to include alt attribute values
+                final StringBuilder accum = new StringBuilder();
+                new NodeTraversor(new NodeVisitor() {
+                    public void head(Node node, int depth) {
+                        if (node instanceof TextNode) {
+                            TextNode textNode = (TextNode) node;
+                            accum.append(textNode.text());
+                        } else if (node instanceof Element) {
+                            Element element = (Element) node;
+                            boolean hasAlt = element.hasAttr("alt");
+                            if (hasAlt) {
+                                accum.append(StringUtil.normaliseWhitespace(element.attr("alt")));
+                            }
+
+                            if (accum.length() > 0 &&
+                                    (element.isBlock() || hasAlt || element.tag().getName().equals("br")) &&
+                                    !(accum.length() != 0 && accum.charAt(accum.length() - 1) == ' '))
+                                accum.append(" ");
+                        }
+                    }
+
+                    public void tail(Node node, int depth) {}
+                }).traverse(body.get(0));
+
+                plainText = accum.toString().trim();
             }
             return plainText;
         } catch (Exception e) {
