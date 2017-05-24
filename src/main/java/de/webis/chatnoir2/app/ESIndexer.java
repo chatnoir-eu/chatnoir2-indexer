@@ -141,14 +141,14 @@ public class ESIndexer extends Configured implements Tool
         conf.set("es.mapping.id",              "uuid");
         conf.set("es.mapping.exclude",         "uuid");
         conf.set("es.input.json",              "false");
-        conf.set("es.index.auto.create",       "yes");
-        conf.set("es.http.timeout",            "1m");
-        conf.set("es.http.retries",            "5");
-        conf.set("es.batch.size.entries",      "5000");
-        conf.set("es.batch.size.bytes",        "2mb");
-        conf.set("es.batch.write.retry.count", "5");
-        conf.set("es.batch.write.retry.wait",  "30s");
-        conf.set("es.batch.write.refresh",     "false");
+        conf.set("es.index.auto.create",       conf.get("es.index.auto.create",       "yes"));
+        conf.set("es.http.timeout",            conf.get("es.http.timeout",            "1m"));
+        conf.set("es.http.retries",            conf.get("es.http.retries",            "5"));
+        conf.set("es.batch.size.entries",      conf.get("es.batch.size.entries",      "5000"));
+        conf.set("es.batch.size.bytes",        conf.get("es.batch.size.bytes",        "2mb"));
+        conf.set("es.batch.write.retry.count", conf.get("es.batch.write.retry.count", "5"));
+        conf.set("es.batch.write.retry.wait",  conf.get("es.batch.write.retry.wait",  "30s"));
+        conf.set("es.batch.write.refresh",     conf.get("es.batch.write.refresh",     "false"));
 
         conf.set("webis.mapfile.uuid.prefix", uuidPrefix);
 
