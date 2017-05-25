@@ -53,6 +53,9 @@ public class ESIndexer extends Configured implements Tool
     private static final String[] PAGERANK_INPUT_OPTION    = { "pageranks",      "p" };
     private static final String[] ANCHOR_INPUT_OPTION      = { "anchortexts",    "a" };
     private static final String[] INDEX_INPUT_OPTION       = { "index",          "i" };
+    private static final String[] INPUT_PARTITIONS_OPTION  = { "partitions",     "t" };
+    private static final String[] INPUT_BATCHES_OPTION     = { "batches",        "n" };
+    private static final String[] INPUT_BATCH_NUM_OPTION   = { "batch-num",      "b" };
 
     /**
      * Run this tool.
@@ -80,7 +83,7 @@ public class ESIndexer extends Configured implements Tool
                 withArgName("GLOB").
                 hasArg().
                 withLongOpt(SEQFILE_INPUT_OPTION[0]).
-                withDescription("input Mapfiles").
+                withDescription("directory containing input mapfiles").
                 isRequired().
                 create(SEQFILE_INPUT_OPTION[1]));
         options.addOption(OptionBuilder.
@@ -104,6 +107,27 @@ public class ESIndexer extends Configured implements Tool
                 withDescription("input path for anchor texts").
                 isRequired(false).
                 create(ANCHOR_INPUT_OPTION[1]));
+        options.addOption(OptionBuilder.
+                withArgName("NUM").
+                hasArg().
+                withLongOpt(INPUT_PARTITIONS_OPTION[0]).
+                withDescription("number of input partitions (default: 100)").
+                isRequired(false).
+                create(INPUT_PARTITIONS_OPTION[1]));
+        options.addOption(OptionBuilder.
+                withArgName("NUM").
+                hasArg().
+                withLongOpt(INPUT_BATCHES_OPTION[0]).
+                withDescription("total number of batches (default: 1)").
+                isRequired(false).
+                create(INPUT_BATCHES_OPTION[1]));
+        options.addOption(OptionBuilder.
+                withArgName("NUM").
+                hasArg().
+                withLongOpt(INPUT_BATCH_NUM_OPTION[0]).
+                withDescription("which batch to run (default: 1)").
+                isRequired(false).
+                create(INPUT_BATCH_NUM_OPTION[1]));
 
         CommandLine cmdline;
         final CommandLineParser parser = new GnuParser();
@@ -117,19 +141,36 @@ public class ESIndexer extends Configured implements Tool
             return -1;
         }
 
-        final String indexName        = cmdline.getOptionValue(INDEX_INPUT_OPTION[0]);
-        final String seqFileInputPath = cmdline.getOptionValue(SEQFILE_INPUT_OPTION[0]);
-        final String inputSpamRanks   = cmdline.getOptionValue(SPAMRANK_INPUT_OPTION[0]);
-        final String inputPageRanks   = cmdline.getOptionValue(PAGERANK_INPUT_OPTION[0]);
-        final String inputAnchors     = cmdline.getOptionValue(ANCHOR_INPUT_OPTION[0]);
-        final String uuidPrefix       = cmdline.getOptionValue(UUID_PREFIX_INPUT_OPTION[0]);
+        String indexName          = cmdline.getOptionValue(INDEX_INPUT_OPTION[0]);
+        String seqFileInputPath   = cmdline.getOptionValue(SEQFILE_INPUT_OPTION[0]);
+        String inputSpamRanks     = cmdline.getOptionValue(SPAMRANK_INPUT_OPTION[0]);
+        String inputPageRanks     = cmdline.getOptionValue(PAGERANK_INPUT_OPTION[0]);
+        String inputAnchors       = cmdline.getOptionValue(ANCHOR_INPUT_OPTION[0]);
+        String uuidPrefix         = cmdline.getOptionValue(UUID_PREFIX_INPUT_OPTION[0]);
+        String inputPartitionsStr = cmdline.getOptionValue(INPUT_PARTITIONS_OPTION[0]);
+        String inputBatchesStr    = cmdline.getOptionValue(INPUT_BATCHES_OPTION[0]);
+        String batchNumStr        = cmdline.getOptionValue(INPUT_BATCH_NUM_OPTION[0]);
 
-        LOG.info("Tool name:    " + ESIndexer.class.getSimpleName());
-        LOG.info(" - index:     "  + indexName);
-        LOG.info(" - seqfiles:  "  + seqFileInputPath);
-        LOG.info(" - spamranks: "  + (null != inputSpamRanks ? inputSpamRanks : "[none]"));
-        LOG.info(" - pageranks: "  + (null != inputPageRanks ? inputPageRanks : "[none]"));
-        LOG.info(" - anchors:   "  + (null != inputAnchors   ? inputAnchors   : "[none]"));
+        int inputPartitions = 100;
+        if (null != inputPartitionsStr) {
+            inputPartitions = Integer.parseInt(inputPartitionsStr);
+        }
+        int inputBatches = 1;
+        if (null != inputBatchesStr) {
+            inputBatches = Integer.parseInt(inputBatchesStr);
+        }
+        int batchNum = 0;
+        if (null != batchNumStr) {
+            batchNum = Math.max(0, Integer.parseInt(batchNumStr) - 1);
+        }
+
+        LOG.info("Tool name:        " + ESIndexer.class.getSimpleName());
+        LOG.info(" - batch:         " + batchNum + " of " + inputBatches);
+        LOG.info(" - partitions:    " + inputPartitions);
+        LOG.info(" - index:         " + indexName);
+        LOG.info(" - spamranks:     " + (null != inputSpamRanks ? inputSpamRanks : "[none]"));
+        LOG.info(" - pageranks:     " + (null != inputPageRanks ? inputPageRanks : "[none]"));
+        LOG.info(" - anchors:       " + (null != inputAnchors   ? inputAnchors   : "[none]"));
 
         // configure Hadoop for Elasticsearch
         final Configuration conf = getConf();
@@ -161,7 +202,21 @@ public class ESIndexer extends Configured implements Tool
         job.setReducerClass(WarcReducer.class);
 
         // add input formats for input paths
-        MultipleInputs.addInputPath(job, new Path(seqFileInputPath), SequenceFileInputFormat.class, WarcMapper.class);
+        if (!seqFileInputPath.endsWith("/")) {
+            seqFileInputPath += "/";
+        }
+        if (inputBatches == 1) {
+            MultipleInputs.addInputPath(job, new Path(seqFileInputPath + "data-r-*/data"), SequenceFileInputFormat.class, WarcMapper.class);
+            LOG.info(" - sequence file: " + seqFileInputPath + "data-r-*/data");
+        } else {
+            int numFiles = inputPartitions / inputBatches;
+            for (int i = numFiles * batchNum; i < numFiles + numFiles * batchNum; ++i) {
+                String mapFile = String.format("data-r-%05d/data", i);
+                LOG.info(" - sequence file: " + mapFile);
+                MultipleInputs.addInputPath(job, new Path(seqFileInputPath + mapFile), SequenceFileInputFormat.class, WarcMapper.class);
+            }
+        }
+
         if (null != inputSpamRanks)
             MultipleInputs.addInputPath(job, new Path(inputSpamRanks), TextInputFormat.class, WarcSpamRankMapper.class);
         if (null != inputPageRanks)
