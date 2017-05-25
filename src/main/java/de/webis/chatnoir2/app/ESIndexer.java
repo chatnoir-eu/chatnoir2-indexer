@@ -194,7 +194,7 @@ public class ESIndexer extends Configured implements Tool
         conf.set("webis.mapfile.uuid.prefix", uuidPrefix);
 
         final Job job = Job.getInstance(conf);
-        job.setJobName("es-index-" + indexName);
+        job.setJobName("es-index-" + indexName + "-#" + batchNum + "-of-" + inputBatches);
         job.setJarByClass(ESIndexer.class);
         job.setOutputFormatClass(EsOutputFormat.class);
         job.setMapOutputKeyClass(Text.class);
