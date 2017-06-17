@@ -1,7 +1,7 @@
 {
     "template" : "webis_warc_*",
     "settings" : {
-        "index.query.default_field" : "body_lang",
+        "index.query.default_field" : "body_lang.en",
         "index" : {
             "number_of_replicas" : 0
         },
@@ -30,6 +30,22 @@
                         "sv", "sy", "sz", "tc", "td", "tf", "tg", "th", "tj", "tk", "tl", "tm", "tn", "to", "tp",
                         "tr", "tt", "tv", "tw", "tz", "ua", "ug", "uk", "um", "us", "uy", "uz", "va", "vc", "ve",
                         "vg", "vi", "vn", "vu", "wf", "ws", "ye", "yt", "yu", "za", "zm", "zr", "zw"
+                    ]
+                },
+                "host_delimiter_filter1" : {
+                    "type" : "word_delimiter",
+                    "generate_word_parts" : true,
+                    "catenate_words" : true,
+                    "catenate_numbers" : true,
+                    "preserve_original" : true,
+                    "stem_english_possessive" : true,
+                    "split_on_numerics" : false
+                },
+                "host_delimiter_filter2" : {
+                    "type" : "pattern_capture",
+                    "preserve_original" : true,
+                    "patterns" : [
+                        "([^\\.]+)"
                     ]
                 },
                 "de_stem_filter" : {
@@ -87,8 +103,14 @@
             "analyzer" : {
                 "host_analyzer" : {
                     "type" : "custom",
-                    "tokenizer" : "host_tokenizer",
-                    "filter" : [ "host_stop_filter" ]
+                    "tokenizer" : "whitespace",
+                    "filter" : [
+                        "host_delimiter_filter1",
+                        "host_delimiter_filter2",
+                        "host_delimiter_filter1",
+                        "host_stop_filter",
+                        "unique"
+                    ]
                 },
                 "path_analyzer" : {
                     "type" : "custom",
@@ -351,10 +373,6 @@
                 }
             },
             "tokenizer" : {
-                "host_tokenizer" : {
-                    "type": "pattern",
-                    "pattern" : "\\."
-                },
                 "meta_keyword_tokenizer" : {
                     "type": "pattern",
                     "pattern" : "[, \\t]"
