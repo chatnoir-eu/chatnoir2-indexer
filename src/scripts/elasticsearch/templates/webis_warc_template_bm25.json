@@ -17,8 +17,8 @@
                 "host_stop_filter" : {
                     "type" : "stop",
                     "stopwords" : [
-                        "aero", "arpa", "asia", "biz", "cat", "com", "coop", "edu", "eu", "gov", "info", "int",
-                        "jobs", "mil", "mobi", "museum", "name", "net", "org", "post", "pro", "tel", "travel", "xxx",
+                        "aero", "arpa", "asia", "biz", "cat", "com", "coop", "edu", "eu", "gov", "int",
+                        "jobs", "mil", "mobi", "net", "org", "post", "pro", "tel", "xxx",
                         "ac", "ad", "ae", "af", "ag", "ai", "al", "am", "an", "ao", "aq", "ar", "as", "at", "au",
                         "aw", "ax", "az", "ba", "bb", "bd", "be", "bf", "bg", "bh", "bi", "bj", "bm", "bn", "bo",
                         "br", "bs", "bt", "bv", "bw", "by", "bz", "ca", "cc", "cd", "cf", "cg", "ch", "ci", "ck",
