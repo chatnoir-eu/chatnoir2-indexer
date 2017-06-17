@@ -7,10 +7,16 @@
         },
         "analysis" : {
             "filter" : {
+                "host_pre_filter" : {
+                    "type" : "pattern_capture",
+                    "preserve_original" : false,
+                    "patterns" : [
+                        "^(?:www\\d?\\.)(.+\\..+)$"
+                    ]
+                },
                 "host_stop_filter" : {
                     "type" : "stop",
                     "stopwords" : [
-                        "en", "www", "www2",
                         "aero", "arpa", "asia", "biz", "cat", "com", "coop", "edu", "eu", "gov", "info", "int",
                         "jobs", "mil", "mobi", "museum", "name", "net", "org", "post", "pro", "tel", "travel", "xxx",
                         "ac", "ad", "ae", "af", "ag", "ai", "al", "am", "an", "ao", "aq", "ar", "as", "at", "au",
@@ -105,6 +111,7 @@
                     "type" : "custom",
                     "tokenizer" : "whitespace",
                     "filter" : [
+                        "host_pre_filter",
                         "host_delimiter_filter1",
                         "host_delimiter_filter2",
                         "host_delimiter_filter1",
