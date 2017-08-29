@@ -125,7 +125,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"index\" : {\n        \"refresh_interval\" : \"300s\"\n    }\n}"
+							"raw": "{\n    \"index\" : {\n        \"refresh_interval\" : \"3600s\"\n    }\n}"
 						},
 						"description": ""
 					},
