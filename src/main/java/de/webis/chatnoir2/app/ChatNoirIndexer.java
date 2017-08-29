@@ -43,9 +43,9 @@ import java.util.Arrays;
  *
  * @author Janek Bevendorff
  */
-public class ESIndexer extends Configured implements Tool
+public class ChatNoirIndexer extends Configured implements Tool
 {
-    private static final Logger LOG = Logger.getLogger(ESIndexer.class);
+    private static final Logger LOG = Logger.getLogger(ChatNoirIndexer.class);
 
     private static final String[] SEQFILE_INPUT_OPTION     = { "sequence-files", "f" };
     private static final String[] UUID_PREFIX_INPUT_OPTION = { "uuid-prefix",    "u" };
@@ -164,8 +164,8 @@ public class ESIndexer extends Configured implements Tool
             batchNum = Math.max(0, Integer.parseInt(batchNumStr) - 1);
         }
 
-        LOG.info("Tool name:        " + ESIndexer.class.getSimpleName());
-        LOG.info(" - batch:         " + batchNum + " of " + inputBatches);
+        LOG.info("Tool name:        " + ChatNoirIndexer.class.getSimpleName());
+        LOG.info(" - batch:         " + (batchNum + 1) + " of " + inputBatches);
         LOG.info(" - partitions:    " + inputPartitions);
         LOG.info(" - index:         " + indexName);
         LOG.info(" - spamranks:     " + (null != inputSpamRanks ? inputSpamRanks : "[none]"));
@@ -194,8 +194,8 @@ public class ESIndexer extends Configured implements Tool
         conf.set("webis.mapfile.uuid.prefix", uuidPrefix);
 
         final Job job = Job.getInstance(conf);
-        job.setJobName("es-index-" + indexName + "-#" + batchNum + "-of-" + inputBatches);
-        job.setJarByClass(ESIndexer.class);
+        job.setJobName(String.format("chatnoir2-indexer: %s, batch %d of %d", indexName , batchNum + 1, inputBatches));
+        job.setJarByClass(ChatNoirIndexer.class);
         job.setOutputFormatClass(EsOutputFormat.class);
         job.setMapOutputKeyClass(Text.class);
         job.setMapOutputValueClass(MapWritable.class);
@@ -246,8 +246,8 @@ public class ESIndexer extends Configured implements Tool
      */
     public static void main(final String[] args) throws Exception
     {
-        LOG.info("Running " + ESIndexer.class.getSimpleName() + " with args "
+        LOG.info("Running " + ChatNoirIndexer.class.getSimpleName() + " with args "
                 + Arrays.toString(args));
-        System.exit(ToolRunner.run(new ESIndexer(), args));
+        System.exit(ToolRunner.run(new ChatNoirIndexer(), args));
     }
 }

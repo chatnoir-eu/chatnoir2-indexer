@@ -1,4 +1,4 @@
-rootProject.name = 'es-indexer'
+rootProject.name = 'chatnoir2-indexer'
 
 include ':aitools4-aq-web-page-content-extraction'
 project(':aitools4-aq-web-page-content-extraction').projectDir =
