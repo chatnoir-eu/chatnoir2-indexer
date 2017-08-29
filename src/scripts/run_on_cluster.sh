@@ -49,7 +49,7 @@ elif [[ "$corpus" == "cc" ]]; then
             -batch-num ${batch} \
             -index "webis_warc_commoncrawl15_${index_revision}" $@
 
-        echo "Merging down segments..."
-        curl -XPOST "http://betaweb015:9200/webis_warc_commoncrawl15_${index_revision}/_forcemerge?max_num_segments=1"
+        #echo "Merging down segments..."
+        #curl -XPOST "http://betaweb015:9200/webis_warc_commoncrawl15_${index_revision}/_forcemerge?max_num_segments=1"
     done
 fi
