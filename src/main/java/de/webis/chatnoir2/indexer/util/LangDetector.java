@@ -23,7 +23,7 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.webis.chatnoir2.chatnoir2_indexer.util;
+package de.webis.chatnoir2.indexer.util;
 
 import de.aitools.ie.languagedetection.LanguageDetector;
 

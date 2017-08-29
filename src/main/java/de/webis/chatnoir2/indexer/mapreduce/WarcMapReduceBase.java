@@ -23,7 +23,7 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.webis.chatnoir2.chatnoir2_indexer.mapreduce;
+package de.webis.chatnoir2.indexer.mapreduce;
 
 import org.apache.hadoop.io.*;
 import org.apache.log4j.Logger;

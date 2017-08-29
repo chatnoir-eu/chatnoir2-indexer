@@ -23,7 +23,7 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.webis.chatnoir2.chatnoir2_indexer.mapreduce;
+package de.webis.chatnoir2.indexer.mapreduce;
 
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.MapWritable;
@@ -33,22 +33,22 @@ import org.apache.hadoop.mapreduce.Mapper;
 import java.io.IOException;
 
 /**
- * MapReduce Mapper class for Spam rankings.
+ * MapReduce Mapper class for page ranks.
  *
  * @author Janek Bevendorff
  */
-public class WarcSpamRankMapper extends Mapper<LongWritable, Text, Text, MapWritable> implements WarcMapReduceBase
+public class WarcPageRankMapper extends Mapper<LongWritable, Text, Text, MapWritable> implements WarcMapReduceBase
 {
     @Override
     public void map(final LongWritable key, final Text value, final Context context) throws IOException, InterruptedException
     {
         final String[] parts = value.toString().split("\\s+");
 
-        MAPREDUCE_KEY.set(parts[1]);
+        MAPREDUCE_KEY.set(parts[0]);
 
         OUTPUT_MAP.clear();
-        SPAM_RANK_VALUE.set(Long.valueOf(parts[0]));
-        OUTPUT_MAP.put(SPAM_RANK_KEY, SPAM_RANK_VALUE);
+        PAGE_RANK_VALUE.set(Float.valueOf(parts[1]));
+        OUTPUT_MAP.put(PAGE_RANK_KEY, PAGE_RANK_VALUE);
         context.write(MAPREDUCE_KEY, OUTPUT_MAP);
     }
 }

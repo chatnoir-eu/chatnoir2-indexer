@@ -35,7 +35,7 @@ buildscript {
 
 jar {
     manifest {
-        attributes 'Main-Class': 'de.webis.chatnoir2.chatnoir2_indexer.app.ChatNoirIndexer'
+        attributes 'Main-Class': 'de.webis.chatnoir2.indexer.app.ChatNoirIndexer'
     }
     zip64 true
 }

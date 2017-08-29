@@ -23,9 +23,9 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.webis.chatnoir2.chatnoir2_indexer.app;
+package de.webis.chatnoir2.indexer.app;
 
-import de.webis.chatnoir2.chatnoir2_indexer.mapreduce.*;
+import de.webis.chatnoir2.indexer.mapreduce.*;
 import org.apache.commons.cli.*;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;

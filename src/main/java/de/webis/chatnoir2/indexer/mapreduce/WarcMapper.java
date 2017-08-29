@@ -23,11 +23,11 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.webis.chatnoir2.chatnoir2_indexer.mapreduce;
+package de.webis.chatnoir2.indexer.mapreduce;
 
 import de.webis.WebisUUID;
-import de.webis.chatnoir2.chatnoir2_indexer.util.ContentExtractor;
-import de.webis.chatnoir2.chatnoir2_indexer.util.LangDetector;
+import de.webis.chatnoir2.indexer.util.ContentExtractor;
+import de.webis.chatnoir2.indexer.util.LangDetector;
 import org.apache.hadoop.io.MapWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Counter;
