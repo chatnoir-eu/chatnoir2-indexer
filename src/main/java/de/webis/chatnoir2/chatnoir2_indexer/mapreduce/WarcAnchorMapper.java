@@ -15,9 +15,9 @@
  * permissions and limitations under the License.
  */
 
-package de.webis.chatnoir2.mapreduce;
+package de.webis.chatnoir2.chatnoir2_indexer.mapreduce;
 
-import de.webis.chatnoir2.util.LangDetector;
+import de.webis.chatnoir2.chatnoir2_indexer.util.LangDetector;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.MapWritable;
 import org.apache.hadoop.io.Text;

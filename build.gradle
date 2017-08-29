@@ -1,6 +1,7 @@
 group 'de.webis.chatnoir2'
 version '1.0-SNAPSHOT'
 
+apply plugin: 'com.github.johnrengelman.shadow'
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
@@ -23,22 +24,24 @@ repositories {
     }
 }
 
-// configurations.compile.transitive = false
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.1'
+    }
+}
 
 jar {
-    doFirst {
-        from {
-            configurations.compile.collect {
-                it.isDirectory() ? it : zipTree(it)
-            }
-        }
+    manifest {
+        attributes 'Main-Class': 'de.webis.chatnoir2.chatnoir2_indexer.app.ChatNoirIndexer'
     }
-    exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA'
     zip64 true
 }
 
-configurations {
-    all*.exclude group: 'org.apache.curator', module: 'apache-curator'
+shadowJar {
+    zip64 true
 }
 
 dependencies {

@@ -15,7 +15,7 @@
  * permissions and limitations under the License.
  */
 
-package de.webis.chatnoir2.util;
+package de.webis.chatnoir2.chatnoir2_indexer.util;
 
 import de.aitools.aq.web.extractor.PotthastJerichoExtractor;
 import org.jsoup.Jsoup;

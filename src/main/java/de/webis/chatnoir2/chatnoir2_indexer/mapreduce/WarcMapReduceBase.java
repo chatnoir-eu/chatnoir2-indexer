@@ -15,7 +15,7 @@
  * permissions and limitations under the License.
  */
 
-package de.webis.chatnoir2.mapreduce;
+package de.webis.chatnoir2.chatnoir2_indexer.mapreduce;
 
 import org.apache.hadoop.io.*;
 import org.apache.log4j.Logger;

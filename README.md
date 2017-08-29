@@ -89,7 +89,7 @@ resources (both CPU time and I/O bandwidth) to index. Once your data has been in
     }'
 
 ### 4. Compiling the Indexer JAR
-The indexer can be compiled with `gradle build`, which will compile a fat JAR suitable for submission to Hadoop.
+The indexer can be compiled with `gradle shadowJar`, which will compile a fat JAR suitable for submission to Hadoop.
 
 ### 5. Starting the Indexing Process
 To start the indexer, use the `hadoop` command to run this Java tool. Make sure you set the number of reduces to

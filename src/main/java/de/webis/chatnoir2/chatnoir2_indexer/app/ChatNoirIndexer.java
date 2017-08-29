@@ -15,9 +15,9 @@
  * permissions and limitations under the License.
  */
 
-package de.webis.chatnoir2.app;
+package de.webis.chatnoir2.chatnoir2_indexer.app;
 
-import de.webis.chatnoir2.mapreduce.*;
+import de.webis.chatnoir2.chatnoir2_indexer.mapreduce.*;
 import org.apache.commons.cli.*;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
