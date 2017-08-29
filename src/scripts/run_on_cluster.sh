@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-JAR_VERSION="1.0-SNAPSHOT"
 corpus="$1"
 index_revision="$2"
 
@@ -15,7 +14,8 @@ if [[ "$index_revision" == "" ]]; then
 fi
 
 if [[ "$corpus" == "09" ]]; then
-    hadoop jar "$(dirname $0)/../../build/libs/es-indexer-${JAR_VERSION}.jar" "de.webis.chatnoir2.app.ESIndexer" \
+    hadoop jar "$(dirname $0)/../../build/libs/chatnoir2-indexer-*-all.jar" \
+        "de.webis.chatnoir2.chatnoir2_indexer.app.ChatNoirIndexer" \
         -Des.nodes=betaweb015,betaweb016,betaweb017,betaweb018,betaweb019 \
         -uuid-prefix "clueweb${corpus}" \
         -sequence-files "/corpora/clueweb/${corpus}-mapfile/" \
@@ -24,7 +24,8 @@ if [[ "$corpus" == "09" ]]; then
         -pageranks "/corpora/clueweb/${corpus}-page-ranks.txt" \
         -index "webis_warc_clueweb${corpus}_${index_revision}" $@
 elif [[ "$corpus" == "12" ]]; then
-    hadoop jar "$(dirname $0)/../../build/libs/es-indexer-${JAR_VERSION}.jar" "de.webis.chatnoir2.app.ESIndexer" \
+    hadoop jar "$(dirname $0)/../../build/libs/chatnoir2-indexer-*-all.jar" \
+        "de.webis.chatnoir2.chatnoir2_indexer.app.ChatNoirIndexer" \
         -Des.nodes=betaweb015,betaweb016,betaweb017,betaweb018,betaweb019 \
         -uuid-prefix "clueweb${corpus}" \
         -sequence-files "/corpora/clueweb/${corpus}-mapfile/" \
@@ -37,7 +38,8 @@ elif [[ "$corpus" == "cc" ]]; then
 
     for batch in $(seq 1 4); do
         echo "Running batch ${batch} of 4..."
-        hadoop jar "$(dirname $0)/../../build/libs/es-indexer-${JAR_VERSION}.jar" "de.webis.chatnoir2.app.ESIndexer" \
+        hadoop jar "$(dirname $0)/../../build/libs/chatnoir2-indexer-*-all.jar" \
+        "de.webis.chatnoir2.chatnoir2_indexer.app.ChatNoirIndexer" \
             -Des.nodes=betaweb015,betaweb016,betaweb017,betaweb018,betaweb019 \
             -Des.batch.size.entries=7000 \
             -Des.batch.size.bytes=10mb \
