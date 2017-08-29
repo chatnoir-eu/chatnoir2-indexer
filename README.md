@@ -118,18 +118,19 @@ quite well:
             <value>3072</value>
         </property>
         <property>
-            <!-- Since we only have a fixed number of reduces, give them enough memory to process data fast
-                 and without failures. -->
+            <!-- Since we only have a fixed number of reduces, give them enough
+                 memory to process data fast and without failures. -->
             <name>mapreduce.reduce.memory.mb</name>
             <value>4096</value>
         </property>
         <property>
-            <!-- Adjust this to the number of nodes in your Hadoop cluster and the number of indexing nodes
-                 in your ES cluster. Remember: the number of parallel indexing requests is this number times
-                 the indexing batch size. The batch size is defined by es.batch.size.entries and es.batch.size.bytes
-                 (whichever is smaller) and defaults to 5000 and 2mb.
-                 This number should never be higher than the reduce slots (or nodes) in your cluster.
-                 If your ES cluster is overloaded, first reduce the batch size, then the number of reduces. -->
+            <!-- Adjust this to the number of nodes in your Hadoop cluster and the number
+                 of indexing nodes in your ES cluster. Remember: the number of parallel
+                 indexing requests is this number times the indexing batch size. The batch
+                 size is defined by es.batch.size.entries and es.batch.size.bytes (whichever
+                 is smaller) and defaults to 5000 and 2mb. This number should never be higher
+                 than the reduce slots (or nodes) in your cluster. If your ES cluster is
+                 overloaded, first reduce the batch size, then the number of reduces. -->
             <name>mapreduce.job.reduces</name>
             <value>100</value>
         </property>
@@ -149,8 +150,9 @@ quite well:
             <value>-Xmx4096m</value>
         </property>
         <property>
-            <!-- Give resource manager enough memory. This is especially important for indexing the CommonCrawl.
-                 You may even want to up this even further to 8092. -->
+            <!-- Give resource manager enough memory. This is especially important
+                 for indexing the CommonCrawl. You may even want to up this even
+                 further to 8192. -->
             <name>yarn.app.mapreduce.am.resource.mb</name>
             <value>5120</value>
         </property>
