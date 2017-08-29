@@ -7,7 +7,7 @@ Convenience script for running the indexing process with different corpus config
 
 * `elasticsearch`
     * `templates`<br>
-    Various Elasticsearch indexing templates describing the layout of a Chatnoir2 index
+    Elasticsearch indexing templates describing the layout of a ChatNoir2 index
 
     * `Elasticsearch.postman_collection`<br>
     Helper snippets for use with the [Postman](https://www.getpostman.com/) REST client. These snippets contain
