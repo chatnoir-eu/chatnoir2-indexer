@@ -108,7 +108,7 @@ quite well:
             <value>yarn</value>
         </property>
         <property>
-            <!-- W don't want our whole job to fail only because a few mappers died. -->
+            <!-- We don't want our whole job to fail only because a few mappers died. -->
             <name>mapreduce.map.failures.maxpercent</name>
             <value>2</value>
         </property>
@@ -163,7 +163,7 @@ quite well:
 
 Once everything is configured, start the indexing process with
 
-    hadoop jar es-indexer.jar de.webis.chatnoir2.app.ChatNoirIndexer \
+    hadoop jar chatnoir2-indexer.jar de.webis.chatnoir2.app.ChatNoirIndexer \
         -Des.nodes="{{eshost}}" \
         -sequence-files "/corpus-path/mapfile/data-r-*/data" \
         -spamranks "/corpus-path/spam-rankings/*" \
