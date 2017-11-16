@@ -7,9 +7,9 @@ mapfile-generator tool.
 ## Compiling the Source Code
 Create a folder `aitools` next to this source directory and clone the following dependencies to it:
 
-* [`aitools4-aq-web-page-content-extraction`](https://github.com/chatnoir-eu/aitools4-aq-web-page-content-extraction')
-* [`aitools3-ie-languagedetection`](https://github.com/chatnoir-eu/aitools3-ie-languagedetection")
-* [`aitools3-ie-stopwords`](https://github.com/chatnoir-eu/aitools3-ie-stopwords")
+* [`aitools4-aq-web-page-content-extraction`](https://github.com/chatnoir-eu/aitools4-aq-web-page-content-extraction)
+* [`aitools3-ie-languagedetection`](https://github.com/chatnoir-eu/aitools3-ie-languagedetection)
+* [`aitools3-ie-stopwords`](https://github.com/chatnoir-eu/aitools3-ie-stopwords)
 
 Then run
 ```
