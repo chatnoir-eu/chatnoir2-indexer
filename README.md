@@ -4,6 +4,22 @@ Hadoop MapReduce tool for indexing Webis WARC MapFiles into a ChatNoir2 index.
 If you haven't parsed your raw WARC files into WARC MapFiles yet, you need to do that first using the
 mapfile-generator tool.
 
+## Compiling the Source Code
+Create a folder `aitools` next to this source directory and clone the following dependencies to it:
+
+[`aitools4-aq-web-page-content-extraction`](https://github.com/chatnoir-eu/aitools4-aq-web-page-content-extraction')
+[`aitools3-ie-languagedetection`](https://github.com/chatnoir-eu/aitools3-ie-languagedetection")
+[`aitools3-ie-stopwords`](https://github.com/chatnoir-eu/aitools3-ie-stopwords")
+
+Then run
+```
+gradle shadowJar
+```
+from this source directory to download other third-party dependencies and compile the sources.
+
+The generated shadow (fat) JAR will be in `build/libs`. The JAR can be submitted to run on a Hadoop cluster.
+For ease of use, there is a helper script `src/scripts/run_on_cluster.sh` for starting the indexing process.
+
 ## Indexing Process
 The indexer will create an index automatically if it doesn't exist, but in order for the index to work properly,
 we want to adjust some settings first as described below.

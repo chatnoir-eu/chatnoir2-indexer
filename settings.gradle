@@ -2,12 +2,12 @@ rootProject.name = 'chatnoir2-indexer'
 
 include ':aitools4-aq-web-page-content-extraction'
 project(':aitools4-aq-web-page-content-extraction').projectDir =
-        new File('../../aitools/aitools4-aq-web-page-content-extraction')
+        new File('../aitools/aitools4-aq-web-page-content-extraction')
 
 include ':aitools3-ie-languagedetection'
 project(':aitools3-ie-languagedetection').projectDir =
-        new File("../../aitools/aitools3-ie-languagedetection")
+        new File("../aitools/aitools3-ie-languagedetection")
 
 include ':aitools3-ie-stopwords'
 project(':aitools3-ie-stopwords').projectDir =
-        new File("../../aitools/aitools3-ie-stopwords")
+        new File("../aitools/aitools3-ie-stopwords")
