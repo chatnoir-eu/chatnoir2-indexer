@@ -251,6 +251,9 @@ public class ChatNoirIndexer extends Configured implements Tool
 
     /**
      * Dispatches command-line arguments to the tool via the <code>ToolRunner</code>.
+     *
+     * @param args Arguments
+     * @throws java.lang.Exception on error
      */
     public static void main(final String[] args) throws Exception
     {

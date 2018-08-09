@@ -1,0 +1,69 @@
+// Fetch Artifactory publishing plugin
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "org.jfrog.buildinfo:build-info-extractor-gradle:4+"
+    }
+}
+
+// Apply plugins
+apply plugin: 'maven-publish'
+apply plugin: org.jfrog.gradle.plugin.artifactory.ArtifactoryPlugin
+
+repositories {
+    maven {
+        url = 'https://repo.webis.de/artifactory/libs-release'
+    }
+    maven {
+        url = 'https://repo.webis.de/artifactory/libs-snapshot'
+    }
+}
+
+// Configure Artifactory remote
+artifactory {
+    contextUrl = "https://repo.webis.de/artifactory"
+    publish {
+        repository {
+            repoKey = version.endsWith('SNAPSHOT') ? 'libs-snapshot-webis-gradle' : 'libs-release-webis-gradle'
+            username = "${artifactoryUsername}"
+            password = "${artifactoryPassword}"
+            maven = true
+        }
+        defaults {
+            publications('mavenJava')
+        }
+    }
+}
+
+// Create tasks for generating source and JavaDoc JARs
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+
+// Configure Maven Publishing Information
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            // Publish binary, source, and JavaDoc JARs
+            from components.java
+            artifact sourcesJar
+            artifact javadocJar
+
+            // Set POM definition
+            pom pomDef
+        }
+    }
+}

@@ -1,20 +1,19 @@
-group 'de.webis.chatnoir2'
-version '1.0-SNAPSHOT'
-
-apply plugin: 'com.github.johnrengelman.shadow'
+// Apply plugins
 apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'idea'
+apply plugin: 'application'
+apply plugin: 'com.github.johnrengelman.shadow'
 
-allprojects {
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.1'
+    }
 }
 
-
 repositories {
-    mavenCentral()
-
     maven {
         url 'http://conjars.org/repo'
     }
@@ -24,32 +23,59 @@ repositories {
     }
 }
 
-buildscript {
-    repositories {
-        jcenter()
-    }
+
+// Basic configuration and settings for all (sub-)projects
+allprojects {
+    group = 'de.webis.chatnoir2'
+    version = '1.0-SNAPSHOT'
+    mainClassName = 'de.webis.chatnoir2.indexer.app.ChatNoirIndexer'
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
     dependencies {
-        classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.1'
+        implementation group: 'org.elasticsearch', name: 'elasticsearch-hadoop', version: '5.6.10'
+        implementation group: 'org.jsoup', name: 'jsoup', version: '1.10.2'
+        implementation group: 'org.apache.hadoop', name: 'hadoop-common', version: '2.7.3'
+        implementation group: 'org.apache.hadoop', name: 'hadoop-mapreduce-client-core', version: '2.7.3'
+        implementation group: 'de.webis.aitools', name: 'aitools4-aq-web-page-content-extraction', version: '1.0'
+        implementation group: 'de.webis.aitools', name: 'aitools3-ie-languagedetection', version: '1.0'
+        implementation group: 'de.webis.corpora', name: 'webis-uuid', version: '1.0'
+    }
+
+    jar {
+        manifest {
+            attributes('Main-Class': mainClassName)
+        }
+        zip64 true
+    }
+
+    shadowJar {
+        zip64 true
     }
 }
 
-jar {
-    manifest {
-        attributes 'Main-Class': 'de.webis.chatnoir2.indexer.app.ChatNoirIndexer'
+// Set POM definition
+ext.pomDef = {
+    name = 'chatnoir2-indexer'
+    description = 'Indexing Component for ChatNoir'
+    url = 'https://webis.de'
+     licenses {
+         license {
+             name = 'MIT License'
+             url = 'https://opensource.org/licenses/MIT'
+         }
+     }
+     developers {
+         developer {
+             name = 'Janek Bevendorff'
+             email = 'janek.bevendorff@uni-weimar.de'
+         }
+     }
+    organization {
+        name = 'Webis'
+        url = 'https://webis.de'
     }
-    zip64 true
 }
 
-shadowJar {
-    zip64 true
-}
-
-dependencies {
-    compile group: 'org.elasticsearch', name: 'elasticsearch-hadoop', version: '5.4.0'
-    compile group: 'org.jsoup', name: 'jsoup', version: '1.10.2'
-    compile group: 'org.apache.hadoop', name: 'hadoop-common', version: '2.7.3'
-    compile group: 'org.apache.hadoop', name: 'hadoop-mapreduce-client-core', version: '2.7.3'
-    compile project(':aitools4-aq-web-page-content-extraction')
-    compile project(':aitools3-ie-languagedetection')
-    compile files("$projectDir/../webis-uuid/jar/webis-uuid.jar")
-}
+// Include Artifactory configuration
+apply from: 'artifactory.gradle'
