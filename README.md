@@ -5,20 +5,13 @@ If you haven't parsed your raw WARC files into WARC MapFiles yet, you need to do
 mapfile-generator tool.
 
 ## Compiling the Source Code
-Create a folder `aitools` next to this source directory and clone the following dependencies to it:
+To build the sources, run
 
-* [`aitools4-aq-web-page-content-extraction`](https://github.com/chatnoir-eu/aitools4-aq-web-page-content-extraction)
-* [`aitools3-ie-languagedetection`](https://github.com/chatnoir-eu/aitools3-ie-languagedetection)
-* [`aitools3-ie-stopwords`](https://github.com/chatnoir-eu/aitools3-ie-stopwords)
+    ./gradlew shadowJar
 
-Then run
-```
-gradle shadowJar
-```
-from this source directory to download other third-party dependencies and compile the sources.
-
-The generated shadow (fat) JAR will be in `build/libs`. The JAR can be submitted to run on a Hadoop cluster.
-For ease of use, there is a helper script `src/scripts/run_on_cluster.sh` for starting the indexing process.
+from this source directory. This will generate a shadow (fat) JAR in `build/libs`.
+The JAR can be submitted to run on a Hadoop cluster. For ease of use, there is a helper script
+`src/scripts/run_on_cluster.sh` for starting the indexing process.
 
 ## Indexing Process
 The indexer will create an index automatically if it doesn't exist, but in order for the index to work properly,
