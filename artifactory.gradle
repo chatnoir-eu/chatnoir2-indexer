@@ -4,7 +4,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath "org.jfrog.buildinfo:build-info-extractor-gradle:4+"
+        classpath 'org.jfrog.buildinfo:build-info-extractor-gradle:4+'
     }
 }
 
@@ -12,12 +12,33 @@ buildscript {
 apply plugin: 'maven-publish'
 apply plugin: org.jfrog.gradle.plugin.artifactory.ArtifactoryPlugin
 
+// Determine which repositories to pull from and publish to
+def pullRelease  = 'libs-release'
+def pullSnapshot = 'libs-snapshot'
+def pushRelease  = 'libs-snapshot-webis-gradle'
+def pushSnapshot = 'libs-release-webis-gradle'
+
+if (project.ext.has("nonFree") && project.ext.get("nonFree")) {
+    pullRelease  += '-nonfree'
+    pullSnapshot += '-nonfree'
+    pushRelease  += '-nonfree'
+    pushSnapshot += '-nonfree'
+}
+
 repositories {
     maven {
-        url = 'https://repo.webis.de/artifactory/libs-release'
+        url = 'https://repo.webis.de/artifactory/' + pullRelease
+        credentials {
+            username = project.findProperty("artifactoryUsername") ?: ""
+            password = project.findProperty("artifactoryPassword") ?: ""
+        }
     }
     maven {
-        url = 'https://repo.webis.de/artifactory/libs-snapshot'
+        url = 'https://repo.webis.de/artifactory/' + pullSnapshot
+        credentials {
+            username = project.findProperty("artifactoryUsername") ?: ""
+            password = project.findProperty("artifactoryPassword") ?: ""
+        }
     }
 }
 
@@ -26,9 +47,9 @@ artifactory {
     contextUrl = "https://repo.webis.de/artifactory"
     publish {
         repository {
-            repoKey = version.endsWith('SNAPSHOT') ? 'libs-snapshot-webis-gradle' : 'libs-release-webis-gradle'
-            username = "${artifactoryUsername}"
-            password = "${artifactoryPassword}"
+            repoKey = version.endsWith('SNAPSHOT') ? pushRelease : pushSnapshot
+            username = project.findProperty("artifactoryUsername") ?: ""
+            password = project.findProperty("artifactoryPassword") ?: ""
             maven = true
         }
         defaults {
@@ -63,7 +84,9 @@ publishing {
             artifact javadocJar
 
             // Set POM definition
-            pom pomDef
+            if (project.ext.has("pomDef")) {
+                pom project.ext.get("pomDef")
+            }
         }
     }
 }
