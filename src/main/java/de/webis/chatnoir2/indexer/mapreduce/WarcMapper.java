@@ -155,8 +155,8 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
 
                         WARC_TARGET_QUERY_STRING_VALUE.set(null != targetURI.getQuery() ? targetURI.getQuery() : "");
                         OUTPUT_MAP.put(WARC_TARGET_QUERY_STRING_KEY, WARC_TARGET_QUERY_STRING_VALUE);
-                    } catch (URISyntaxException ignored) {
-                        LOG.error("URL Exception for url '" + metadata.getString(k) + "': " + ignored.getMessage());
+                    } catch (URISyntaxException e) {
+                        LOG.error("URL Exception for url '" + metadata.getString(k) + "': " + e.getMessage());
                     }
 
                     WARC_TARGET_URI_VALUE.set(metadata.getString(k));
