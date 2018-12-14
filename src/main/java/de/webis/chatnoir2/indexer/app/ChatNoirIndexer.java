@@ -68,8 +68,8 @@ public class ChatNoirIndexer extends Configured implements Tool
     /**
      * Run this tool.
      */
-    @SuppressWarnings("static-access")
     @Override
+    @SuppressWarnings({"static-access", "Duplicates"})
     public int run(final String[] args) throws Exception
     {
         final Options options = new Options();
