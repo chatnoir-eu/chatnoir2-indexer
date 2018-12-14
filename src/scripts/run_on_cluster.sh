@@ -37,7 +37,7 @@ shift 5
 
 
 for batch in $(seq 1 ${batches}); do
-    echo "Running batch ${batch} of 4..."
+    echo "Running batch ${batch} of ${batches}..."
 
     if [[ "$corpus" == "cw" ]] && [[ "$dataset" == "09" ]]; then
         hadoop jar $(dirname $0)/../../build/libs/chatnoir2-indexer-*-all.jar \
