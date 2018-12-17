@@ -54,10 +54,12 @@ import java.util.*;
  */
 public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements WarcMapReduceBase
 {
+    protected static Counter TOTAL_RECORDS_COUNTER;
     protected static Counter RECORDS_COUNTER;
     protected static Counter JSON_PARSE_ERROR_COUNTER;
     protected static Counter TOO_LARGE_COUNTER;
     protected static Counter TOO_SMALL_COUNTER;
+    protected static Counter NO_REPONSE_RECORD_COUNTER;
     protected static Counter HTML_PARSER_ERROR_COUNTER;
     protected static Counter BINARY_COUNTER;
     protected static Counter LANGDETECT_FAILED_COUNTER;
@@ -70,10 +72,12 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
     {
         super.setup(context);
 
+        TOTAL_RECORDS_COUNTER       = context.getCounter(RecordCounters.TOTAL_RECORDS);
         RECORDS_COUNTER             = context.getCounter(RecordCounters.RECORDS);
         JSON_PARSE_ERROR_COUNTER    = context.getCounter(RecordCounters.SKIPPED_RECORDS_JSON_PARSE_ERROR);
         TOO_LARGE_COUNTER           = context.getCounter(RecordCounters.SKIPPED_RECORDS_TOO_LARGE);
         TOO_SMALL_COUNTER           = context.getCounter(RecordCounters.SKIPPED_RECORDS_TOO_SMALL);
+        NO_REPONSE_RECORD_COUNTER   = context.getCounter(RecordCounters.SKIPPED_RECORDS_NO_RESPONSE_RECORD);
         HTML_PARSER_ERROR_COUNTER   = context.getCounter(RecordCounters.SKIPPED_RECORDS_HTML_PARSE_ERROR);
         BINARY_COUNTER              = context.getCounter(RecordCounters.SKIPPED_RECORDS_BINARY);
         LANGDETECT_FAILED_COUNTER   = context.getCounter(RecordCounters.LANGDETECT_FAILED);
@@ -90,7 +94,8 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
         OUTPUT_MAP.clear();
         MAPREDUCE_KEY.clear();
 
-        RECORDS_COUNTER.increment(1);
+        TOTAL_RECORDS_COUNTER.increment(1);
+
         final String valueStr = value.toString();
 
         LOG.debug("Mapping document " + key);
@@ -135,6 +140,12 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
             String trecId = null;
             while (it.hasNext()) {
                 final String k = (String) it.next();
+
+                if (k.equalsIgnoreCase("WARC-Type") && !metadata.getString(k).equals("response")) {
+                    NO_REPONSE_RECORD_COUNTER.increment(1);
+                    return;
+                }
+
                 if (k.equalsIgnoreCase("WARC-Record-ID")) {
                     recordId = metadata.getString(k);
                     WARC_RECORD_ID_VALUE.set(recordId);
@@ -263,6 +274,7 @@ public class WarcMapper extends Mapper<Text, Text, Text, MapWritable> implements
 
             // write final document to context
             context.write(MAPREDUCE_KEY, OUTPUT_MAP);
+            RECORDS_COUNTER.increment(1);
         } catch (JSONException e) {
             LOG.error("Document " + key + " skipped due to JSON parsing error: " + e.getMessage());
             JSON_PARSE_ERROR_COUNTER.increment(1);

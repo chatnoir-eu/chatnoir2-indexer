@@ -101,6 +101,11 @@ public interface WarcMapReduceBase
         /**
          * Total records read.
          */
+        TOTAL_RECORDS,
+
+        /**
+         * Records processed.
+         */
         RECORDS,
 
         /**
@@ -117,6 +122,11 @@ public interface WarcMapReduceBase
          * Number of skipped records that are too small.
          */
         SKIPPED_RECORDS_TOO_SMALL,
+
+        /**
+         * Number of skipped records that are no response records.
+         */
+        SKIPPED_RECORDS_NO_RESPONSE_RECORD,
 
         /**
          * Number of skipped records due to HTML parser errors.
