@@ -38,7 +38,7 @@
                     ]
                 },
                 "host_delimiter_filter1" : {
-                    "type" : "word_delimiter",
+                    "type" : "word_delimiter_graph",
                     "generate_word_parts" : true,
                     "catenate_words" : true,
                     "catenate_numbers" : true,
@@ -397,9 +397,6 @@
     },
     "mappings" : {
         "warcrecord" : {
-            "_all" : {
-                "enabled" : false
-            },
             "_source" : {
                 "enabled" : true,
                 "excludes" : [
