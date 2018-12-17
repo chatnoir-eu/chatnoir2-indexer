@@ -1,5 +1,5 @@
 {
-    "template" : "webis_warc_*",
+    "index_patterns" : ["webis_warc_*"],
     "settings" : {
         "index.query.default_field" : "body_lang.en",
         "index" : {
