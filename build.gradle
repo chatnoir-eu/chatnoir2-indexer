@@ -13,12 +13,10 @@ buildscript {
 }
 
 repositories {
-    maven {
-        url 'http://conjars.org/repo'
-    }
+    mavenCentral()
 
     maven {
-        url 'http://repo.spring.io/plugins-release'
+        url 'http://conjars.org/repo'
     }
 }
 
@@ -31,11 +29,11 @@ allprojects {
     targetCompatibility = 1.8
 
     dependencies {
-        implementation group: 'org.elasticsearch', name: 'elasticsearch-hadoop', version: '6.4.1'
+        implementation group: 'org.elasticsearch', name: 'elasticsearch-hadoop', version: '7.9.3'
         implementation group: 'org.jsoup', name: 'jsoup', version: '1.10.2'
-        implementation group: 'org.json', name: 'json', version: '20180813'
-        implementation group: 'org.apache.hadoop', name: 'hadoop-common', version: '2.7.6'
-        implementation group: 'org.apache.hadoop', name: 'hadoop-mapreduce-client-core', version: '2.7.6'
+        implementation group: 'org.json', name: 'json', version: '20201115'
+        implementation group: 'org.apache.hadoop', name: 'hadoop-common', version: '2.9.2'
+        implementation group: 'org.apache.hadoop', name: 'hadoop-mapreduce-client-core', version: '2.9.2'
         implementation group: 'de.webis.aitools', name: 'aitools4-aq-web-page-content-extraction', version: '1.0'
         implementation group: 'de.webis.aitools', name: 'aitools3-ie-languagedetection', version: '1.1'
         implementation group: 'de.webis.corpora', name: 'webis-uuid', version: '1.0'
