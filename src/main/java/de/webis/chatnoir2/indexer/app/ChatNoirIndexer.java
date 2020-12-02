@@ -186,7 +186,7 @@ public class ChatNoirIndexer extends Configured implements Tool
         conf.setBoolean(MRJobConfig.MAP_SPECULATIVE,    false);
         conf.setBoolean(MRJobConfig.REDUCE_SPECULATIVE, false);
 
-        conf.set("es.resource",                conf.get("es.resource", String.format("%s/warcrecord", indexName)));
+        conf.set("es.resource",                conf.get("es.resource", indexName + "/_doc"));
         conf.set("es.mapping.id",              "uuid");
         conf.set("es.mapping.exclude",         "uuid");
         conf.set("es.input.json",              "false");
